@@ -61,6 +61,8 @@ python3 ~/.claude/skills/e2e-qa-review/scripts/summarize.py /tmp/site-review/swe
 If navigation changed, also run `node ~/.claude/skills/e2e-qa-review/scripts/nav_gate.mjs` with a
 `nav.json` (start `contact`, typed `about`, `about/team`, `contact`, `products`).
 Exit 1 from a gate means it could not run: fix the setup or report "Not confirmed", never read it as clean.
+The sweep also requests every same-site link on every page; each dead link is a Blocker (a CTA to
+`/demonstrations`, a route that was never built, shipped past every other gate).
 
 ### 3. Live inspection (Playwright MCP)
 For each scoped route: open it at 1440×900, take a screenshot, resize to 768 and 390 and take one each.
@@ -68,6 +70,8 @@ Then use the page the way a visitor would:
 - hover and click the menus; open the phone menu; follow one link from each dropdown;
 - Tab through the page: every focus stop visible, nothing focusable hidden behind the sticky header;
 - scroll the page end to end: scroll reveals finish, 3D scenes draw (a blank canvas is a finding);
+- look at every card, thumbnail and poster in the screenshots: clipped titles, text over a play button, and
+  placeholders standing in for real images are findings a clean sweep never reports;
 - try forms with empty and invalid input;
 - emulate `prefers-reduced-motion: reduce` once: content still readable, no motion loops;
 - read the console and network: errors and failed requests are findings.
@@ -78,7 +82,8 @@ JetBrains Mono labels), spacing rhythm, component patterns and the Don'ts. In th
 colours, px sizes or font stacks that bypass the tokens, and new classes with no CSS.
 
 ### 5. Content
-Grammar and clarity; claims consistent with the pre-silicon status; no em dashes (house style); link text
+Grammar and clarity; claims consistent with the pre-silicon status; no em dashes and no straight quotes
+(house style; the sweep counts both); link text
 that says where it goes.
 
 ## Grading and report
