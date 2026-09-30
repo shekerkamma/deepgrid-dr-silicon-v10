@@ -163,7 +163,7 @@ function YouTube({ v }: { v: Video }) {
           />
         ) : (
           <button type="button" className="cp-yt-play" onClick={() => setOn(true)} aria-label={`Play ${v.title}${v.secs ? ', ' + mmss(v.secs) : ''}`}>
-            <span className="cp-yt-poster"><small>DEEPGRID SEMI / VIDEO</small><strong>{v.title}</strong><span>Play the company video</span></span>
+            <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" loading="lazy" decoding="async" width={480} height={360} />
             <span className="cp-yt-btn"><Play size={16} fill="currentColor" aria-hidden="true" /></span>
             {v.secs ? <em className="cp-yt-dur">{mmss(v.secs)}</em> : v.short ? <em className="cp-yt-dur">Short</em> : null}
           </button>

@@ -190,7 +190,7 @@ export const companyPages: CompanyPage[] = [
     sections: [
       { kind: 'videos', title: 'By platform', groups: videoGroups, shorts: shortGroups, channel: true, from: 'deepgridsemi.com/resources/videos + youtube.com DeepGrid Semi channel' },
       { kind: 'cta', title: 'Simulations and the narrated walkthrough', lede: 'The product lines in their simulators, the silicon films, and the 104-slide portfolio narrated end to end.', from: 'showcase films',
-        actions: [ { label: 'Simulations & walkthrough', href: 'demonstrations', primary: true }, { label: 'Documentation', href: 'resources/docs' } ] },
+        actions: [ { label: 'Narrated decks & films', href: 'resources', primary: true }, { label: 'Documentation', href: 'resources/docs' } ] },
     ],
   },
 

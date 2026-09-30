@@ -19,7 +19,7 @@ export default function Page() {
     <Shell route="products">
       <section className="page-wrap">
   <SectionHead title="A portfolio of physical jobs. Two DG32 variants in detail." copy="DG32-LITE puts a hardware lockstep safety monitor, the motor-drive peripherals and the ADC, CORDIC and PWM datapath in one 64-pin chip. DG32-2DOM is the same chip with an attention engine on its own clock, so a board built for one takes the other."/>
-  <div className="v6-home"><section className="v6-section"><header><span className="v6-mono">PORTFOLIO / FIND THE FUNCTION</span><h2>Different sockets. Named architectures.</h2><p>Start with the silicon job. DG32 is the detailed safety-MCU case within the wider architecture portfolio.</p></header><PortfolioAtlas/></section></div>
+  <Sec kicker="PORTFOLIO / FIND THE FUNCTION" title="Different sockets." em="Named architectures." copy="Start with the silicon job. DG32 is the detailed safety-MCU case within the wider architecture portfolio."><div className="v6-home v6-embed"><PortfolioAtlas/></div></Sec>
   <ProductsScene/>
   <Stats items={[['2 cores','In lockstep: CHECKER runs two cycles behind MAIN'],['~300 cycles','Fixed hardware cost of one FOC loop'],['44 pins','One signal pinout for both chips']]}/>
 
