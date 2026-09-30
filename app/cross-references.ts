@@ -19,10 +19,10 @@ export type Related = {sections: SectionRef[]; docs: DocId[]};
 export const related: Record<RouteId, Related> = {
   home: {
     sections: [
-      {id: 'products', why: 'The two chips, what is identical between them and what DG32-2DOM adds.'},
+      {id: 'products', why: 'Explore the silicon portfolio, then inspect DG32-LITE and DG32-2DOM in detail.'},
       {id: 'technology', why: 'How the lockstep pair, the control loop and the attention engine actually work.'},
       {id: 'evidence', why: 'Where every figure on this site comes from, and which claims were withdrawn.'},
-      {id: 'procurement', why: 'Measured against the incumbent, including where it still wins.'},
+      {id: 'procurement', why: 'Compare design requirements with the incumbent, including its practical advantages.'},
     ],
     docs: ['doc5', 'doc2'],
   },
