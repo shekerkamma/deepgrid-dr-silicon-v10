@@ -6,7 +6,7 @@
 // what the task detects, what it needs to sense it, the features and model it runs, and the
 // memory, latency and maximum rate the document states. Nothing here is summarised or inferred.
 //
-// Domain ids are the site's own (rotating, electrical, motion, degradation), not the playbook's
+// Domain ids are the site’s own (rotating, electrical, motion, degradation), not the playbook's
 // page titles: the catalogue filters on them, and using the document's wording instead left two
 // filters showing zero tasks until scripts/check-usecases.mjs compared the two sets.
 // scripts/check-usecases.mjs re-counts these against the document's own headline figure.

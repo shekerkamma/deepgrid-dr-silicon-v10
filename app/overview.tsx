@@ -11,7 +11,7 @@ import {useNav} from './shell';
 import {headline} from './content';
 import './overview.css';
 
-// The site's front door: what DG32 is, who it is for, why the architecture matters, where it
+// The site’s front door: what DG32 is, who it is for, why the architecture matters, where it
 // fits, what is verifiable today, and what to do next. Six sections, the spine from PLAN.md.
 //
 // Evidence cards reuse the verification-ladder styling from the original overview,
@@ -234,7 +234,7 @@ export function Overview({
         }/>
       </section>
 
-      {/* 4 — APPLICATIONS. Where DeepGrid's chips go, by the system they end up in: the same five
+      {/* 4 — APPLICATIONS. Where DeepGrid’s chips go, by the system they end up in: the same five
           areas /applications opens on, from the same data, so the two cannot drift. This replaced four
           DG32 task-family cards with stock photos and per-domain fields no source carried (an
           AEC-Q100 label on motion tasks, "CWRU Audited", a "10 kHz – 100 kHz sample rate"). */}

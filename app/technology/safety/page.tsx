@@ -46,7 +46,7 @@ export default function Page() {
           <figure className="st-film" id="film">
             <video controls preload="none" playsInline width={1920} height={1080}
               poster={url('/media/dg32-fault-path-explained-poster.jpg')}
-              aria-label="Animated explainer: how DG32-LITE's lockstep pair turns a CPU fault into a switched-off bridge">
+              aria-label="Animated explainer: how DG32-LITE’s lockstep pair turns a CPU fault into a switched-off bridge">
               <source src={url('/media/dg32-fault-path-explained.mp4')} type="video/mp4"/>
               <track kind="captions" srcLang="en" label="English" src={url('/media/dg32-fault-path-explained.vtt')}/>
             </video>

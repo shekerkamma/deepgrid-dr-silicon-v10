@@ -51,19 +51,19 @@ export const companyPages: CompanyPage[] = [
   {
     id: 'story', menu: 'about', path: 'about', label: 'Our story',
     kicker: 'About Us', title: 'A semiconductor company for edge AI, in Hyderabad',
-    lede: 'Our mission is to provide businesses with cutting-edge AI acceleration technology to thrive in today\'s intelligent systems market.',
+    lede: 'Our mission is to provide businesses with cutting-edge AI acceleration technology to thrive in today’s intelligent systems market.',
     sections: [
       { kind: 'stats', from: REF + '/about/story', items: [['2020', 'Founded'], ['28', 'Team Members'], ['4', 'Product Lines']] },
       { kind: 'split', title: 'Who We Are', from: REF + '/about/story',
         paras: [
           'Deepgrid Semi is a pioneering semiconductor company specializing in AI acceleration solutions for edge computing. Founded by a team of industry veterans with decades of combined experience in chip design, AI, and autonomous systems, we are at the forefront of the AI revolution.',
-          'Our headquarters in Hyderabad, India, serves as a hub of innovation where world-class engineers and researchers collaborate to push the boundaries of what\'s possible in AI hardware acceleration.',
+          'Our headquarters in Hyderabad, India, serves as a hub of innovation where world-class engineers and researchers collaborate to push the boundaries of what’s possible in AI hardware acceleration.',
           'We focus on delivering specialized System-on-Chip (SoC) solutions that bring datacenter-class AI performance to edge devices, enabling real-time intelligence in autonomous vehicles, robotics, industrial automation, and smart infrastructure.',
         ],
         image: img('scenes/company-wafer-1536.webp'), imageAlt: 'Illustration of a 200 mm silicon wafer covered in identical small dies, lit in copper' },
       { kind: 'cards', title: 'Company Strategy', cols: 3, from: REF + '/about/story',
         items: [
-          { title: 'Our Philosophy', text: 'Our philosophy is simple: innovate with a purpose. We don\'t just create technology for the sake of innovation; we aim to solve real-world problems that impact road safety and mobility. Our approach is focused on delivering practical, high-performance solutions that enhance driver awareness, anticipate potential hazards, and respond rapidly to keep you safe.' },
+          { title: 'Our Philosophy', text: 'Our philosophy is simple: innovate with a purpose. We don’t just create technology for the sake of innovation; we aim to solve real-world problems that impact road safety and mobility. Our approach is focused on delivering practical, high-performance solutions that enhance driver awareness, anticipate potential hazards, and respond rapidly to keep you safe.' },
           { title: 'Our Vision', text: 'Towards ZERO Fatalities on Roads. We envision a world where roads are safer for everyone, where AI-powered automotive technology significantly reduces traffic accidents. By equipping vehicles with state-of-the-art ADAS solutions, we aim to make this vision a reality. Looking back from 2040, we should proudly declare that there used to be so many fatalities on our roads, but now we have achieved zero.' },
           { title: 'Our Mission', text: 'Our mission is to push the boundaries of automotive technology by developing intelligent chipsets that provide predictive safety features and real-time assistance. We aim to set new benchmarks in the ADAS industry by making vehicles smarter, more responsive, and capable of preventing accidents before they happen.' },
         ] },
@@ -86,7 +86,7 @@ export const companyPages: CompanyPage[] = [
           { title: 'Industry Collaboration', text: 'Partnering with leading manufacturers' },
           { title: 'Practical Solutions', text: 'Real-world effectiveness guaranteed' },
         ] },
-      { kind: 'cta', title: 'Join Us on Our Journey', lede: 'Whether you\'re looking to partner with us, join our team, or learn more about our technology, we\'d love to hear from you.', from: REF + '/about/story',
+      { kind: 'cta', title: 'Join Us on Our Journey', lede: 'Whether you’re looking to partner with us, join our team, or learn more about our technology, we’d love to hear from you.', from: REF + '/about/story',
         actions: [ { label: 'Contact Us', href: 'contact', primary: true }, { label: 'Leadership and team', href: 'about/team' } ] },
     ],
   },
@@ -143,7 +143,7 @@ export const companyPages: CompanyPage[] = [
     lede: 'Milestones and recognition in AI acceleration innovation',
     sections: [
       { kind: 'split', title: 'Top 50 Startups in Telangana', lede: 'Telangana Innovation Ecosystem & T-Hub · Recognition Year: 2024', from: REF + '/about/achievements',
-        paras: ['DeepGrid Semi Pvt. Ltd. is redefining the semiconductor landscape with its indigenous DGrid SoC, a low-power, high-parallelism AI chipset designed for ADAS, robotics, and edge intelligence. With a mission to bring Full-Stack Edge Intelligence: from Silicon, Sensors, Systems to Sentience, DeepGrid Semi stands at the forefront of India\'s next-generation compute innovation.'], },
+        paras: ['DeepGrid Semi Pvt. Ltd. is redefining the semiconductor landscape with its indigenous DGrid SoC, a low-power, high-parallelism AI chipset designed for ADAS, robotics, and edge intelligence. With a mission to bring Full-Stack Edge Intelligence: from Silicon, Sensors, Systems to Sentience, DeepGrid Semi stands at the forefront of India’s next-generation compute innovation.'], },
       { kind: 'stats', from: REF + '/about/achievements', items: [['1000+', 'ADAS chipsets'], ['5+', 'Collaborations'], ['3+', 'Patents'], ['28', 'Skilled engineers']] },
       { kind: 'bullets', title: 'Achievements', from: REF + '/about/achievements',
         items: [
@@ -154,7 +154,7 @@ export const companyPages: CompanyPage[] = [
         ] },
       { kind: 'cards', title: 'All Awards & Recognition', cols: 3, from: REF + '/about/achievements',
         items: [
-          { title: 'Top 50 Startups in Telangana', meta: '2024 · Telangana Innovation Ecosystem & T-Hub', text: 'Selected among the Top 50 Startups in Telangana for pioneering India\'s edge-first semiconductor and AI ecosystem with the DGrid-SoC chipset.' },
+          { title: 'Top 50 Startups in Telangana', meta: '2024 · Telangana Innovation Ecosystem & T-Hub', text: 'Selected among the Top 50 Startups in Telangana for pioneering India’s edge-first semiconductor and AI ecosystem with the DGrid-SoC chipset.' },
           { title: 'Top 10 AI Semiconductor Companies', meta: '2024 · Industry Analyst Report', text: 'Recognized among the top 10 AI semiconductor companies globally for our innovative NPU architecture and transformer optimization capabilities.' },
           { title: 'Innovation Excellence Award', meta: '2024 · Semiconductor Industry Association', text: 'Honored for breakthrough innovations in edge AI processing and power-efficient chip design methodologies.' },
           { title: 'Best Product Design - DG-T100', meta: '2024 · Design & Engineering Awards', text: 'Our DG-T100 transformer accelerator received acclaim for its elegant architecture and exceptional performance-per-watt ratio.' },
@@ -178,7 +178,7 @@ export const companyPages: CompanyPage[] = [
     kicker: 'Technical documentation & resources', title: 'Resources',
     lede: 'Access technical documentation, datasheets, whitepapers, and development resources',
     sections: [
-      { kind: 'docs', groups: docGroups, from: 'deepgridsemi.com/resources/docs + the site\'s own PDFs' },
+      { kind: 'docs', groups: docGroups, from: 'deepgridsemi.com/resources/docs + the site’s own PDFs' },
       { kind: 'cta', title: 'Need Technical Support?', lede: 'Our technical team is here to help you get the most out of our products', from: 'deepgridsemi.com/resources/docs',
         actions: [ { label: 'Contact Support', href: 'contact', primary: true }, { label: 'Videos', href: 'resources/videos' } ] },
     ],
@@ -186,7 +186,7 @@ export const companyPages: CompanyPage[] = [
   {
     id: 'videos', menu: 'resources', path: 'resources/videos', label: 'Videos',
     kicker: 'Demos, field tests & deep dives', title: 'Videos',
-    lede: 'Watch DeepGrid Semi\'s silicon, autonomous driving, and mobility platforms in action.',
+    lede: 'Watch DeepGrid Semi’s silicon, autonomous driving, and mobility platforms in action.',
     sections: [
       { kind: 'videos', title: 'By platform', groups: videoGroups, shorts: shortGroups, channel: true, from: 'deepgridsemi.com/resources/videos + youtube.com DeepGrid Semi channel' },
       { kind: 'cta', title: 'Simulations and the narrated walkthrough', lede: 'The product lines in their simulators, the silicon films, and the 104-slide portfolio narrated end to end.', from: 'showcase films',
@@ -207,7 +207,7 @@ export const companyPages: CompanyPage[] = [
 // ------------------------------------------------------------------ Use cases (DG32 site)
 // One page per application area, generated from applications-story-data.ts (the Annex's socket sheets): the
 // same areas, chips, roles and evidence the Applications page shows, laid out on the use-case template. Only
-// DG32's own films appear, on the area they explain; no third-party or other-product footage is attached.
+// DG32’s own films appear, on the area they explain; no third-party or other-product footage is attached.
 const SCENE: Record<string, { src: string; alt: string }> = {
   motors: { src: '/media/deepgrid_robotics.jpg', alt: 'Concept render of an autonomous forklift in a warehouse aisle' },
   vehicles: { src: '/media/deepgrid_truck.jpg', alt: 'Concept render of a truck on a wet highway at dusk' },

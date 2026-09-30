@@ -31,7 +31,7 @@ const clips: Record<string, Clip> = {
     film: '/media/dg32-2dom-architecture.mp4', captions: '/media/dg32-2dom-architecture.vtt',
     poster: '/decks/dg32-2dom/slide-10.webp', start: 257.60, duration: 32.16, slide: 10,
     deck: 'DG32-2DOM architecture', shows: 'One query row costs about 3,242\u00a0cycles.',
-    saying: 'The engine\'s cost can be worked out before silicon, because it is plain arithmetic. At sixteen lanes and four hundred keys, with keys of thirty-two bytes and values of sixty-four, combining the values takes half of each row, about sixteen hundred cycles. Scoring the keys takes a quarter, requantising about seven hundred, and the divide just forty-eight, roughly thirty-two hundred and forty in all. A bench measurement replaces that estimate once first silicon arrives.',
+    saying: 'The engine’s cost can be worked out before silicon, because it is plain arithmetic. At sixteen lanes and four hundred keys, with keys of thirty-two bytes and values of sixty-four, combining the values takes half of each row, about sixteen hundred cycles. Scoring the keys takes a quarter, requantising about seven hundred, and the divide just forty-eight, roughly thirty-two hundred and forty in all. A bench measurement replaces that estimate once first silicon arrives.',
   },
   'Tool estimate': {
     film: '/media/dg32-lite-datasheet.mp4', captions: '/media/dg32-lite-datasheet.vtt',
@@ -102,7 +102,7 @@ export default function Page() {
       <section className="page-wrap">
         <SectionHead
           title="Every figure says how it was obtained"
-          copy="DG32 is pre-silicon as of September 2026, and it is the furthest along of DeepGrid's ten chips. This page takes each kind of evidence behind the site's numbers in turn, with the moment in the narrated films where it is explained, then says what the other nine chips rest on."
+          copy="DG32 is pre-silicon as of September 2026, and it is the furthest along of DeepGrid’s ten chips. This page takes each kind of evidence behind the site’s numbers in turn, with the moment in the narrated films where it is explained, then says what the other nine chips rest on."
         />
         <SceneFigure name="evidence-fpga" eager
           alt="Illustration of a validation bench: an FPGA development board wired to a small motor-drive board, with an oscilloscope out of focus behind"

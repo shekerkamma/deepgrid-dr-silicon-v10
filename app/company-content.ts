@@ -1,7 +1,7 @@
 /** Content for /company and /contact, ported from the hand-written site that used to serve
  *  deepgrid-dr-silicon_new (company.html, contact.html at 8dc6e8c).
  *
- *  Three claims from that site are deliberately NOT carried over, because this site's
+ *  Three claims from that site are deliberately NOT carried over, because this site’s
  *  verification already rejected them. They are listed with their reasons on /evidence, and
  *  re-stating them here would quietly undo that:
  *    - "MCEME / Indian Army — Defence Anchor, ₹1.01 Cr (Chip 4)"  (see claims.ts `withheld`)

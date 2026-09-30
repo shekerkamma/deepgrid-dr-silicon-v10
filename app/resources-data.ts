@@ -3,7 +3,7 @@ import { url } from './routes';
 // YouTube channel (UCNhzSUQYxiL7lGdzxMRwNvA, listed 2026-09-26 with yt-dlp). The reference's own titles and
 // descriptions are used wherever it lists a video; channel videos it does not list are kept as new information
 // under their own groups, titled from the channel. Documents the reference names but that do not exist as files
-// are shown "on request", never as links; the downloadable ones are the site's own PDFs.
+// are shown "on request", never as links; the downloadable ones are the site’s own PDFs.
 export const CHANNEL = 'https://www.youtube.com/@DeepgridSemi/videos'; // = channel UCNhzSUQYxiL7lGdzxMRwNvA (all 28 ids match)
 
 export type Video = { id: string; title: string; text?: string; secs?: number; short?: boolean };
@@ -29,7 +29,7 @@ export const V = {
   mirrorAlerts: { id: 'Bx9gC9iW99k', title: 'Real-Time ADAS Alerts on D-Mirror', text: 'Live lane, object, and hazard alerts rendered on the D-Mirror display.', secs: 66 },
   followMe: { id: '-iY2KLMsZqw', title: 'D-Drive: Follow-Me Mode', text: 'D-Drive autonomously tracks and follows its target in real time.', secs: 655 },
   turn360: { id: 'fvz-Uhi8vhU', title: 'D-Drive: 360° Turn (Field Test 1)', text: 'In-place maneuverability test of the D-Drive chassis.', secs: 30 },
-  bev: { id: 'knNspgTt7rM', title: 'D-Drive: BEV Perception', text: "Bird's-eye-view perception stack running on the D-Drive platform.", secs: 7 },
+  bev: { id: 'knNspgTt7rM', title: 'D-Drive: BEV Perception', text: "Bird’s-eye-view perception stack running on the D-Drive platform.", secs: 7 },
   steering: { id: 'pmIK4nGp5xg', title: 'D-Drive: Autonomous Steering Control', text: 'Steering-control test: the platform actuates the wheel autonomously (no manual driving).', secs: 13 },
   // channel only
   apexYoga: { id: 'i_5wXj0lHmM', title: 'Apexgrid doing a basic yoga exercise', text: 'The Apexgrid humanoid holding a sequence of yoga poses.', secs: 207 },
@@ -44,7 +44,7 @@ export const V = {
   anatomy: { id: 'b4VFlC5GDzY', title: 'Anatomy of our chip (DG32-2DOM): 13 words from a real tape-out', text: 'The vocabulary of a silicon tape-out, explained on the DG32-2DOM.', secs: 681 },
   lockstep: { id: 'bJOUUJhwa9w', title: 'DG32-LITE: dual-core lockstep RISC-V safety MCU, laid out', secs: 81 },
   gdsii: { id: '4ZVohoOoesE', title: 'DG32-LITE: GDSII view', secs: 120 },
-  wrapalign: { id: 'VYNbuuYrXSg', title: "Why the DG32-2DOM's power never reached the wrapper, and how Wrapalign fixed it", secs: 164 },
+  wrapalign: { id: 'VYNbuuYrXSg', title: "Why the DG32-2DOM’s power never reached the wrapper, and how Wrapalign fixed it", secs: 164 },
   latchup: { id: 'HBLdDD5Vm9k', title: 'SAR guard ring latch-up', secs: 201 },
   pcb: { id: 'CKDsqkh1eZA', title: 'Our PCB engine, live: autoroute and auto-placement', secs: 75 },
   slam: { id: 'mRvephRowgc', title: 'D-Drive moving autonomously after slamming', secs: 139 },
@@ -67,7 +67,7 @@ export const videoGroups: VideoGroup[] = [
     videos: [V.hitech, V.dgridAdas, V.scen2, V.test3, V.modelOut, V.nuscenes, V.waymo, V.carla] },
   { title: 'Smart Mirror: D-Mirror', lede: 'The AD0 Smart Mirror (D-Mirror) turns the rear-view mirror into a live ADAS display: thermal vision that sees through glare, with real-time driver and hazard alerts.', from: REF,
     videos: [V.mirrorThermal, V.mirrorDemo, V.mirrorAlerts] },
-  { title: 'Autonomous Mobility: D-Drive', lede: "Field tests of the D-Drive autonomous mobility platform: follow-me navigation, bird's-eye-view perception, and autonomous steering control.", from: REF + ' + ' + YT,
+  { title: 'Autonomous Mobility: D-Drive', lede: "Field tests of the D-Drive autonomous mobility platform: follow-me navigation, bird’s-eye-view perception, and autonomous steering control.", from: REF + ' + ' + YT,
     videos: [V.followMe, V.turn360, V.bev, V.steering, V.slam] },
   { title: 'Humanoid: Apexgrid', lede: 'The Apexgrid humanoid: joint calibration, balance and first movements.', from: YT,
     videos: [V.apexYoga] },

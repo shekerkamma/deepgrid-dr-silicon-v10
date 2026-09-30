@@ -1,7 +1,7 @@
 'use client';
 import {useEffect} from 'react';
 
-// Two scroll devices beyond the site's entrance reveal, so a section is not just the previous
+// Two scroll devices beyond the site’s entrance reveal, so a section is not just the previous
 // section shown again. Each is selector-driven off the existing markup: no view changes its DOM,
 // its copy or its order to get one. Both honour reduced motion by rendering the final state.
 //

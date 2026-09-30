@@ -3,7 +3,7 @@ import {NotFoundRedirect} from './not-found-redirect';
 
 export const metadata = {title: 'Page not found · DG32 · DeepGrid Semi'};
 
-// Pages serves 404.html for any unknown path. Keep it in the site's look and point back in.
+// Pages serves 404.html for any unknown path. Keep it in the site’s look and point back in.
 export default function NotFound() {
   const links: [string, string][] = [
     ['/', 'Home'], ['/products', 'Products'], ['/technology', 'Technology'], ['/use-cases/motors', 'Use cases'],

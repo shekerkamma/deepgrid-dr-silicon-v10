@@ -144,7 +144,7 @@ export const quickPrompts: QuickPrompt[] = [
 
   // --- Document #5: Master Whitepaper v3 (India Defence Silicon) ---
   { id: 'funnel-10x', label: '$9B Funnel & 10x Cost', query: 'How does DeepGrid achieve a 10x cost reduction across the $9B import funnel?', category: 'strategy', docId: 'doc5', docBadge: 'Doc #5', docName: 'Master Whitepaper v3' },
-  { id: 'boxes-not-chips', label: '"Boxes, Not Chips" Playbook', query: 'Why does DeepGrid target boxes and LRUs in PIL-5 rather than chips?', category: 'defense', docId: 'doc5', docBadge: 'Doc #5', docName: 'Master Whitepaper v3' },
+  { id: 'boxes-not-chips', label: '“Boxes, Not Chips” Playbook', query: 'Why does DeepGrid target boxes and LRUs in PIL-5 rather than chips?', category: 'defense', docId: 'doc5', docBadge: 'Doc #5', docName: 'Master Whitepaper v3' },
   { id: 'crash-stop-rules', label: 'Chinese Crash & Stop Rules', query: 'What happens in the FY31 Chinese price crash stress test and what are Stop Rules S1-S4?', category: 'strategy', docId: 'doc5', docBadge: 'Doc #5', docName: 'Master Whitepaper v3' },
   { id: 'dgridriscv-spec', label: 'DGridRiscV Core Spec', query: 'What is the exact circuit-code architecture of the DGridRiscV RV32IM processor?', category: 'architecture', docId: 'doc5', docBadge: 'Doc #5', docName: 'Master Whitepaper v3' },
   { id: 'funds-10cr', label: '₹10 Cr Capital Waterfall', query: 'How is the ₹10 Cr seed capital allocated across fabs and ATE?', category: 'strategy', docId: 'doc5', docBadge: 'Doc #5', docName: 'Master Whitepaper v3' },

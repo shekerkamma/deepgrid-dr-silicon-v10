@@ -14,7 +14,7 @@ import { films, type Film as DGFilm } from './dg32-films';
 import { CHANNEL, type Video } from './resources-data';
 import type { CompanyPage, Person, Section } from './company-pages';
 
-// Scenes are concept renders; posters are stills from DeepGrid's simulators; apexgrid-* are stills from the
+// Scenes are concept renders; posters are stills from DeepGrid’s simulators; apexgrid-* are stills from the
 // company's own video; the rest are illustrations.
 const captionFor = (src: string) =>
   src.includes('/apexgrid') ? 'Stills from DeepGrid Semi’s Apexgrid video' : src.includes('/scenes/') || src.includes('/media/deepgrid_') ? 'Concept render' : src.includes('/posters/') ? 'Simulation still' : 'Illustration';

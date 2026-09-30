@@ -1,7 +1,7 @@
 import type {Clip} from './evidence-clip';
 import {groundedDocuments} from './documents-data';
 
-/** A citation, through the document registry (the site's convention: app/documents-data.ts is the one
+/** A citation, through the document registry (the site’s convention: app/documents-data.ts is the one
  *  place a document's title and file live, and every link reads it rather than a hard-coded path). */
 export const citeDoc = (id: 'doc2' | 'doc5') => {
   const d = groundedDocuments.find(x => x.id === id)!;
@@ -49,7 +49,7 @@ export const clips: Record<string, Clip> = {
     captions: '/media/dg32-2dom-architecture.vtt',
     poster: '/decks/dg32-2dom/slide-01.webp', start: 0, duration: 29.73, slide: 1,
     shows: 'Condition monitoring on the motor-control chip.',
-    saying: 'DG32-2DOM is the attention variant of Deepgrid Semi\'s DG32-LITE motor-control chip. It keeps the dual-core lockstep controller and adds an INT8 attention engine on its own clock, so a drive can watch its own motor for faults. The design is complete and in physical trials. Every figure here is a post-route, simulated or analytic value, and each one is labelled.',
+    saying: 'DG32-2DOM is the attention variant of Deepgrid Semi’s DG32-LITE motor-control chip. It keeps the dual-core lockstep controller and adds an INT8 attention engine on its own clock, so a drive can watch its own motor for faults. The design is complete and in physical trials. Every figure here is a post-route, simulated or analytic value, and each one is labelled.',
   },
   'bearing': {
     deck: 'DG32-2DOM architecture',
@@ -57,7 +57,7 @@ export const clips: Record<string, Clip> = {
     captions: '/media/dg32-2dom-architecture.vtt',
     poster: '/decks/dg32-2dom/slide-12.webp', start: 316.54, duration: 32.37, slide: 12,
     shows: 'The engine targets bearing faults in the drive.',
-    saying: 'What is it for? Catching a wearing bearing, or a drive that starts behaving oddly, without an extra processor on the board, because the motor controller watches its own motor. The STM32G0 can only run that kind of model in software, so a hardware engine sets DG32-2DOM apart. On the roadmap it runs alongside DG32-LITE\'s first silicon, with its design finished and undergoing physical trials.',
+    saying: 'What is it for? Catching a wearing bearing, or a drive that starts behaving oddly, without an extra processor on the board, because the motor controller watches its own motor. The STM32G0 can only run that kind of model in software, so a hardware engine sets DG32-2DOM apart. On the roadmap it runs alongside DG32-LITE’s first silicon, with its design finished and undergoing physical trials.',
   },
   'trip': {
     deck: 'DG32-LITE architecture',
@@ -179,7 +179,7 @@ export const sockets: {id: string; name: string; short: string; what: string; li
  *  section 7 agree on every product. `replaces`, `goes` and `status` restate each sheet's own
  *  "Replaces", "Socket" and "Status & node path" panels in plain words.
  *
- *  Left out on purpose, per the site's own rules: anchor customers (the only one verified, MCEME,
+ *  Left out on purpose, per the site’s own rules: anchor customers (the only one verified, MCEME,
  *  failed), market sizes and prices (the Annex flags them as internal estimates), and specifications
  *  for any part without silicon. D100's node is the Annex matrix's own "130nm + 28nm SiP": sheet 11
  *  names the 130 nm die and app/detail-content.ts the TSMC 28 nm one, and both are in the package. */

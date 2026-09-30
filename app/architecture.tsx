@@ -43,7 +43,7 @@ function Lite({block,reduced,setReduced,exploded,setExploded,update,go}:Props){
   </Intro>
   <SceneFigure name="technology-die"
    alt="Illustration of a silicon die under a microscope with two identical core regions side by side"
-   caption="Illustration of a lockstep die: two identical cores side by side, a comparator between them. DG32's own block diagram is below."/>
+   caption="Illustration of a lockstep die: two identical cores side by side, a comparator between them. DG32’s own block diagram is below."/>
   <Stats items={[['50 MHz','ONE CLOCK DOMAIN'],['2','BUS MASTERS'],['16','INTERRUPT SOURCES'],['64 KB','BOOT ROM'],['32 KB','DUAL-PORT SRAM'],['39 cycles','FAULT TO LATCH, SIMULATED']]}/>
   <Sec kicker="ARCHITECTURAL CONSTRAINTS" title="Four hardening findings set the shape of every block," em="starting with a lockstep core that tops out near 55–62 MHz." copy="Read across a row to see what each constraint means and what the design does about it.">
    <DataTable caption="Design premises and what they set" head={['Constraint','What it means','What the design does']} rows={litePremises} wide/>
