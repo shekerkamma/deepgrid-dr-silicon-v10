@@ -78,7 +78,7 @@ function Scene({reduced,job,step=0,opened=false,paused=false,reset=0}:{reduced:b
   },[]);
   const disabled=step>=6;
   return <div className="v6-stage" data-region={job} data-opened={opened} data-reduced={reduced}>
-    <img className="v6-assembly" src={url('/images/v6/system-workbench.webp')} alt="Representative assembly with visible motor, bridge power stage, controller package and electrical interfaces"/>
+    <img className="v6-assembly" src={url('/images/v6/system-workbench.webp')} width={1536} height={1024} alt="Representative assembly with visible motor, bridge power stage, controller package and electrical interfaces"/>
     <div className="v6-material-layer" ref={host}/>
     <div className="v6-region-wash" aria-hidden="true"/>
     <div className="v6-socket v6-socket-motion" data-selected={job===1}><span>Motion</span><strong>SKU-1 + DG32</strong></div>
