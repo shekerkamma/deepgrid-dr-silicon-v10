@@ -5,7 +5,7 @@ The user's review revealed failures missed by the initial v6 finish review: bone
 Corrections:
 - Light sections resolve their foreground explicitly. Headers pair the argument with its supporting text; mobile stacks them.
 - The shared portfolio atlas prioritises the part's job, with architecture and boundaries in native disclosures.
-- Reuse has connected foundation/specialist/integration geometry. Qualification and process/manufacturing plans use distinct sequences.
+- Reuse has connected foundation/specialist/integration geometry. Its light panels define their own foregrounds on the dark company surface. Qualification and process/manufacturing plans use distinct sequences.
 - All 23 downloadable Markdown files gain static reading editions with an outline, readable typography, scrollable tables/code and library navigation. Original downloads and Markdown fetched by inline readers remain unchanged.
 - Guide reading actions in technology/resources and the graph report in Ask open reading editions. Explicit Markdown download actions retain their format labels.
 - The route-specific evaluation guide lives inside the existing related-content block as an expandable section, replacing the separate repeated closing block.

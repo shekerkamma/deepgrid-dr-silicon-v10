@@ -19,7 +19,7 @@ for(const width of [1440,390]){
  }
  for(const route of ['', 'company.html']){
   await page.goto(site+route,{waitUntil:'networkidle'});
-  const bad=await page.locator('.v6-bone h2,.v6-bone h3,.v6-bone strong').evaluateAll(nodes=>nodes.filter(el=>{const c=getComputedStyle(el).color.match(/\d+/g);return c&&Number(c[0])>150&&Number(c[1])>150&&Number(c[2])>150}).map(el=>el.textContent));
+  const bad=await page.locator('.v6-bone h2,.v6-bone h3,.v6-bone strong,.v6-foundation h3,.v6-foundation p,.v6-proposed h3,.v6-proposed p').evaluateAll(nodes=>nodes.filter(el=>{const c=getComputedStyle(el).color.match(/\d+/g);return c&&Number(c[0])>150&&Number(c[1])>150&&Number(c[2])>150}).map(el=>el.textContent));
   if(bad.length)failures.push(`${width} ${route}: pale text on light surface: ${bad.join(', ')}`);
   const rawLinks=await page.locator('a[href*=".md"]:not([download])').count();
   if(rawLinks)failures.push(`${width} ${route}: ${rawLinks} raw-source reading links`);
