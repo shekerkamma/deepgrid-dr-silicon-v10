@@ -30,7 +30,7 @@ const skuSource = (section: string): StorySource => ({title: 'SKU Architecture C
 const strategySource = (section: string): StorySource => ({title: 'Mature-Node Silicon System Architecture', path: '/downloads/deepgrid-mature-silicon-architecture.md', section});
 
 export const portfolioGroups: PortfolioGroup[] = [
-  {id: 'motion', title: 'Motion & safety', question: 'What drives the motor—and what stops it?', description: 'Motor-control power stages and the independent logic that watches control execution.'},
+  {id: 'motion', title: 'Motion & safety', question: 'What drives the motor, and what stops it?', description: 'Motor-control power stages and the independent logic that watches control execution.'},
   {id: 'infrastructure', title: 'Power & infrastructure', question: 'What measures, powers and supervises the board?', description: 'Metering, rail generation and supply supervision are separate silicon jobs.'},
   {id: 'interfaces', title: 'Interfaces & perception', question: 'How does the system communicate, sense and display?', description: 'Harness interfaces, radio-frequency sensing and display drive each need specialist blocks.'},
   {id: 'integration', title: 'System integration', question: 'How do these functions become a platform?', description: 'Zonal control and drone architectures combine functions across process and safety boundaries.'},
