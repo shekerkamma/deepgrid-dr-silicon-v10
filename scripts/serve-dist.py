@@ -16,7 +16,7 @@ class Handler(SimpleHTTPRequestHandler):
     def send_head(self):
         request_path = self.path.split('?')[0]
         # Match Pages case-sensitive route lookup on Windows as well as Linux.
-        if os.path.splitext(request_path)[1] in ('', '.html') and request_path != request_path.lower():
+        if '/downloads/' not in request_path and os.path.splitext(request_path)[1] in ('', '.html') and request_path != request_path.lower():
             self.send_error(404); return None
         path = self.translate_path(self.path)
         if not os.path.exists(path) and os.path.isfile(path.rstrip('/') + '.html'):

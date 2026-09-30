@@ -68,7 +68,7 @@ export default function Page() {
     <img src={url('/images/deepgridsemi/package-stack.webp')} alt="Exploded view of a layered chip package: die, substrate and lid separated" width={544} height={364} loading="lazy" decoding="async"/>
     <figcaption>DeepGrid&rsquo;s multi-die package concept, from deepgridsemi.com. The D100 at the foot of this table is the portfolio&rsquo;s multi-die part.</figcaption>
    </figure>
-   <div className="table-scroll">
+   <details className="dr-evaluation-guide"><summary>Compare process nodes across the portfolio</summary><div className="table-scroll">
     <table className="dr-table dr-table-wide">
      {/* Per-chip facts live on /applications (one home per fact); this table keeps only what the
          mature-node argument needs, and each part opens its card there. */}
@@ -91,7 +91,7 @@ export default function Page() {
       })}
      </tbody>
     </table>
-   </div>
+   </div></details>
    <p className="disclaimer">
     Portfolio, numbering and nodes reconciled on 23 September 2026 against the SKU Architecture
     Compendium (Technical Annex v3) and the Mature-Node Silicon System Architecture, which agree

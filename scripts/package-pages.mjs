@@ -17,6 +17,9 @@ const base=(process.env.PAGES_BASE||'/deepgrid-dr-silicon-v3/').replace(/\/?$/,'
 const domain=(process.env.PAGES_DOMAIN||'').trim();
 fs.rmSync(output,{recursive:true,force:true});
 fs.cpSync(source,output,{recursive:true});
+// Generate human-readable editions alongside the preserved source downloads.
+const {generateReaders}=await import('./document-readers.mjs');
+generateReaders(output,base);
 if(base!=='/'){
  // The export emits scripts and styles under an absolute /_next/ prefix, which a project site cannot serve.
  // Vite's preload map lists deps as "_next/static/..." and its URL builder prepends "/", so those

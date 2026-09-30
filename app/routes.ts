@@ -14,6 +14,8 @@ export const BASE = (process.env.NEXT_PUBLIC_PAGES_BASE || '/').replace(/\/?$/, 
 // /deepgrid-dr-silicon-v2/deepgrid-dr-silicon-v2/media/…, a 404 that only a client-mounted element
 // shows: the server-rendered HTML was correct and hydration keeps its attributes.
 export function url(path: string): string {
+  // Source documents open in the generated reading view; raw files remain downloadable there.
+  if (/\/downloads\/.*\.md(?:[?#]|$)/.test(path)) path = path.replace(/\.md(?=[?#]|$)/, '.html');
   if (BASE !== '/' && path.startsWith(BASE)) return path;
   return path === '/' ? BASE : BASE.replace(/\/$/, '') + path;
 }

@@ -5,6 +5,7 @@ import {byId, url, type RouteId} from './routes';
 import {related} from './cross-references';
 import {groundedDocuments} from './documents-data';
 import './related.css';
+import {RouteJourney} from './route-journey';
 
 /** The cross-reference block every route ends on. Sections first, because a reader who wants more
  *  usually wants the neighbouring argument rather than a 71-page PDF; documents second, with the
@@ -17,6 +18,7 @@ export default function Related({route}: {route: RouteId}) {
 
   return (
     <aside className="dr-related" aria-labelledby={'related-' + route}>
+      {route !== 'home' && route !== 'company' && <details className="dr-evaluation-guide"><summary>Engineering evaluation guide</summary><RouteJourney route={route}/></details>}
       <h2 className="dr-kicker" id={'related-' + route}>Where to go next</h2>
 
       <ul className="dr-related-sections">
@@ -44,7 +46,7 @@ export default function Related({route}: {route: RouteId}) {
                   <span className="dr-related-doc-title">{d.title}</span>
                   <span className="dr-related-doc-meta">PDF · {d.pdfPageCount}</span>
                 </a>
-                <a className="dr-related-doc-spec" href={url(d.specFile)}>Specification (Markdown)</a>
+                <a className="dr-related-doc-spec" href={url(d.specFile)}>Read specification</a>
               </li>
             ))}
           </ul>

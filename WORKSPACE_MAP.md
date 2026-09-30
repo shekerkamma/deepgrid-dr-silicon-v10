@@ -13,5 +13,6 @@
 - `PRODUCT.md`, `DESIGN.md`, `.impeccable/design.json`: product truth and implemented design system.
 - `scripts/package-pages.mjs`, `.github/workflows/pages.yml`: base-aware static export and gated Pages publication.
 - `scripts/verify-routes.mjs`, `scripts/verify-nav.mjs`: desktop, mobile, reduced-motion route and navigation gates.
+- `scripts/document-readers.mjs`, `scripts/verify-reading.mjs`: generated source-document reading editions, mobile reading checks and light-section foreground regression checks.
 
 Windows: run npm through `node 'C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js'`. Stop preview servers before rebuilding `dist`; Windows can lock the served export. Build with both `PAGES_BASE` and `NEXT_PUBLIC_PAGES_BASE` set to the endpoint path. Do not rebuild during route capture.

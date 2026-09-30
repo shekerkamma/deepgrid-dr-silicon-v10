@@ -7,6 +7,10 @@
   border-top: 1px solid var(--rule);
 }
 .dr-related > .dr-kicker { margin: 0 0 18px; }
+.dr-evaluation-guide{margin-bottom:2rem;border-bottom:1px solid var(--rule);padding-bottom:1rem}
+.dr-evaluation-guide>summary{cursor:pointer;color:var(--foreground);font-size:1rem;min-height:44px;padding:.6rem 0}
+.dr-evaluation-guide .route-journey{margin:1rem 0;padding:1rem 0;border-top:0}
+.dr-evaluation-guide>summary:focus-visible{outline:2px solid var(--copper);outline-offset:4px}
 
 .dr-related-sections {
   list-style: none;

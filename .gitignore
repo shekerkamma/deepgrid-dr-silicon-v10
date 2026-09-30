@@ -58,3 +58,4 @@ next-env.d.ts
 *.tmp
 verify-shots/
 /.v6-serve/
+/.npm-cache/

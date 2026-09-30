@@ -7,6 +7,7 @@ import {
   FileText, Compass, HelpCircle, Download, Copy, Users,
   ExternalLink, Maximize2, Table, ChevronDown, ChevronUp, SlidersHorizontal
 } from 'lucide-react';
+import {url} from './routes';
 import {SectionHead} from './detail';
 import CouncilView from './council-view';
 import {
@@ -411,7 +412,7 @@ export default function AskDeepGrid({go}: {go: (hash: string) => void}) {
                 <Download size={13} /> Graph JSON
               </a>
               <a
-                href="/downloads/GRAPH_REPORT.md"
+                href={url('/downloads/GRAPH_REPORT.md')}
                 target="_blank"
                 rel="noreferrer"
                 className="dr-graphify-btn primary"

@@ -3,7 +3,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {ArrowUpRight, ArrowRight, ArrowLeft, Menu, X} from 'lucide-react';
 import {byId, nextRoute, prevRoute, resolveTarget, url, type RouteId} from './routes';
-import {RouteJourney} from './route-journey';
+
 import {MegaNav} from './mega-nav';
 import {useReveal, useScrollVars} from './motion';
 import {useDraw, useRail} from './devices';
@@ -111,7 +111,7 @@ export function Shell({
           </nav>
         )}
         {children}
-        <RouteJourney route={route}/>
+
 
         {(prev || next) && (
           <nav className="section-pagination" aria-label="Section navigation">
