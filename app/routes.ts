@@ -14,8 +14,16 @@ export const BASE = (process.env.NEXT_PUBLIC_PAGES_BASE || '/').replace(/\/?$/, 
 // /deepgrid-dr-silicon-v2/deepgrid-dr-silicon-v2/media/…, a 404 that only a client-mounted element
 // shows: the server-rendered HTML was correct and hydration keeps its attributes.
 export function url(path: string): string {
-  // Source documents open in the generated reading view; raw files remain downloadable there.
-  if (/\/downloads\/.*\.md(?:[?#]|$)/.test(path)) path = path.replace(/\.md(?=[?#]|$)/, '.html');
+  // A source document's markdown edition opens in the in-site reader (/resources/read), inside the
+  // site's own design. Until 2026-10-01 this rewrote .md to a generated .html page with its own fonts
+  // and no navigation; those paths are now redirects. Use asset() for the raw file.
+  const doc = path.match(/\/downloads\/(.+?)\.md(#.*)?$/);
+  if (doc) return asset('/resources/read') + '?doc=' + encodeURIComponent(doc[1]) + (doc[2] || '');
+  return asset(path);
+}
+
+/** Base-aware href with no rewriting: for files the page fetches or offers as downloads. */
+export function asset(path: string): string {
   if (BASE !== '/' && path.startsWith(BASE)) return path;
   return path === '/' ? BASE : BASE.replace(/\/$/, '') + path;
 }
@@ -23,14 +31,25 @@ export function url(path: string): string {
 export type RouteId =
   | 'home' | 'products' | 'technology' | 'safety' | 'control' | 'die'
   | 'package' | 'applications' | 'evidence' | 'resources' | 'procurement' | 'ask'
-  | 'company' | 'contact' | 'videos' | 'docs' | 'about' | 'team' | 'recognition'
-  | 'uc-motors' | 'uc-vehicles' | 'uc-defence' | 'uc-grid' | 'uc-boards';
+  | 'company' | 'contact' | 'videos' | 'docs' | 'read' | 'about' | 'team' | 'recognition'
+  | 'uc-motors' | 'uc-vehicles' | 'uc-defence' | 'uc-grid' | 'uc-boards'
+  | 'sku1' | 'sku2' | 'sku3' | 'sku4' | 'sku5' | 'sku6' | 'sku7' | 'sku8' | 'sku9' | 'd100';
 
 export type Route = {id: RouteId; href: string; label: string; nav?: boolean; parent?: RouteId};
 
 export const routes: Route[] = [
   {id: 'home',         href: '/',                        label: 'Home', nav: true},
   {id: 'products',     href: '/products',                label: 'Products',     nav: true},
+  {id: 'sku1', href: '/products/sku-1', label: 'SKU-1 motor controller', parent: 'products'},
+  {id: 'sku2', href: '/products/sku-2', label: 'SKU-2 smart meter', parent: 'products'},
+  {id: 'sku3', href: '/products/sku-3', label: 'SKU-3 power IC', parent: 'products'},
+  {id: 'sku4', href: '/products/sku-4', label: 'SKU-4 safety MCU', parent: 'products'},
+  {id: 'sku5', href: '/products/sku-5', label: 'SKU-5 transceiver', parent: 'products'},
+  {id: 'sku6', href: '/products/sku-6', label: 'SKU-6 supervisor', parent: 'products'},
+  {id: 'sku7', href: '/products/sku-7', label: 'SKU-7 radar', parent: 'products'},
+  {id: 'sku8', href: '/products/sku-8', label: 'SKU-8 display driver', parent: 'products'},
+  {id: 'sku9', href: '/products/sku-9', label: 'SKU-9 zonal gateway', parent: 'products'},
+  {id: 'd100', href: '/products/d100', label: 'D100 drone SoC', parent: 'products'},
   {id: 'technology',   href: '/technology',              label: 'Technology',   nav: true},
   {id: 'safety',       href: '/technology/safety',       label: 'Safety',       parent: 'technology'},
   {id: 'control',      href: '/technology/control-loop', label: 'Control loop', parent: 'technology'},
@@ -47,6 +66,7 @@ export const routes: Route[] = [
   {id: 'resources',    href: '/resources',               label: 'Resources',    nav: true},
   {id: 'docs',         href: '/resources/docs',          label: 'Documentation', parent: 'resources'},
   {id: 'videos',       href: '/resources/videos',        label: 'Videos',       parent: 'resources'},
+  {id: 'read', href: '/resources/read', label: 'Source document', parent: 'resources'},
   {id: 'ask',          href: '/ask',                     label: 'Ask DeepGrid', nav: true},
   {id: 'about',        href: '/about',                   label: 'Our story'},
   {id: 'team',         href: '/about/team',              label: 'Leadership & team', parent: 'about'},

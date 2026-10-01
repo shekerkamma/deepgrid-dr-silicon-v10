@@ -26,6 +26,95 @@ export const related: Record<RouteId, Related> = {
     ],
     docs: ['doc5', 'doc2'],
   },
+  sku1: {
+    sections: [
+      {id: 'sku4', why: 'The safety MCU that supervises this drive and can shut it down.'},
+      {id: 'uc-motors', why: 'Where the motor controller sits in a drive, beside its safety supervisor.'},
+      {id: 'control', why: 'How DG32 budgets a hardware control loop, cycle by cycle.'},
+    ],
+    docs: ['doc2', 'doc5'],
+  },
+  sku2: {
+    sections: [
+      {id: 'uc-grid', why: 'The meter it goes into, and what decides measurement quality.'},
+      {id: 'sku5', why: 'The RS-485 transceiver on the wired meter bus.'},
+      {id: 'sku6', why: 'The supervisor that catches a brownout before the record is lost.'},
+    ],
+    docs: ['doc2', 'doc5'],
+  },
+  sku3: {
+    sections: [
+      {id: 'sku6', why: 'The supervisor that independently checks every rail this IC produces.'},
+      {id: 'uc-defence', why: 'The avionics and vehicle platforms its 28 V bus comes from.'},
+      {id: 'evidence', why: 'What an architecture sheet establishes, and what only silicon can.'},
+    ],
+    docs: ['doc2'],
+  },
+  sku4: {
+    sections: [
+      {id: 'safety', why: 'The fault path from a wrong value to a switched-off bridge, step by step.'},
+      {id: 'control', why: 'The cycle budget of one current-control loop on DG32-LITE.'},
+      {id: 'die', why: 'The six block groups on the die, and the one that is frozen.'},
+      {id: 'package', why: 'The QFN-64 pinout a board designer works from.'},
+    ],
+    docs: ['doc2', 'doc6'],
+  },
+  sku5: {
+    sections: [
+      {id: 'sku9', why: 'The zonal gateway whose buses this transceiver drives.'},
+      {id: 'uc-boards', why: 'The boards where an interface part sits at every node.'},
+      {id: 'uc-vehicles', why: 'The vehicle buses that need CAN-FD at every node.'},
+    ],
+    docs: ['doc2'],
+  },
+  sku6: {
+    sections: [
+      {id: 'sku3', why: 'The power IC whose rails this supervisor cross-checks.'},
+      {id: 'sku4', why: 'The safety MCU it holds in reset until the supplies are good.'},
+      {id: 'uc-boards', why: 'The boards that need a predictable start below firmware.'},
+    ],
+    docs: ['doc2', 'doc5'],
+  },
+  sku7: {
+    sections: [
+      {id: 'uc-vehicles', why: 'The truck mirror tower and braking systems the radar serves.'},
+      {id: 'd100', why: 'The drone platform that uses radar for collision avoidance.'},
+      {id: 'evidence', why: 'Why an RF front end is proven on silicon or not at all.'},
+    ],
+    docs: ['doc2'],
+  },
+  sku8: {
+    sections: [
+      {id: 'uc-defence', why: 'The rugged cockpit and vehicle displays it drives.'},
+      {id: 'sku3', why: 'The power IC that supplies its display bias rails.'},
+      {id: 'evidence', why: 'What a rugged-display target does and does not establish.'},
+    ],
+    docs: ['doc2'],
+  },
+  sku9: {
+    sections: [
+      {id: 'uc-vehicles', why: 'The zones of a software-defined vehicle, and what mature nodes own there.'},
+      {id: 'sku5', why: 'The transceivers on its physical vehicle buses.'},
+      {id: 'sku4', why: 'The lockstep pattern its safety island reuses.'},
+    ],
+    docs: ['doc2'],
+  },
+  d100: {
+    sections: [
+      {id: 'uc-defence', why: 'The drone and avionics platforms D100 is scoped for.'},
+      {id: 'sku1', why: 'The motor controller on its flight motors.'},
+      {id: 'sku7', why: 'The radar that feeds its collision avoidance.'},
+    ],
+    docs: ['doc2', 'doc5'],
+  },
+  read: {
+    sections: [
+      {id: 'resources', why: 'Every source document, with its PDF and the decision it supports.'},
+      {id: 'evidence', why: 'How each figure in these documents is graded on the site.'},
+      {id: 'ask', why: 'Search all the documents at once and get a cited answer.'},
+    ],
+    docs: [],
+  },
   products: {
     sections: [
       {id: 'technology', why: 'The architecture behind both parts, one tab each.'},

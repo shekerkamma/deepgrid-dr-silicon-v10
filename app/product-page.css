@@ -1,0 +1,83 @@
+/* Product pages (/products/<slug>). Tokens from DESIGN.md: serif headings, Inter body, mono labels,
+   copper the one accent. Layout follows the page's own Sec sections; the sticky bar is the only new
+   pattern (Apple-style product sub-nav), sitting under the site header. */
+.pp { display: grid; gap: 0; }
+.pp-bar { position: sticky; top: var(--nav-h, 60px); z-index: 20; display: flex; align-items: center; gap: 1.5rem; padding: .6rem 0; background: var(--background); border-bottom: 1px solid var(--line); }
+.pp-bar-name { font-family: var(--font-display); font-size: var(--sc-t-block); color: var(--ink); white-space: nowrap; }
+.pp-bar-name .mono { font-family: var(--font-mono); font-size: var(--sc-t-meta); letter-spacing: var(--sc-track-meta); color: var(--copper); margin-right: .35rem; }
+.pp-bar ul { display: flex; gap: 1.1rem; margin: 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; flex: 1; }
+.pp-bar ul a { display: inline-flex; align-items: center; min-height: 32px; color: var(--ink-2); font-size: var(--sc-t-control); white-space: nowrap; text-decoration: none; }
+.pp-bar ul a:hover, .pp-bar ul a:focus-visible { color: var(--ink); }
+.pp-bar-cta { display: inline-flex; align-items: center; gap: .4rem; min-height: 36px; padding: 0 .9rem; border: 1px solid var(--copper); border-radius: var(--sc-radius-sm); color: var(--copper); font-size: var(--sc-t-control); white-space: nowrap; text-decoration: none; }
+
+.pp-head { padding-block: clamp(2rem, 5vw, 3.5rem) 1rem; max-width: 60rem; }
+.pp-head h1 { font-family: var(--font-display); font-size: var(--sc-t-hero); line-height: var(--sc-lh-hero); letter-spacing: var(--sc-track-hero); font-weight: 400; margin: .6rem 0 1rem; color: var(--ink); text-wrap: balance; }
+.pp-lede { font-size: var(--sc-t-lead); line-height: var(--sc-lh-body); color: var(--ink-2); max-width: var(--sc-measure); margin: 0; text-wrap: pretty; }
+.pp-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; margin: 2rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.pp-facts dt, .pp-evidence dt { font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--ink-3); margin-bottom: .35rem; }
+.pp-facts dd, .pp-evidence dd { margin: 0; color: var(--ink); font-size: var(--sc-t-body); line-height: var(--sc-lh-body); }
+.pp-badge { display: inline-block; padding: .15rem .55rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--copper); }
+
+.pp-sec { scroll-margin-top: calc(var(--nav-h, 60px) + 4rem); }
+.pp-physics { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.pp-physics li { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 1.25rem; align-items: start; padding: 1.1rem 0; border-top: 1px solid var(--line); }
+.pp-physics li p { margin: 0; font-size: var(--sc-t-body); line-height: var(--sc-lh-body); color: var(--ink-2); }
+.pp-physics .pp-req { color: var(--ink); }
+.pp-physics svg { color: var(--copper); margin-top: .3rem; }
+
+.pp-blocks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--sc-radius-md); overflow: hidden; counter-reset: stage; }
+.pp-blocks > li { position: relative; padding: 1.1rem 1.1rem 1.25rem; background: var(--surface); border-right: 1px solid var(--line); counter-increment: stage; }
+.pp-blocks > li:last-child { border-right: 0; }
+.pp-blocks h3 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-block); color: var(--ink); margin: 0 0 .7rem; }
+.pp-blocks h3::before { content: counter(stage, decimal-leading-zero); display: block; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); color: var(--copper); margin-bottom: .4rem; }
+.pp-blocks ul { margin: 0; padding: 0 0 0 1rem; display: grid; gap: .35rem; }
+.pp-blocks ul li { font-size: var(--sc-t-control); line-height: 1.5; color: var(--ink-2); }
+.pp-note { margin: .9rem 0 0; font-size: var(--sc-t-meta); color: var(--ink-3); line-height: 1.5; }
+
+.pp-toward { margin-top: 1.5rem; }
+.pp-toward ul { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0 0; padding: 0; list-style: none; }
+.pp-toward li { padding: .3rem .65rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); font-size: var(--sc-t-control); color: var(--ink-2); }
+.pp-reconcile { margin-top: 1.5rem; padding: 1rem 1.15rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); }
+.pp-reconcile p:last-child { margin: .5rem 0 0; font-size: var(--sc-t-body); line-height: var(--sc-lh-body); color: var(--ink-2); max-width: var(--sc-measure); }
+
+.pp-questions { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--sc-radius-md); overflow: hidden; counter-reset: q; }
+.pp-questions li { background: var(--background); padding: 1.15rem 1.25rem; counter-increment: q; }
+.pp-questions h3 { margin: 0 0 .45rem; font-size: var(--sc-t-body); font-weight: 600; color: var(--ink); }
+.pp-questions h3::before { content: counter(q, decimal-leading-zero) "  "; font: var(--sc-t-meta) var(--font-mono); color: var(--copper); white-space: pre; }
+.pp-questions p { margin: 0; font-size: var(--sc-t-body); line-height: var(--sc-lh-body); color: var(--ink-2); }
+
+.pp-fit { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 2rem; }
+.pp-areas, .pp-related, .pp-sources, .pp-deeper { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.pp-areas a, .pp-related a { display: grid; gap: .3rem; padding: .95rem 0; border-top: 1px solid var(--line); text-decoration: none; color: var(--ink-2); font-size: var(--sc-t-body); line-height: 1.55; }
+.pp-area-name { display: inline-flex; align-items: center; gap: .35rem; color: var(--ink); font-weight: 600; }
+.pp-related a { color: var(--ink); }
+.pp-related .mono { font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); color: var(--copper); }
+.pp-why { color: var(--ink-2); font-size: var(--sc-t-control); }
+.pp-areas a:hover .pp-area-name, .pp-related a:hover { color: var(--copper); }
+
+.pp-evidence { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin: 0 0 1rem; }
+.pp-deeper { margin-top: .75rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .5rem; }
+.pp-deeper a { display: flex; justify-content: space-between; align-items: center; gap: .5rem; min-height: 44px; padding: 0 .9rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); color: var(--ink); font-size: var(--sc-t-control); text-decoration: none; }
+.pp-deeper a:hover { border-color: var(--copper); }
+
+.pp-sources li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding: .9rem 0; border-top: 1px solid var(--line); }
+.pp-sources li > a:first-child { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .5rem; color: var(--ink); text-decoration: none; font-size: var(--sc-t-body); }
+.pp-sources svg { color: var(--copper); }
+.pp-cite { font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); color: var(--ink-3); }
+.pp-pdf { display: inline-flex; align-items: center; min-height: 28px; color: var(--copper); font-size: var(--sc-t-control); }
+
+.pp-close { margin-top: clamp(3.5rem, 6vh, 5rem); padding: clamp(2rem, 4vw, 3rem); border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); }
+.pp-close h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-page); line-height: var(--sc-lh-page); color: var(--ink); margin: 0 0 .75rem; max-width: 28ch; text-wrap: balance; }
+.pp-close p { margin: 0; color: var(--ink-2); font-size: var(--sc-t-body); line-height: var(--sc-lh-body); max-width: var(--sc-measure); }
+.pp-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
+
+@media (max-width: 900px) {
+  .pp-bar ul { display: none; }
+  .pp-bar { justify-content: space-between; }
+  .pp-facts, .pp-evidence, .pp-fit, .pp-questions { grid-template-columns: minmax(0, 1fr); }
+  .pp-physics li { grid-template-columns: minmax(0, 1fr); gap: .4rem; }
+  .pp-physics svg { transform: rotate(90deg); }
+  .pp-blocks > li { border-right: 0; border-bottom: 1px solid var(--line); }
+  .pp-blocks > li:last-child { border-bottom: 0; }
+}
+@media (max-width: 540px) { .pp-bar-name { font-size: var(--sc-t-control); } }

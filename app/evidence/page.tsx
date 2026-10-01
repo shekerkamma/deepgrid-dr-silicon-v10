@@ -9,6 +9,7 @@ import {FilmMoment, type Clip} from '../evidence-clip';
 import {citeDoc, products, type ProductId} from '../applications-story-data';
 import {url} from '../routes';
 import {SceneFigure} from '../scene-figure';
+import {productSlugById} from '../product-pages-data';
 
 /** The moment in a narrated film where each kind of evidence is actually on screen, with the deck
  *  slide that states it as the poster. Timings are the film segment maps in app/data/*-film.json;
@@ -216,7 +217,7 @@ export default function Page() {
                   <tbody>
                     {portfolio.map(([id, p]) => (
                       <tr key={id}>
-                        <th scope="row"><a className="st-link" href={href('applications') + '#chip-' + id}>{p.name}</a><span className="st-claim-tag num">{p.tag}</span></th>
+                        <th scope="row"><a className="st-link" href={url('/products/' + productSlugById[id])}>{p.name}</a><span className="st-claim-tag num">{p.tag}</span></th>
                         <td>{p.evidence}</td>
                         <td>{p.status ?? 'Not stated on the sheet.'}</td>
                         <td className="st-cite">

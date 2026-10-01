@@ -2,6 +2,7 @@
 
 import {ArrowUpRight, FileText} from 'lucide-react';
 import {byId, url, type RouteId} from './routes';
+import {readHref} from './doc-links';
 import {related} from './cross-references';
 import {groundedDocuments} from './documents-data';
 import './related.css';
@@ -46,7 +47,7 @@ export default function Related({route}: {route: RouteId}) {
                   <span className="dr-related-doc-title">{d.title}</span>
                   <span className="dr-related-doc-meta">PDF · {d.pdfPageCount}</span>
                 </a>
-                <a className="dr-related-doc-spec" href={url(d.specFile)}>Read specification</a>
+                <a className="dr-related-doc-spec" href={readHref(d.specFile)}>Read in the library</a>
               </li>
             ))}
           </ul>

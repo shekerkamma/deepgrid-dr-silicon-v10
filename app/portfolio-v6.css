@@ -37,3 +37,24 @@
 .v6-embed{background:none}
 /* /company sits under a breadcrumb: start its sections on the breadcrumb's 1210px column. */
 @media(min-width:801px){.v6-company>.v6-section{padding-inline:max(5%,calc((100% - 1210px) / 2))}}
+/* A citation: names the source document and opens it in the site library. Quieter than a go-deeper link. */
+.v6-cite{display:inline-flex;align-items:center;min-height:28px;font:var(--sc-t-meta) var(--font-mono);letter-spacing:var(--sc-track-meta);color:var(--ink-3);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.v6-cite:hover{color:var(--copper)}
+/* /company depth: reuse ledger and the DG SDV reference platform. */
+.v6-ledger{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem}
+.v6-ledger h3{font:var(--sc-t-meta) var(--font-mono);letter-spacing:var(--sc-track-meta);text-transform:uppercase;color:var(--copper);margin:0 0 .5rem}
+.v6-ledger ul{list-style:none;margin:0;padding:0}
+.v6-ledger li{padding:1.1rem 0;border-top:1px solid #343b36}
+.v6-ledger strong{display:block;color:var(--v6-ink);font-size:var(--sc-t-body);font-weight:600;margin-bottom:.35rem}
+.v6-ledger p{margin:0 0 .5rem;color:var(--v6-muted);font-size:var(--sc-t-body);line-height:var(--sc-lh-body);max-width:var(--sc-measure)}
+.v6-ledger p.v6-boundary{font-size:var(--sc-t-control);color:var(--ink-3)}
+.v6-sdv{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:2.5rem;align-items:start}
+.v6-sdv ol{list-style:none;margin:0;padding:0;border:1px solid #343b36;border-radius:var(--sc-radius-md);overflow:hidden}
+.v6-sdv ol li{display:grid;grid-template-columns:10rem minmax(0,1fr);gap:1rem;padding:1rem 1.15rem;border-top:1px solid #343b36}
+.v6-sdv ol li:first-child{border-top:0}
+.v6-sdv ol strong{color:var(--v6-ink);font-weight:600;font-size:var(--sc-t-body)}
+.v6-sdv ol span{color:var(--v6-muted);font-size:var(--sc-t-body);line-height:var(--sc-lh-body)}
+.v6-sdv-side p{margin:0 0 1rem;color:var(--v6-muted);font-size:var(--sc-t-body);line-height:var(--sc-lh-body)}
+.v6-sdv-side ul{list-style:none;margin:0 0 1rem;padding:0;display:grid;gap:.25rem}
+.v6-sdv-side a:not(.v6-cite){color:var(--copper);font-size:var(--sc-t-control)}
+@media(max-width:800px){.v6-ledger,.v6-sdv{grid-template-columns:minmax(0,1fr)}.v6-sdv ol li{grid-template-columns:minmax(0,1fr);gap:.3rem}}

@@ -10,9 +10,10 @@
 
 import { url } from './routes';
 import { areas, products } from './applications-story-data';
+import { groundedDocuments } from './documents-data';
 import { V, videoGroups, shortGroups, docGroups, type VideoGroup, type DocGroup } from './resources-data';
 
-export type Card = { title: string; text?: string; image?: string; meta?: string; href?: string; icon?: string };
+export type Card = { title: string; text?: string; image?: string; meta?: string; href?: string; go?: string; icon?: string };
 export type FlowStep = { label: string; text: string; icon: string };
 export type Person = { name: string; role: string; detail?: string; photo?: string; initials: string; bio?: string[] };
 export type Section =
@@ -178,6 +179,9 @@ export const companyPages: CompanyPage[] = [
     kicker: 'Technical documentation & resources', title: 'Resources',
     lede: 'Access technical documentation, datasheets, whitepapers, and development resources',
     sections: [
+      { kind: 'cards', title: 'Read the source documents here', lede: 'The documents every figure on this site traces to. Each opens inside the site with its contents and sections; the PDF is the edition of record.', cols: 3,
+        items: groundedDocuments.map((d) => ({ title: d.title, meta: `PDF · ${d.pdfPageCount}`, text: d.summary.split(/(?<=\.)\s/)[0], href: d.specFile, go: 'Read on this site' })),
+        from: 'app/documents-data.ts (grounded document registry)' },
       { kind: 'docs', groups: docGroups, from: 'deepgridsemi.com/resources/docs + the site’s own PDFs' },
       { kind: 'cta', title: 'Need Technical Support?', lede: 'Our technical team is here to help you get the most out of our products', from: 'deepgridsemi.com/resources/docs',
         actions: [ { label: 'Contact Support', href: 'contact', primary: true }, { label: 'Videos', href: 'resources/videos' } ] },
@@ -216,14 +220,122 @@ const SCENE: Record<string, { src: string; alt: string }> = {
   boards: { src: '/images/scenes/boards-supervisor-1536.webp', alt: 'Concept render of an industrial controller board with a small supervisor chip' },
 };
 const FILMS: Record<string, string[]> = { motors: ['dg32-fault-path-explained', 'dg32-lite-architecture'] };
+// Depth for each use-case page (docs/v6/story-pack-depth.md §12): the system, its signal path with the
+// chips placed in it, and where it fails. Fair synthesis from the annex sheets and the applications data;
+// every chip named here links to its product page, where the figures and their sources live.
+const USECASE_DEPTH: Record<string, { paras: string[]; flowLabel: string; flow: FlowStep[]; failures: Card[] }> = {
+  motors: {
+    paras: [
+      'A motor drive is a loop: measure phase current and rotor position, compute the next voltage, switch the bridge. It runs thousands of times a second, and the power stage it drives can destroy itself in microseconds.',
+      'The two chips answer different questions. One keeps the loop running in hardware; the other checks that the processor computing it has not gone wrong, and can turn the bridge off without asking firmware.',
+    ],
+    flowLabel: 'One control tick, and the path that can stop it',
+    flow: [
+      { label: 'Sense', text: 'Phase current and rotor angle from Hall sensors or an encoder', icon: 'gauge' },
+      { label: 'Control: SKU-1', text: 'Hardware PID, CORDIC and Park transforms close the loop in under 1 µs', icon: 'cpu' },
+      { label: 'Drive', text: 'PWM and pre-drivers switch the three-phase bridge', icon: 'sliders' },
+      { label: 'Supervise: SKU-4', text: 'A trailing core compares every result; a mismatch drives FAULT_N', icon: 'check' },
+      { label: 'Safe state', text: 'FAULT_N removes the gate-driver enable and the motor coasts', icon: 'hand' },
+    ],
+    failures: [
+      { title: 'Shoot-through in the bridge', text: 'Both switches of a leg on at once. Dead time inserted in the PWM engine prevents it, and must hold as gate thresholds drift with temperature.' },
+      { title: 'A wrong value, silently computed', text: 'A transient flips a result inside the processor. Self-test runs too rarely to see it; DG32-LITE’s lockstep pair catches it on the store where it happens.' },
+      { title: 'Noise from the power stage', text: 'Fast switching edges couple into the current measurement. Guard rings and separate grounds keep the ADC clean on a shared die.' },
+      { title: 'Wear that has not failed yet', text: 'Bearing and winding faults show in the current the drive already samples. Small classifiers can flag them in the cycles the loop leaves free.' },
+    ],
+  },
+  vehicles: {
+    paras: [
+      'A software-defined vehicle splits into a central computer and zones. The zones are where wiring, switching, protection and the safety-critical edges live.',
+      'Each zone gathers sensors and loads near where they are, so the harness gets shorter. The zonal controller routes messages on time, protects every load circuit, and keeps safety functions isolated from comfort functions.',
+    ],
+    flowLabel: 'From a sensor to a switched load, inside one zone',
+    flow: [
+      { label: 'Sense: SKU-7', text: 'Radar returns range and velocity of up to 64 targets', icon: 'eye' },
+      { label: 'Link: SKU-5', text: 'CAN-FD and RS-485 carry the data off the sensor, failsafe when the bus is open', icon: 'layers' },
+      { label: 'Route: SKU-9', text: 'Time-sensitive switching delivers brake messages with bounded latency', icon: 'boxes' },
+      { label: 'Protect: SKU-9', text: 'Sixteen smart fuses switch loads and trip on an I²t model', icon: 'gauge' },
+      { label: 'Supervise: SKU-4', text: 'Battery management and actuator controllers check their own computation', icon: 'check' },
+    ],
+    failures: [
+      { title: 'A short in the harness', text: 'A pyro-fuse is slow and one-shot. A smart electronic fuse cuts off in microseconds and can be reset, if it survives the harness inductance.' },
+      { title: 'A late brake message', text: 'Bulk data on the same Ethernet link can delay a critical frame. A time-aware shaper reserves the slot so it arrives within a bound.' },
+      { title: 'A miswired or dead bus', text: 'An open or shorted bus must read as a known state. Failsafe biasing and thick-oxide outputs let the transceiver survive and report it.' },
+      { title: 'Comfort reaching control', text: 'A lighting command must never touch steering registers. Memory protection and bus firewalls enforce that inside the zonal controller.' },
+    ],
+  },
+  defence: {
+    paras: [
+      'Drones, avionics boxes and rugged vehicles share a hostile electrical and physical environment: a 28 V bus with surges, radiation at altitude, heat in a closed fuselage, and displays read in direct sun. The requirement differs by platform, and each has its own qualification route.',
+      'The parts here cover the chain from the power bus to the operator: clean, sequenced rails, a flight or mission controller that fails safe in hardware, sensing that works without GPS, and a display that notices when it has frozen.',
+    ],
+    flowLabel: 'From the platform bus to the operator',
+    flow: [
+      { label: 'Power: SKU-3', text: '28 V bus to four sequenced rails, surge-tolerant and upset-hardened', icon: 'layers' },
+      { label: 'Sense: SKU-7', text: '77 GHz radar for obstacles and terrain', icon: 'eye' },
+      { label: 'Fly: D100', text: 'Flight control and GPS-denied navigation, with a separate failsafe island', icon: 'cpu' },
+      { label: 'Check: SKU-4', text: 'Lockstep supervision of flight-critical computation', icon: 'check' },
+      { label: 'Show: SKU-8', text: 'Cockpit display with sunlight gamma and frame-freeze detection', icon: 'film' },
+    ],
+    failures: [
+      { title: 'A 100 V surge on the bus', text: 'An inductive load dump spikes the 28 V bus. The power IC’s input stage has to clamp it without thermal runaway in its own pass devices.' },
+      { title: 'A particle flips a bit', text: 'At altitude a single upset can corrupt a state machine. Interlocked latches and triple redundancy keep the power sequence correct.' },
+      { title: 'The mission computer hangs, or GPS is jammed', text: 'D100’s failsafe island watches from outside the flight stack and can take the motors to a safe state on its own.' },
+      { title: 'The display freezes', text: 'A frozen picture looks normal. Frame-by-frame CRC comparison flags it within two frames.' },
+    ],
+  },
+  grid: {
+    paras: [
+      'A smart meter measures energy for fifteen years, through outages, heat and deliberate tampering, and has to be trusted by both the utility and the customer. Accuracy, security and keeping time without mains power are the job.',
+      'SKU-2 puts the measurement front end, the metrology engine, cryptography and an always-on clock on one die, so the meter needs one chip for measurement, security and its own time base.',
+    ],
+    flowLabel: 'From the line to a signed reading',
+    flow: [
+      { label: 'Sense', text: 'Current transformers or shunts and voltage dividers on each phase', icon: 'gauge' },
+      { label: 'Convert: SKU-2', text: 'Six 24-bit sigma-delta channels with sinc³ decimation', icon: 'sliders' },
+      { label: 'Measure: SKU-2', text: 'Active, reactive and apparent power, harmonics to the 15th', icon: 'cpu' },
+      { label: 'Secure: SKU-2', text: 'AES-256 and secure boot sign and protect the record', icon: 'check' },
+      { label: 'Report', text: 'DLMS/COSEM over optical, serial or RS-485 to the utility', icon: 'layers' },
+    ],
+    failures: [
+      { title: 'A magnet on the meter', text: 'A strong field or injected DC tries to defeat measurement. The front end has to detect the imbalance and keep measuring.' },
+      { title: 'A month without mains', text: 'The clock and tamper log run from a backup cell. The always-on domain draws under 2 µW so the record survives.' },
+      { title: 'Accuracy drift', text: 'Class 0.5S has to hold across a 1000:1 current range for fifteen years without recalibration in the field.' },
+      { title: 'Opened case', text: 'Case-open sensing erases keys, so a tampered meter cannot sign false readings.' },
+    ],
+  },
+  boards: {
+    paras: [
+      'Almost every electronic board needs the same three things below its processor: clean supplies that start in the right order, something that holds the processor in reset until those supplies are good, and a robust link to the rest of the system.',
+      'These parts are small and unglamorous, and they decide whether a board starts predictably and survives a miswired cable. They are also the parts most exposed to obsolescence when a supplier discontinues them.',
+    ],
+    flowLabel: 'Below the firmware, from power-on to a running board',
+    flow: [
+      { label: 'Power', text: 'Rails come up from the input supply in sequence', icon: 'layers' },
+      { label: 'Supervise: SKU-6', text: 'Four rails checked against thresholds, with an 8 µs deglitch', icon: 'gauge' },
+      { label: 'Release', text: 'RESET_N releases the processor 200 ms after the rails are good', icon: 'check' },
+      { label: 'Link: SKU-5', text: 'RS-485 or CAN-FD to the rest of the system, ESD-protected', icon: 'boxes' },
+      { label: 'Display: SKU-8', text: 'Panel drive where the board has a local display', icon: 'film' },
+    ],
+    failures: [
+      { title: 'A brownout that corrupts memory', text: 'A supply dips below threshold. The supervisor latches the fault and resets the processor before it writes garbage.' },
+      { title: 'Converter noise mistaken for a fault', text: 'A buck converter’s ripple crosses the threshold for nanoseconds. The 8 µs deglitch ignores it; a real dip lasts longer.' },
+      { title: 'Firmware that has stopped', text: 'A windowed watchdog expects a kick neither too early nor too late, and resets the board when it gets neither.' },
+      { title: 'An electrostatic hit on a connector', text: 'Bus pins leave the enclosure. The transceiver’s ESD structures take the discharge instead of the logic behind them.' },
+    ],
+  },
+};
+const SLUG: Record<string, string> = { sku1: 'sku-1', sku2: 'sku-2', sku3: 'sku-3', sku4: 'sku-4', sku5: 'sku-5', sku6: 'sku-6', sku7: 'sku-7', sku8: 'sku-8', sku9: 'sku-9', d100: 'd100' };
+
 const stageOf = (e: string) => (e.startsWith('First silicon') ? 'First silicon' : e.startsWith('FPGA') ? 'FPGA-validated' : 'Design only');
 export const useCasePages: CompanyPage[] = areas.map((a) => {
   const items = a.items.map((i) => ({ ...i, p: products[i.product] }));
   const sections: Section[] = [
-    { kind: 'split', title: 'Where the chips fit', paras: [a.lede], from: 'applications-story-data.ts (Technical Annex v3)' },
+    { kind: 'split', title: 'Where the chips fit', paras: [a.lede, ...(USECASE_DEPTH[a.id]?.paras ?? [])], flow: USECASE_DEPTH[a.id]?.flow, flowLabel: USECASE_DEPTH[a.id]?.flowLabel, from: 'applications-story-data.ts (Technical Annex v3)' },
     { kind: 'cards', title: 'The chips for this application', lede: `${items.length} ${items.length === 1 ? 'chip' : 'chips'}, each with what it does here.`, cols: items.length > 2 ? 3 : 2,
-      items: items.map((i) => ({ title: i.p.name, meta: `${i.p.tag} · ${stageOf(i.p.evidence)}`, text: i.role + (i.p.replaces ? ' Replaces: ' + i.p.replaces : '') })),
+      items: items.map((i) => ({ title: i.p.name, meta: `${i.p.tag} · ${stageOf(i.p.evidence)}`, text: i.role + (i.p.replaces ? ' Replaces: ' + i.p.replaces : ''), href: '/products/' + SLUG[i.product], go: `Open the ${i.p.tag} page` })),
       from: 'applications-story-data.ts' },
+    ...(USECASE_DEPTH[a.id] ? [{ kind: 'steps' as const, title: 'Where it can fail, and what catches it', lede: 'The failure modes this system has to survive, and the part of the design that answers each one.', items: USECASE_DEPTH[a.id].failures, from: 'Technical Annex v3 engineering questions' }] : []),
     { kind: 'bullets', title: 'What the evidence says today', items: items.map((i) => `${i.p.tag}, ${i.p.name}: ${i.p.evidence}`), from: 'applications-story-data.ts' },
   ];
   const SCENE3D: Record<string, { scene: 'motor' | 'truck' | 'defence'; title: string; lede: string }> = {

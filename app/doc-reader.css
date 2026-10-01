@@ -1,0 +1,50 @@
+/* In-site document reader (/resources/read). Site tokens throughout: serif headings, Inter body at
+   the Body size and 64ch measure, mono labels, copper links. A table of contents rail on wide screens. */
+.rd { display: grid; grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); padding-block: clamp(1.5rem, 4vw, 3rem); }
+.rd-toc { position: sticky; top: calc(var(--nav-h, 60px) + 1.5rem); align-self: start; max-height: calc(100vh - var(--nav-h, 60px) - 3rem); overflow: auto; }
+.rd-toc ol { margin: .75rem 0 0; padding: 0; list-style: none; display: grid; gap: .15rem; }
+.rd-toc ol a { display: block; padding: .4rem 0; color: var(--ink-2); font-size: var(--sc-t-control); line-height: 1.4; text-decoration: none; }
+.rd-toc ol a:hover, .rd-toc ol a:focus-visible { color: var(--copper); }
+.rd-files { display: grid; gap: .25rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.rd-files a { display: inline-flex; align-items: center; gap: .45rem; min-height: 32px; color: var(--copper); font-size: var(--sc-t-control); }
+
+.rd-body { min-width: 0; }
+.rd-body > h1 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-page); line-height: var(--sc-lh-page); letter-spacing: var(--sc-track-page); color: var(--ink); margin: .5rem 0 .5rem; max-width: 30ch; text-wrap: balance; }
+.rd-sub { margin: 0 0 1rem; color: var(--ink-3); font-size: var(--sc-t-control); }
+.rd-banner { margin: 1rem 0 2rem; padding: .9rem 1rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); color: var(--ink-2); font-size: var(--sc-t-control); line-height: 1.55; max-width: var(--sc-measure); }
+.rd-banner a { color: var(--copper); }
+
+.rd-content { max-width: 46rem; color: var(--ink-2); font-size: var(--sc-t-body); line-height: var(--sc-lh-body); }
+.rd-content h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-section); line-height: var(--sc-lh-section); color: var(--ink); margin: 2.75rem 0 1rem; padding-top: 1.5rem; border-top: 1px solid var(--line); scroll-margin-top: calc(var(--nav-h, 60px) + 1.5rem); text-wrap: balance; }
+.rd-content h3 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-block); color: var(--ink); margin: 2rem 0 .75rem; scroll-margin-top: calc(var(--nav-h, 60px) + 1.5rem); }
+.rd-content h4 { font-size: var(--sc-t-body); font-weight: 600; color: var(--ink); margin: 1.5rem 0 .5rem; }
+.rd-content p { margin: 0 0 1rem; max-width: var(--sc-measure); }
+.rd-content ul, .rd-content ol { margin: 0 0 1rem; padding-left: 1.25rem; max-width: var(--sc-measure); }
+.rd-content li { margin-bottom: .35rem; }
+.rd-content strong { color: var(--ink); font-weight: 600; }
+.rd-content a { color: var(--copper); }
+.rd-content code { font-family: var(--font-mono); font-size: .9em; color: var(--ink); }
+.rd-content pre { overflow-x: auto; padding: 1rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); font-size: var(--sc-t-meta); }
+.rd-content blockquote { margin: 0 0 1rem; padding-left: 1rem; border-left: 1px solid var(--line); color: var(--ink-3); }
+.rd-content hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
+.rd-table { overflow-x: auto; margin: 0 0 1.5rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); }
+.rd-table:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
+.rd-table table { border-collapse: collapse; width: 100%; font-size: var(--sc-t-control); font-variant-numeric: tabular-nums; }
+.rd-table th { text-align: left; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--ink-3); background: var(--surface); }
+.rd-table th, .rd-table td { padding: .6rem .75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.rd-table tr:last-child td { border-bottom: 0; }
+
+.rd-empty, .rd-loading { padding-block: clamp(2rem, 6vw, 4rem); max-width: 40rem; }
+.rd-empty h1 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-page); color: var(--ink); margin: 0 0 .75rem; }
+.rd-empty p { color: var(--ink-2); margin: 0 0 1.5rem; }
+
+@media (max-width: 900px) {
+  .rd { grid-template-columns: minmax(0, 1fr); }
+  .rd-toc { position: static; max-height: none; border-bottom: 1px solid var(--line); padding-bottom: 1rem; }
+}
+/* RTL specs carry long unbroken identifiers (register and signal names); let them wrap rather than
+   push the page sideways on a phone. Code blocks and tables keep their own horizontal scroll. */
+.rd-content p, .rd-content li { overflow-wrap: anywhere; }
+.rd-table th { white-space: nowrap; }
+.rd-table table { min-width: 36rem; }
+.rd-content pre { max-width: 100%; overflow-wrap: normal; }

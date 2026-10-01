@@ -225,7 +225,7 @@ function Block({ s }: { s: Section }) {
                   {c.meta && <p className="cp-meta">{c.meta}</p>}
                   <h3>{c.title}</h3>
                   {c.text && <p>{c.text}</p>}
-                  {c.href && <span className="cp-card-go">Read more <ArrowRight size={14} aria-hidden="true" /></span>}
+                  {c.href && <span className="cp-card-go">{c.go || 'Read more'} <ArrowRight size={14} aria-hidden="true" /></span>}
                 </>
               );
               return c.href ? <a key={c.title} className="cp-card cp-card-link" href={link(c.href)}>{inner}</a> : <article key={c.title} className="cp-card">{inner}</article>;

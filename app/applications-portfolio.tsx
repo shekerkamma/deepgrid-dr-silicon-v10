@@ -4,8 +4,9 @@ import {useMemo, useState} from 'react';
 import {ArrowRight, ArrowUpRight, Search} from 'lucide-react';
 import {url} from './routes';
 import {sovereignSkuHorizon} from './detail-content';
-import {areas, citeDoc, products, type ProductId} from './applications-story-data';
+import {areas, products, type ProductId} from './applications-story-data';
 import './applications-portfolio.css';
+import {productSlugById} from './product-pages-data';
 
 /** The portfolio by where it goes, structured like the showcase's Product lines page
  *  (deepgrid-platform-showcase, app/views/portfolio.tsx), which the owner named as the reference:
@@ -19,7 +20,6 @@ import './applications-portfolio.css';
  *  under one line, as in the reference; the other places it goes are part of its "Used for".
  *  The SoC2 die render is not used anywhere here: it is printed "39.3 TOPS", a withdrawn claim. */
 
-const ANNEX = citeDoc('doc2');
 const scene: Record<string, {src: string; alt: string}> = {
   motors: {src: '/media/deepgrid_robotics.jpg', alt: 'Concept render of an autonomous forklift in a warehouse aisle, its sensor beams sweeping the racks'},
   vehicles: {src: '/media/deepgrid_truck.jpg', alt: 'Concept render of a DeepGrid-liveried truck on a wet highway at dusk, a camera-mirror display beside the cab'},
@@ -147,9 +147,9 @@ export default function ApplicationsPortfolio() {
                 <div className="pf-grid">
                   {members.map(r => {
                     const deep = r.onSilicon;
-                    const href = deep ? '#st-answer' : url(ANNEX.pdf);
+                    const href = deep ? '#st-answer' : url('/products/' + productSlugById[r.id]);
                     return (
-                      <a key={r.id} id={'chip-' + r.id} className="pf-card" href={href} {...(deep ? {} : {target: '_blank', rel: 'noreferrer'})}>
+                      <a key={r.id} id={'chip-' + r.id} className="pf-card" href={href}>
                         <div className="pf-card-body">
                           <span className="pf-meta">{a.name}<span className="num">{r.tag}</span></span>
                           <h3>{r.name}</h3>
