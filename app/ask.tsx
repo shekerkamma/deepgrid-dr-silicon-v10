@@ -17,6 +17,7 @@ import {
   nodeToCatalogMap, catalogToNodeMap
 } from './data/deepgrid-knowledge';
 import {groundedDocuments, GroundedDoc} from './documents-data';
+import {readHref} from './doc-links';
 
 // Helper to resolve the authoritative grounded document for any DeepGrid catalog item
 export function resolveItemDocument(item?: DeepGridItem | null): GroundedDoc {
@@ -579,16 +580,17 @@ export default function AskDeepGrid({go}: {go: (hash: string) => void}) {
                 <p className="dr-dossier-doc-subtitle">{activeDoc.subtitle}</p>
               </div>
               <div className="dr-dossier-doc-banner-actions">
-                <button 
-                  type="button" 
-                  className="dr-dossier-action-btn primary"
-                  onClick={() => {
-                    const gDoc = groundedDocuments.find(d => d.id === activeDoc.id);
-                    if (gDoc) handleReadDocInline(gDoc);
-                  }}
-                >
-                  <BookOpen size={14} /> Read Spec Inline
-                </button>
+                {/* Was a button that loaded the text into state the audit modal renders; with no audit item
+                    selected the modal is closed, so the click did nothing. It now opens the in-site reader. */}
+                {(() => {
+                  const gDoc = groundedDocuments.find(d => d.id === activeDoc.id);
+                  if (!gDoc) return null;
+                  return (
+                    <a className="dr-dossier-action-btn primary" href={readHref(gDoc.specFile)}>
+                      <BookOpen size={14} /> Read the specification
+                    </a>
+                  );
+                })()}
                 {(() => {
                   const gDoc = groundedDocuments.find(d => d.id === activeDoc.id);
                   if (!gDoc) return null;

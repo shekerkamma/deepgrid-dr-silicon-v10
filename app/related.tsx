@@ -6,7 +6,7 @@ import {readHref} from './doc-links';
 import {related} from './cross-references';
 import {groundedDocuments} from './documents-data';
 import './related.css';
-import {RouteJourney} from './route-journey';
+import {RouteJourney, hasBrief} from './route-journey';
 
 /** The cross-reference block every route ends on. Sections first, because a reader who wants more
  *  usually wants the neighbouring argument rather than a 71-page PDF; documents second, with the
@@ -19,7 +19,7 @@ export default function Related({route}: {route: RouteId}) {
 
   return (
     <aside className="dr-related" aria-labelledby={'related-' + route}>
-      {route !== 'home' && route !== 'company' && <details className="dr-evaluation-guide"><summary>Engineering evaluation guide</summary><RouteJourney route={route}/></details>}
+      {route !== 'home' && route !== 'company' && hasBrief(route) && <details className="dr-evaluation-guide"><summary>Engineering evaluation guide</summary><RouteJourney route={route}/></details>}
       <h2 className="dr-kicker" id={'related-' + route}>Where to go next</h2>
 
       <ul className="dr-related-sections">
