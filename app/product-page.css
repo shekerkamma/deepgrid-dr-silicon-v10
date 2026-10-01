@@ -1,9 +1,9 @@
 /* Product pages (/products/<slug>). Tokens from DESIGN.md: serif headings, Inter body, mono labels,
    copper the one accent. Layout follows the page's own Sec sections; the sticky bar is the only new
    pattern (Apple-style product sub-nav), sitting under the site header. */
-.pp { display: grid; gap: 0; }
+.pp { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
 .pp-bar { position: sticky; top: var(--nav-h, 60px); z-index: 20; display: flex; align-items: center; gap: 1.5rem; padding: .6rem 0; background: var(--background); border-bottom: 1px solid var(--line); }
-.pp-bar-name { font-family: var(--font-display); font-size: var(--sc-t-block); color: var(--ink); white-space: nowrap; }
+.pp-bar-name { min-width: 0; font-family: var(--font-display); font-size: var(--sc-t-block); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pp-bar-name .mono { font-family: var(--font-mono); font-size: var(--sc-t-meta); letter-spacing: var(--sc-track-meta); color: var(--copper); margin-right: .35rem; }
 .pp-bar ul { display: flex; gap: 1.1rem; margin: 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; flex: 1; }
 .pp-bar ul a { display: inline-flex; align-items: center; min-height: 32px; color: var(--ink-2); font-size: var(--sc-t-control); white-space: nowrap; text-decoration: none; }
@@ -80,4 +80,5 @@
   .pp-blocks > li { border-right: 0; border-bottom: 1px solid var(--line); }
   .pp-blocks > li:last-child { border-bottom: 0; }
 }
-@media (max-width: 540px) { .pp-bar-name { font-size: var(--sc-t-control); } }
+/* On a phone the bar holds the name and the action only; a long name truncates rather than widening the page. */
+@media (max-width: 540px) { .pp-bar { gap: .75rem; } .pp-bar-name { flex: 1; font-size: var(--sc-t-control); } .pp-bar-cta { padding: 0 .7rem; } }
