@@ -20,7 +20,9 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = f => fs.readFileSync(path.join(root, f), 'utf8');
 
 const routesSrc = read('app/routes.ts');
-const declared = [...routesSrc.matchAll(/\{id: '([\w]+)',\s*href: '([^']+)'/g)].map(m => ({id: m[1], href: m[2]}));
+// Ids may contain hyphens (uc-motors). Until 2026-10-01 these patterns were [\w]+, which silently
+// skipped all five use-case routes and their cross-reference entries: the check passed without reading them.
+const declared = [...routesSrc.matchAll(/\{id: '([\w-]+)',\s*href: '([^']+)'/g)].map(m => ({id: m[1], href: m[2]}));
 if (declared.length < 8) {
   console.error(`Only ${declared.length} routes parsed from app/routes.ts; the map or this parser is wrong.`);
   process.exit(1);
@@ -32,9 +34,9 @@ if (docIds.size < 3) { console.error('Fewer than 3 documents parsed from app/doc
 
 // Each entry runs from `<id>: {` to the closing `},` of its docs array.
 const entries = new Map();
-for (const m of xref.matchAll(/^ {2}(\w+): \{\n([\s\S]*?)\n {2}\},$/gm)) {
+for (const m of xref.matchAll(/^ {2}'?([\w-]+)'?: \{\n([\s\S]*?)\n {2}\},$/gm)) {
   const body = m[2];
-  const sections = [...body.matchAll(/\{id: '(\w+)', why: '((?:[^'\\]|\\.)*)'/g)].map(s => ({id: s[1], why: s[2]}));
+  const sections = [...body.matchAll(/\{id: '([\w-]+)', why: '((?:[^'\\]|\\.)*)'/g)].map(s => ({id: s[1], why: s[2]}));
   const docs = [...(body.match(/docs: \[([^\]]*)\]/)?.[1] ?? '').matchAll(/'(\w+)'/g)].map(d => d[1]);
   entries.set(m[1], {sections, docs});
 }
@@ -73,13 +75,13 @@ const pages = [];
 
 for (const f of pages) {
   const src = read(f);
-  const route = src.match(/<Shell route="(\w+)"/)?.[1];
+  const route = src.match(/<Shell route="([\w-]+)"/)?.[1];
   if (!route) continue;
-  if (!/<Related\s+route="(\w+)"/.test(src)) {
+  if (!/<Related\s+route="([\w-]+)"/.test(src)) {
     problems.push(`${f}: renders <Shell route="${route}"> but never renders <Related>`);
     continue;
   }
-  const rendered = src.match(/<Related\s+route="(\w+)"/)[1];
+  const rendered = src.match(/<Related\s+route="([\w-]+)"/)[1];
   if (rendered !== route) problems.push(`${f}: <Shell route="${route}"> but <Related route="${rendered}">`);
   // Inside a Suspense fallback it renders only while a lazy chunk is loading, so the reader never
   // sees it. /ask shipped that way on the first pass and measured as unchanged.
