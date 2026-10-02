@@ -15,7 +15,7 @@ SKU-6 watches four supply rails and the processor that depends on them. Each rai
 1. **Sense chain · one per rail**: For each of four rails: an ESD-protected input, a 0.1%-matched polysilicon divider, a chopper-stabilised comparator with 8 mV hysteresis, and an 8 µs digital deglitch counter.
 2. **Fault logic**: A maskable, latched fault matrix with a priority encoder, mask register, latch and I²C registers.
 3. **Output stage**: Open-drain FAULT_N, which asserts before RESET_N, an open-drain RESET_N with a trimmed 200 ms delay, and a manual-reset input.
-4. **Reference + timebase**: A curvature-corrected bandgap at 1.20 V and 10 ppm/°C, a 5-bit OTP trim to ±0.5%, and an 8 MHz RC oscillator with a reference current.
+4. **Reference + timebase**: A curvature-corrected bandgap at 1.20 V and 10 ppm/°C, a 5-bit OTP trim to ±0.5%, and a 1 MHz oscillator with a reference current.
 5. **Watchdog**: A windowed watchdog adjustable from 100 ms to 1.6 s: an open and close window, a kick input, and a timeout counter that drives RESET_N.
 
 ## Component: Sense chain · one per rail
@@ -27,19 +27,19 @@ Why it exists: Switching noise must not trip a reset, yet a real fault must stil
 - **VIN 1**: 5V0 · ESD 2 kV
 - **Divider**: poly R ladder · 0.1% match
 - **Comparator**: chopper-stabilised · ±1% · 8 mV hyst
-- **Deglitch**: digital counter · 8 µs @ 8 MHz
+- **Deglitch**: digital counter · 8 µs
 - **VIN 2**: 3V3 · ESD 2 kV
 - **Divider**: poly R ladder · 0.1% match
 - **Comparator**: chopper-stabilised · ±1% · 8 mV hyst
-- **Deglitch**: digital counter · 8 µs @ 8 MHz
+- **Deglitch**: digital counter · 8 µs
 - **VIN 3**: 1V8 · ESD 2 kV
 - **Divider**: poly R ladder · 0.1% match
 - **Comparator**: chopper-stabilised · ±2% · 8 mV hyst
-- **Deglitch**: digital counter · 8 µs @ 8 MHz
-- **VIN 4**: 1V2 · ESD 2 kV
+- **Deglitch**: digital counter · 8 µs
+- **VIN 4**: 1.2 / 0.9 V adjustable · ESD 2 kV
 - **Divider**: poly R ladder · 0.1% match
 - **Comparator**: chopper-stabilised · ±2% · 8 mV hyst
-- **Deglitch**: digital counter · 8 µs @ 8 MHz
+- **Deglitch**: digital counter · 8 µs
 
 ## Component: Fault logic
 
@@ -57,13 +57,13 @@ What it does: Open-drain FAULT_N, which asserts before RESET_N, an open-drain RE
 
 ## Component: Reference + timebase
 
-What it does: A curvature-corrected bandgap at 1.20 V and 10 ppm/°C, a 5-bit OTP trim to ±0.5%, and an 8 MHz RC oscillator with a reference current.
+What it does: A curvature-corrected bandgap at 1.20 V and 10 ppm/°C, a 5-bit OTP trim to ±0.5%, and a 1 MHz oscillator with a reference current.
 
 Why it exists: The bandgap and trimmed polysilicon resistors are what make the threshold accuracy possible on a mature node.
 
 - **Bandgap**: curvature-corrected · 1.20 V · 10 ppm/°C · PTAT + CTAT
 - **Trim**: OTP 5-bit · ±0.5% after trim
-- **Osc**: RC 8 MHz · ±2% over −40 to 125 °C · ref current
+- **Osc**: 1 MHz · ±2% over −40 to 125 °C · ref current
 
 ## Component: Watchdog
 
@@ -85,7 +85,7 @@ What it does: A windowed watchdog adjustable from 100 ms to 1.6 s: an open and c
 
 ## Where this differs from the annex sheet
 
-Structure follows the annex figure on sheet 7. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the watchdog window (1 ms / 10 ms on the sheet, adjustable 100 ms to 1.6 s here).
+Structure follows the annex figure on sheet 7. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the watchdog window (1 ms / 10 ms on the sheet, adjustable 100 ms to 1.6 s here), the oscillator (RC 8 MHz on the sheet, 1 MHz here) and the fourth rail (1V2 on the sheet, 1.2 / 0.9 V adjustable here).
 
 ## Designed toward
 
