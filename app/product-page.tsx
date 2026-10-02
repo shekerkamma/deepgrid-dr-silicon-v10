@@ -134,11 +134,12 @@ export default function ProductPageView({slug}: {slug: string}) {
       </section>
 
       <section id="pp-sources" className="pp-sec">
-        <Sec kicker="SOURCES" title="Read the source behind every figure." copy="Each document opens inside the site at the cited section; the PDF is the edition of record.">
+        <Sec kicker="SOURCES" title="Read the source behind every figure." copy={'Each document opens inside the site at the cited section; the PDF is the edition of record.' + (dg?.annexDiffers ? ' Where the annex sheet differs from this page, the difference is stated beside it.' : '')}>
           <ul className="pp-sources">
             <li>
               <a href={readHref(annex.specFile, part.source.section.includes('§3') ? undefined : '2. Complete 14-Sheet Portfolio Matrix')}><FileText size={15} aria-hidden="true"/><span>{annex.title}</span><span className="pp-cite">{sheet}{part.source.section ? ' · ' + part.source.section : ''}</span></a>
-              <a className="pp-pdf" href={url(annex.pdfFile)}>PDF · {annex.pdfPageCount}</a>
+              <a className="pp-pdf" href={url(annex.pdfFile)}>PDF · {annex.pdfPageCount}{dg?.annexDiffers ? ' · values differ from this page' : ''}</a>
+              {dg?.annexDiffers && <p className="pp-differs">Some values on {sheet.toLowerCase()} differ from this page, which follows the product specification: {dg.annexDiffers}.</p>}
             </li>
             {doc.id !== annex.id && (
               <li>

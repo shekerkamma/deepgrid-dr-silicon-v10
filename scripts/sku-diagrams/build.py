@@ -184,7 +184,7 @@ def ts(all_specs, sizes):
         note = s.get('note', '')
         lines.append(f'  {s["id"]}: {{notes: {notes}, src: {j("/diagrams/" + s["slug"] + "-architecture.svg")}, title: {j(s["code"] + " system architecture")}, '
                      f'width: {w}, height: {h}, drawio: {j("/downloads/" + s["slug"] + "-architecture.drawio")}, guide: {j(g)}, alt: {j(s["alt"])}, '
-                     f'caption: {j(s["caption"])}' + (f', note: {j(note)}' if note else '') + '},')
+                     f'caption: {j(s["caption"])}' + (f', note: {j(note)}' if note else '') + (f', annexDiffers: {j(s["differs"])}' if s.get('differs') else '') + '},')
     lines.append('};')
     return '\n'.join(lines) + '\n'
 

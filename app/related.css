@@ -86,6 +86,7 @@
   font-variant-numeric: tabular-nums;
 }
 .dr-related-doc-spec { font-size: var(--text-meta) !important; color: var(--ink-2) !important; }
+.dr-related-doc-differs { flex-basis: 100%; margin: 0; font-size: var(--sc-t-control); line-height: 1.55; color: var(--ink-2); max-width: var(--sc-measure); }
 
 @media (max-width: 720px) {
   .dr-related-sections a { grid-template-columns: minmax(0, 1fr); row-gap: 2px; }
