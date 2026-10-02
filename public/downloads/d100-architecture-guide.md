@@ -114,11 +114,11 @@ cannot run as a task inside that software.
 
 FPGA timing closure is a prototype milestone; it is not a measurement of the ASIC.
 
-## Where the values come from
+## Where this differs from the annex sheet
 
-Structure follows the annex figure. For the camera interface, the annex figure (a stereo pair at 720p60) and the
-compendium chapter (two lanes, up to 1080p60) differ; the diagram uses the chapter value, which is the one the
-product page states.
+Structure follows the annex figure on sheet 11. Some values on that sheet differ from the product page; where they
+do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences:
+the camera input (a stereo pair at 720p60 on the sheet; two lanes, up to 1080p60 here).
 
 ## Package
 

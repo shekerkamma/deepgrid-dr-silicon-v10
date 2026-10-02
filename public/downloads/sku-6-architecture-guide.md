@@ -83,9 +83,9 @@ What it does: A windowed watchdog adjustable from 100 ms to 1.6 s: an open and c
 - ④ The trimmed bandgap sets every comparator threshold.
 - ⑤ A missed or early watchdog kick times out to RESET_N.
 
-## Where the values come from
+## Where this differs from the annex sheet
 
-Structure follows the annex figure. For the watchdog window, the annex figure and the compendium chapter differ; the diagram uses the chapter values, which are the ones the product page states.
+Structure follows the annex figure on sheet 7. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the watchdog window (1 ms / 10 ms on the sheet, adjustable 100 ms to 1.6 s here).
 
 ## Designed toward
 

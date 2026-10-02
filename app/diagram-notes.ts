@@ -161,7 +161,7 @@ export const diagramNotes: Record<'lite' | '2dom' | 'd100', DiagramNotes> = {
     ],
     primary: [
       {title: 'D100 architecture guide', note: 'Every block group, both data flows, prototype versus product, and what the architecture does not establish.', href: readHref(D100_GUIDE), meta: 'Opens in the site'},
-      {title: 'SKU Architecture Compendium, Technical Annex v3', note: 'Sheet 11 carries the D100 figure this diagram is redrawn from; the SiP sheet covers the package.', href: url(DOCS + 'deepgrid-sku-compendium-technical-annex-v3.pdf'), meta: 'PDF · 14 pages'},
+      {title: 'SKU Architecture Compendium, Technical Annex v3', note: 'Sheet 11 carries the D100 figure this diagram is redrawn from; the SiP sheet covers the package. Some of its values differ from this page, which the diagram follows: the camera input (a stereo pair at 720p60 on the sheet; two lanes, up to 1080p60 here).', href: url(DOCS + 'deepgrid-sku-compendium-technical-annex-v3.pdf'), meta: 'PDF · 14 pages · values differ from this page'},
     ],
     background: [
       {title: 'A Multi-State Constraint Kalman Filter for vision-aided inertial navigation', note: 'Mourikis and Roumeliotis, ICRA 2007: the EKF over a sliding window of camera poses that visual-inertial pose engines build on.', href: 'https://www-users.cse.umn.edu/~stergios/papers/ICRA07-MSCKF.pdf', meta: 'University of Minnesota · PDF'},

@@ -1,7 +1,8 @@
 # One spec per SKU, read off its figure in the Technical Annex v3 (sheet number in `sheet`).
 # Blocks are (key, title, subtitle[, column span]). Edges are (from, to, marker, colour).
 # Where the figure and the compendium chapter the product page is written from disagree, the drawing
-# follows the product page; `followed` names those values for the guide. Certification wording on a figure is not drawn; `toward` repeats the product page.
+# follows the product page; `differs` states each difference, sheet value against page value;
+# it appears beside the annex link on the page and in the guide. Certification wording on a figure is not drawn; `toward` repeats the product page.
 
 TI_FOC = {'title': 'Field Orientated Control of 3-Phase AC-Motors (TI BPRA073)', 'note': 'The Clarke and Park transforms, the PI regulator and PWM behind the control datapath.', 'href': 'https://www.ti.com/lit/an/bpra073/bpra073.pdf', 'meta': 'Texas Instruments · PDF'}
 CORDIC = {'title': 'The CORDIC trigonometric computing technique', 'note': 'Volder, IRE Transactions on Electronic Computers, 1959: the shift-and-add method behind the CORDIC block.', 'href': 'https://doi.org/10.1109/TEC.1959.5222693', 'meta': 'IEEE · DOI'}
@@ -93,7 +94,7 @@ SPECS = [
   'subtitle': 'Input conditioning, a peak-current-mode pre-regulator, four monitored rails and an upset-hardened sequencer for a 28 V aircraft bus · from Technical Annex v3, sheet 4',
   'frame': 'SKU-3  ·  180 nm BCD production, 130 nm 20 V devices for prototyping',
   'input': '28 V aircraft bus',
-  'followed': 'rail regulators and currents, the telemetry ADC and the sequencer depth', 'about': 'SKU-3 turns a 28 V aircraft or vehicle bus into four sequenced, monitored rails. It conditions the input, pre-regulates with a synchronous buck under peak-current-mode control, and supervises every rail with window monitors, current limits and an upset-hardened sequencer.',
+  'differs': 'the rails (the sheet draws 3V3 and 1V8 LDOs at 2 A and 3 A and 1V2 and 0V9 bucks at 5 A and 6 A; this page states 5 V and 3.3 V bucks at 2 A and 3 A and 1.8 V and 1.2 or 0.9 V LDOs at 500 mA and 300 mA), the telemetry ADC (12-bit on the sheet, 10-bit at 500 kSPS here) and the sequencer (8 slots on the sheet, 4 steps here)', 'about': 'SKU-3 turns a 28 V aircraft or vehicle bus into four sequenced, monitored rails. It conditions the input, pre-regulates with a synchronous buck under peak-current-mode control, and supervises every rail with window monitors, current limits and an upset-hardened sequencer.',
   'rows': [
    {'h': 230, 'zones': [
      {'key': 'Z1', 'name': 'Input conditioning', 'color': 'green', 'cols': 2, 'w': 1,
@@ -165,7 +166,7 @@ SPECS = [
   'title': 'SKU-6 quad-rail voltage supervisor system architecture',
   'subtitle': 'Four sense chains, a latched fault matrix, open-drain outputs, a trimmed reference and a windowed watchdog · from Technical Annex v3, sheet 7',
   'frame': 'SKU-6  ·  130 nm CMOS prototype, 180 nm production',
-  'followed': 'the watchdog window', 'about': 'SKU-6 watches four supply rails and the processor that depends on them. Each rail runs through a matched divider, a chopper-stabilised comparator and a digital deglitch counter into a latched fault matrix that drives FAULT_N and RESET_N; a windowed watchdog catches a hung or runaway processor.',
+  'differs': 'the watchdog window (1 ms / 10 ms on the sheet, adjustable 100 ms to 1.6 s here)', 'about': 'SKU-6 watches four supply rails and the processor that depends on them. Each rail runs through a matched divider, a chopper-stabilised comparator and a digital deglitch counter into a latched fault matrix that drives FAULT_N and RESET_N; a windowed watchdog catches a hung or runaway processor.',
   'rows': [
    {'h': 380, 'zones': [
      {'key': 'Z1', 'name': 'Sense chain · one per rail', 'color': 'blue', 'cols': 4, 'w': 2.4,
@@ -205,7 +206,7 @@ SPECS = [
   'subtitle': 'A SiGe HBT front end for chirp synthesis, transmit and four receive channels, and a 130 nm CMOS baseband for FFTs, detection and tracking · from Technical Annex v3, sheet 8',
   'frame': 'SKU-7  ·  two dies: SiGe HBT front end (IHP SG13G2) + 130 nm CMOS baseband at 200 MHz',
   'output': 'To the ECU · CAN-FD · 100BASE-T1 · MIPI CSI-2',
-  'followed': 'the ECU interfaces', 'about': 'SKU-7 is a two-transmit, four-receive FMCW radar for the 76 to 81 GHz band. A SiGe HBT die synthesises the chirp, transmits it and mixes the four echoes down; a 130 nm CMOS die digitises the result and runs range and Doppler FFTs, CFAR detection, angle estimation and a target list.',
+  'differs': 'the ECU interfaces (the sheet names CAN-FD and Ethernet; this page states CAN-FD, 100BASE-T1 and MIPI CSI-2)', 'about': 'SKU-7 is a two-transmit, four-receive FMCW radar for the 76 to 81 GHz band. A SiGe HBT die synthesises the chirp, transmits it and mixes the four echoes down; a 130 nm CMOS die digitises the result and runs range and Doppler FFTs, CFAR detection, angle estimation and a target list.',
   'rows': [
    {'h': 210, 'zones': [
      {'key': 'Z1', 'name': 'Chirp synthesis + transmit · SiGe die', 'color': 'amber', 'cols': 4, 'w': 1.5, 'dashed': False,
@@ -243,7 +244,7 @@ SPECS = [
   'frame': 'SKU-8  ·  130 nm high-voltage CMOS  ·  200 MHz',
   'input': 'LVDS · MIPI DSI · parallel RGB',
   'output': 'To the panel · source / gate / VCOM / LED',
-  'followed': 'the gamma table depth', 'about': 'SKU-8 combines a timing controller and a 1280-column source driver for rugged TFT panels. It receives video over LVDS or MIPI DSI, linearises, colour-corrects, gamma-maps and dithers it, and drives each column through a 10-bit DAC and a high-voltage output amplifier, with row, VCOM and backlight control alongside.',
+  'differs': 'the gamma table (10-bit per channel on the sheet, a 14-bit table here)', 'about': 'SKU-8 combines a timing controller and a 1280-column source driver for rugged TFT panels. It receives video over LVDS or MIPI DSI, linearises, colour-corrects, gamma-maps and dithers it, and drives each column through a 10-bit DAC and a high-voltage output amplifier, with row, VCOM and backlight control alongside.',
   'rows': [
    {'h': 230, 'zones': [
      {'key': 'Z1', 'name': 'Video input', 'color': 'blue', 'cols': 2, 'w': 1,
@@ -283,7 +284,7 @@ SPECS = [
   'frame': 'SKU-9  ·  130 nm CMOS and BCD  ·  200 MHz',
   'banner': 'Scope, as the sheet states it: 130 nm at 200 MHz owns the zonal layer: gateway, smart I/O, safety and security edge. Central software-defined-vehicle compute is a sub-10 nm part and is not claimed here.',
   'output': 'To the zone harness · loads, sensors, actuators',
-  'followed': 'the in-vehicle network port counts', 'about': 'SKU-9 is the zonal edge of a software-defined vehicle. It receives messages on Ethernet, CAN and LIN, schedules them with time-sensitive networking, and turns them into switched power at sixteen smart fuses, with a lockstep safety island and a hardware security module across every path.',
+  'differs': 'the network ports (the sheet draws CAN-XL × 2, FlexRay × 2 and a 1000BASE-T1 port; this page states one CAN-XL, one FlexRay and no 1000BASE-T1)', 'about': 'SKU-9 is the zonal edge of a software-defined vehicle. It receives messages on Ethernet, CAN and LIN, schedules them with time-sensitive networking, and turns them into switched power at sixteen smart fuses, with a lockstep safety island and a hardware security module across every path.',
   'rows': [
    {'h': 230, 'zones': [
      {'key': 'Z1', 'name': 'Safety island', 'color': 'red', 'cols': 2, 'w': 1,

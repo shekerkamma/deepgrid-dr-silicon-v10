@@ -75,9 +75,9 @@ What it does: A gate-driver interface with a 24 V level shift, the VCOM electrod
 - ④ High-voltage amplifiers drive the 3,840 column outputs.
 - ⑤ The timing controller scans the rows through the gate driver.
 
-## Where the values come from
+## Where this differs from the annex sheet
 
-Structure follows the annex figure. For the gamma table depth, the annex figure and the compendium chapter differ; the diagram uses the chapter values, which are the ones the product page states.
+Structure follows the annex figure on sheet 9. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the gamma table (10-bit per channel on the sheet, a 14-bit table here).
 
 ## Designed toward
 

@@ -77,9 +77,9 @@ Why it exists: Switching 12 V and 48 V loads in the harness needs BCD power devi
 - ④ They become switched power at the smart fuses.
 - ⑤ A lockstep mismatch drives the safe state.
 
-## Where the values come from
+## Where this differs from the annex sheet
 
-Structure follows the annex figure. For the in-vehicle network port counts, the annex figure and the compendium chapter differ; the diagram uses the chapter values, which are the ones the product page states.
+Structure follows the annex figure on sheet 10. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the network ports (the sheet draws CAN-XL × 2, FlexRay × 2 and a 1000BASE-T1 port; this page states one CAN-XL, one FlexRay and no 1000BASE-T1).
 
 ## Designed toward
 

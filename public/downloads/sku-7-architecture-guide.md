@@ -71,9 +71,9 @@ What it does: Cell-averaging CFAR detection, digital-beamforming angle estimatio
 - ⑤ The range-Doppler map feeds CFAR detection and angle estimation.
 - ⑥ The target list goes to the ECU over CAN-FD, 100BASE-T1 or MIPI CSI-2.
 
-## Where the values come from
+## Where this differs from the annex sheet
 
-Structure follows the annex figure. For the ECU interfaces, the annex figure and the compendium chapter differ; the diagram uses the chapter values, which are the ones the product page states.
+Structure follows the annex figure on sheet 8. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the ECU interfaces (the sheet names CAN-FD and Ethernet; this page states CAN-FD, 100BASE-T1 and MIPI CSI-2).
 
 ## Designed toward
 
