@@ -45,14 +45,14 @@ const MARK_NAMES: Record<string, string> = {'①': '1', '②': '2', '③': '3', 
  *  stages, no raster text). Zones are cards, blocks sit inside them, and the numbered markers of the reading
  *  path sit on the blocks they name; the legend is the first thing in the notes below. On a phone every zone
  *  stacks, so nothing scrolls sideways. The draw.io drawing stays one click away as the full diagram. */
-export function NativeDiagram({data,title,label,svg,drawio,guide,html,caption,notes}:{data:NativeDiagramData;title:string;label?:string;svg?:string;drawio?:string;guide?:string;html?:string;caption?:React.ReactNode;notes?:DiagramNotesData}){
+export function NativeDiagram({data,title,label,svg,drawio,guide,html,deck,caption,notes}:{data:NativeDiagramData;title:string;label?:string;svg?:string;drawio?:string;guide?:string;html?:string;deck?:string;caption?:React.ReactNode;notes?:DiagramNotesData}){
  const body=useRef<HTMLDivElement>(null);
  // Connections, hover detail and click-to-highlight are drawn by nd-interact once the blocks are laid out.
  useEffect(()=>{const el=body.current;return el&&data.edges?.length?attach(el,data.edges):undefined;},[data]);
  const interactive=!!data.edges?.length;
  return <figure className="nd" aria-label={title}>
   <div className="nd-bar"><div><span className="mono">{label??'SYSTEM ARCHITECTURE · INTERACTIVE'}</span><strong>{title}</strong></div>
-   <div className="nd-actions">{svg&&<a className="text-link" href={svg} target="_blank" rel="noreferrer">Open full diagram <ArrowUpRight size={15} aria-hidden="true"/></a>}{drawio&&<a className="text-link" href={drawio} download>Source (.drawio) <Download size={15} aria-hidden="true"/></a>}{html&&<a className="text-link" href={html} target="_blank" rel="noreferrer">Interactive diagram (HTML) <ArrowUpRight size={15} aria-hidden="true"/></a>}{guide&&<a className="text-link" href={url(guide)}>Read architecture guide <ArrowUpRight size={15} aria-hidden="true"/></a>}</div></div>
+   <div className="nd-actions">{svg&&<a className="text-link" href={svg} target="_blank" rel="noreferrer">Open full diagram <ArrowUpRight size={15} aria-hidden="true"/></a>}{drawio&&<a className="text-link" href={drawio} download>Source (.drawio) <Download size={15} aria-hidden="true"/></a>}{html&&<a className="text-link" href={html} target="_blank" rel="noreferrer">Interactive diagram (HTML) <ArrowUpRight size={15} aria-hidden="true"/></a>}{deck&&<a className="text-link" href={deck} download>Architecture deck (.pptx) <Download size={15} aria-hidden="true"/></a>}{guide&&<a className="text-link" href={url(guide)}>Read architecture guide <ArrowUpRight size={15} aria-hidden="true"/></a>}</div></div>
   {interactive&&<p className="nd-hint">Select a block to see what it receives and feeds; the arrows show each connection.</p>}
   <div className="nd-body" ref={body}>
    <svg className="nd-wires" aria-hidden="true"/>

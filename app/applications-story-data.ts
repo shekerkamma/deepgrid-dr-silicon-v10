@@ -273,7 +273,7 @@ export const areas: {
     headline: 'Defence, avionics and drones need screened parts, and a failsafe that does not depend on software.',
     lede: 'The drone SoC keeps a hardware failsafe island wired straight to the motor controllers, so a crashed or jammed mission stack can still land the airframe.',
     items: [
-      {product: 'd100', primary: true, role: 'Flight control and visual-inertial navigation for drones, with a hardware failsafe to the speed controllers. Navigation is geometric, so it survives GPS jamming.'},
+      {product: 'd100', primary: true, role: 'Flight control and visual-inertial navigation for drones, with a hardware failsafe to the speed controllers. Navigation is geometric, so it does not depend on GPS; jamming immunity is not yet established.'},
       {product: 'sku3', primary: true, role: 'The sequenced 28 V power rails of avionics and military-vehicle electronics.'},
       {product: 'sku8', primary: true, role: 'Rugged cockpit displays.'},
       {product: 'sku7', role: 'Defence perimeter and counter-drone radar.'},

@@ -67,7 +67,7 @@ export default function ProductPageView({slug}: {slug: string}) {
         <Sec kicker="INSIDE THE PART" title="From signal in to signal out." copy={p.blockNote}>
           {dg && nd ? <>
             {dg.note && <p className="pp-note">{nbspUnits(dg.note)}</p>}
-            <NativeDiagram data={nd} title={dg.title} svg={dg.src} html={`/downloads/${p.id === 'sku4' ? 'dg32-lite' : p.slug}-workflow.html`} drawio={dg.drawio} guide={dg.guide} caption={dg.caption} notes={dg.notes}/>
+            <NativeDiagram data={nd} title={dg.title} svg={dg.src} html={`/downloads/${p.id === 'sku4' ? 'dg32-lite' : p.slug}-workflow.html`} deck={`/downloads/${p.id === 'sku4' ? 'dg32-lite' : p.slug}-architecture.pptx`} drawio={dg.drawio} guide={dg.guide} caption={dg.caption} notes={dg.notes}/>
             <p className="pp-note">Architecture from the annex, {sheet}. A functional view, not a floorplan.</p>
           </> : <>
             <ol className="pp-blocks" aria-label={`${part.code} block architecture`}>

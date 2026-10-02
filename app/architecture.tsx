@@ -51,7 +51,7 @@ function Lite({block,reduced,setReduced,exploded,setExploded,update,go}:Props){
    <DataTable caption="Design premises and what they set" head={['Constraint','What it means','What the design does']} rows={litePremises} wide/>
   </Sec>
 
-  <NativeDiagram data={nativeDiagrams['lite']} title="DG32-LITE system architecture" svg="/diagrams/dg32-lite-architecture.svg" html="/downloads/dg32-lite-workflow.html" drawio="/downloads/dg32-lite-architecture.drawio" guide="/downloads/dg32-lite-architecture-guide.md" notes={diagramNotes.lite}
+  <NativeDiagram data={nativeDiagrams['lite']} title="DG32-LITE system architecture" svg="/diagrams/dg32-lite-architecture.svg" html="/downloads/dg32-lite-workflow.html" deck="/downloads/dg32-lite-architecture.pptx" drawio="/downloads/dg32-lite-architecture.drawio" guide="/downloads/dg32-lite-architecture-guide.md" notes={diagramNotes.lite}
    caption={<>Numbered markers trace one current-control loop: ① the PWM fires the ADC sample, ② phase current goes to the CORDIC, ③ the transforms go to the CPU, ④ the PI output sets the PWM duty, ⑤ gate signals leave for the gate driver. F marks the fault latch, whose FAULT_N trips the bridge in hardware.</>}/>
 
   <Sec kicker="THE BLOCK GROUPS & ROLES" title="Six block groups share one deterministic 50 MHz bus," em="and each exists because something on the die could not be left to firmware." copy="Select a group to highlight it on the illustrative die and read what every block inside it does, and why it was built that way.">
@@ -89,7 +89,7 @@ function Dom({go,update,reduced,setReduced,exploded,setExploded}:Props){
    <div className="dr-links"><button className="text-link" onClick={()=>go('library?pkg=2dom')}>Architecture deck and film <ArrowUpRight size={16}/></button><button className="text-link" onClick={()=>go('library?pkg=2dom-datasheet')}>Datasheet deck and film <ArrowUpRight size={16}/></button></div>
   </Intro>
   <Stats items={[['114 MHz','COMPUTE CLOCK'],['50 MHz','CONTROL DOMAIN'],['Bit-exact','TO THE SOFTWARE MODEL'],['400','KEYS PER HEAD'],['~3,242','CYCLES PER ROW, ANALYTIC'],['0','PADS ADDED']]}/>
-  <NativeDiagram data={nativeDiagrams['2dom']} title="DG32-2DOM system architecture" svg="/diagrams/dg32-2dom-architecture.svg" html="/downloads/dg32-2dom-workflow.html" drawio="/downloads/dg32-2dom-architecture.drawio" guide="/downloads/dg32-2dom-architecture-guide.md" notes={diagramNotes['2dom']}
+  <NativeDiagram data={nativeDiagrams['2dom']} title="DG32-2DOM system architecture" svg="/diagrams/dg32-2dom-architecture.svg" html="/downloads/dg32-2dom-workflow.html" deck="/downloads/dg32-2dom-architecture.pptx" drawio="/downloads/dg32-2dom-architecture.drawio" guide="/downloads/dg32-2dom-architecture-guide.md" notes={diagramNotes['2dom']}
    caption={<>One attention kick: ① the CPU programs the shapes through the lite bridge, ② keys and values load once through the burst read bridge, ③ the INT8 output writes back through the burst write bridge, ④ a done interrupt reaches both cores. The engine reaches memory only through the bridges.</>}/>
 
   <Sec kicker="DUAL-DOMAIN CONSTRAINTS" title="Four physical findings forced a second clock domain and a second die," em="including an INT4 output that came out identically zero." copy="Each came from hardening the design, and each one set the variant’s shape.">
