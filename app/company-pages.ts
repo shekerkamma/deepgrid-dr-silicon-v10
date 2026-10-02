@@ -327,26 +327,35 @@ const USECASE_DEPTH: Record<string, { paras: string[]; flowLabel: string; flow: 
 };
 const SLUG: Record<string, string> = { sku1: 'sku-1', sku2: 'sku-2', sku3: 'sku-3', sku4: 'sku-4', sku5: 'sku-5', sku6: 'sku-6', sku7: 'sku-7', sku8: 'sku-8', sku9: 'sku-9', d100: 'd100' };
 
+const NUM: Record<number, string> = {2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six'};
+/** The evidence section states where the chips stand, e.g. "Evidence today: one chip is FPGA-validated, one is at design stage." */
+const WORD: Record<number, string> = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six'};
+const evidenceTitle = (stages: string[]) => {
+  const n = (s: string) => stages.filter((x) => x === s).length;
+  const groups = [['First silicon', 'has first silicon', 'have first silicon'], ['FPGA-validated', 'is FPGA-validated', 'are FPGA-validated'], ['Design only', 'is at design stage', 'are at design stage']].filter(([s]) => n(s));
+  if (groups.length === 1) return `Evidence today: ${stages.length === 1 ? 'the chip ' + groups[0][1] : 'all ' + WORD[stages.length] + ' ' + groups[0][2]}.`;
+  return 'Evidence today: ' + groups.map(([s, one, many], i) => `${WORD[n(s)] ?? n(s)}${i === 0 ? (n(s) === 1 ? ' chip' : ' chips') : ''} ${n(s) === 1 ? one : many}`).join(', ') + '.';
+};
 const stageOf = (e: string) => (e.startsWith('First silicon') ? 'First silicon' : e.startsWith('FPGA') ? 'FPGA-validated' : 'Design only');
 export const useCasePages: CompanyPage[] = areas.map((a) => {
   const items = a.items.map((i) => ({ ...i, p: products[i.product] }));
   const sections: Section[] = [
-    { kind: 'split', title: 'Where the chips fit', paras: [a.lede, ...(USECASE_DEPTH[a.id]?.paras ?? [])], flow: USECASE_DEPTH[a.id]?.flow, flowLabel: USECASE_DEPTH[a.id]?.flowLabel, from: 'applications-story-data.ts (Technical Annex v3)' },
-    { kind: 'cards', title: 'The chips for this application', lede: `${items.length} ${items.length === 1 ? 'chip' : 'chips'}, each with what it does here.`, cols: items.length > 2 ? 3 : 2,
+    { kind: 'split', title: a.fit, paras: [a.lede, ...(USECASE_DEPTH[a.id]?.paras ?? [])], flow: USECASE_DEPTH[a.id]?.flow, flowLabel: USECASE_DEPTH[a.id]?.flowLabel, from: 'applications-story-data.ts (Technical Annex v3)' },
+    { kind: 'cards', title: items.length === 1 ? 'One chip does the whole job here.' : `${NUM[items.length] ?? items.length} chips, each with one job here.`, lede: 'What each part does in this system, and where it stands today.', cols: items.length > 2 ? 3 : 2,
       items: items.map((i) => ({ title: i.p.name, meta: `${i.p.tag} · ${stageOf(i.p.evidence)}`, text: i.role + (i.p.replaces ? ' Replaces: ' + i.p.replaces : ''), href: '/products/' + SLUG[i.product], go: `Open the ${i.p.tag} page` })),
       from: 'applications-story-data.ts' },
-    ...(USECASE_DEPTH[a.id] ? [{ kind: 'steps' as const, title: 'Where it can fail, and what catches it', lede: 'The failure modes this system has to survive, and the part of the design that answers each one.', items: USECASE_DEPTH[a.id].failures, from: 'Technical Annex v3 engineering questions' }] : []),
-    { kind: 'bullets', title: 'What the evidence says today', items: items.map((i) => `${i.p.tag}, ${i.p.name}: ${i.p.evidence}`), from: 'applications-story-data.ts' },
+    ...(USECASE_DEPTH[a.id] ? [{ kind: 'steps' as const, title: `${NUM[USECASE_DEPTH[a.id].failures.length] ?? USECASE_DEPTH[a.id].failures.length} ways this system fails, and the block that catches each.`, lede: 'The failure modes this system has to survive, and the part of the design that answers each one.', items: USECASE_DEPTH[a.id].failures, from: 'Technical Annex v3 engineering questions' }] : []),
+    { kind: 'bullets', title: evidenceTitle(items.map((i) => stageOf(i.p.evidence))), items: items.map((i) => `${i.p.tag}, ${i.p.name}: ${i.p.evidence}`), from: 'applications-story-data.ts' },
   ];
   const SCENE3D: Record<string, { scene: 'motor' | 'truck' | 'defence'; title: string; lede: string }> = {
     motors: { scene: 'motor', title: 'The motor the chips run and supervise', lede: 'Three phase windings around a magnet rotor: SKU-1 drives them, DG32-LITE watches the drive and can shut it down.' },
   };
   if (SCENE3D[a.id]) sections.splice(1, 0, { kind: 'scene', ...SCENE3D[a.id], from: 'v3 three.js scenes' });
   if (FILMS[a.id]) sections.push({ kind: 'films', title: 'DG32 in this application, explained', lede: 'Narrated films on the DG32 safety path and architecture, with captions.', ids: FILMS[a.id], from: 'DG32 films' });
-  sections.push({ kind: 'cta', title: 'Tell us about your application', lede: 'The motor, the control requirement and the sensing constraint are what we need to answer.', from: 'site',
+  sections.push({ kind: 'cta', title: 'Bring the system and its constraints.', lede: a.ask, from: 'site',
     actions: [{ label: 'Discuss your application', href: '/contact', primary: true }, { label: 'All chips by application', href: '/applications' }] });
   return {
-    id: 'uc-' + a.id, menu: 'usecases', path: 'use-cases/' + a.id, label: a.name, kicker: 'Use case', title: a.name, lede: a.headline,
+    id: 'uc-' + a.id, menu: 'usecases', path: 'use-cases/' + a.id, label: a.name, kicker: 'Use case · ' + a.name, title: a.headline, lede: a.lede,
     heroImage: { src: url(SCENE[a.id].src), alt: SCENE[a.id].alt },
     chips: items.slice(0, 3).map((i) => [i.p.name, i.role] as [string, string]),
     sections,

@@ -238,10 +238,14 @@ export const products: Record<ProductId, {name: string; tag: string; sheet: numb
 
 export const areas: {
   id: string; name: string; headline: string; lede: string;
+  /** The verdict of the 'where the chips fit' section, and what an enquiry for this system should bring. */
+  fit: string; ask: string;
   items: {product: ProductId; role: string; primary?: boolean}[];
 }[] = [
   {
     id: 'motors', name: 'Motors and drives',
+    fit: 'The drive and its safety supervisor are separate chips, so a fault in one cannot silence the other.',
+    ask: 'The motor, its power and speed range, the control loop rate and the sensing you have are what we need to answer.',
     headline: 'In a motor drive, one chip runs the motor and another can stop it safely.',
     lede: 'SKU-1 replaces the driver-plus-microcontroller pair in fans, appliances, EV two- and three-wheelers, robots and actuators. SKU-4, DG32-LITE, is the safety processor that supervises a motor and can shut it down.',
     items: [
@@ -251,6 +255,8 @@ export const areas: {
   },
   {
     id: 'vehicles', name: 'Vehicles',
+    fit: 'Mature nodes own the edges of the vehicle; the central computer is not claimed.',
+    ask: 'The zone, its loads and buses, the latency the messages need and the safety target are what we need to answer.',
     headline: 'In a vehicle, the chips sit at the edges: the battery, the brakes, the radar, the bus and the wiring zones.',
     lede: 'The central computer of a software-defined vehicle is a sub-10 nm problem and is explicitly not claimed. What mature nodes own is everything around it.',
     items: [
@@ -262,6 +268,8 @@ export const areas: {
   },
   {
     id: 'defence', name: 'Defence, avionics and drones',
+    fit: 'Each part answers one physical requirement of a screened platform: surge, upset, a hung stack or a frozen display.',
+    ask: 'The platform, its power bus, environment and screening route, and what must keep working when software fails, are what we need to answer.',
     headline: 'Defence, avionics and drones need screened parts, and a failsafe that does not depend on software.',
     lede: 'The drone SoC keeps a hardware failsafe island wired straight to the motor controllers, so a crashed or jammed mission stack can still land the airframe.',
     items: [
@@ -274,6 +282,8 @@ export const areas: {
   },
   {
     id: 'grid', name: 'Grid and metering',
+    fit: 'One chip measures the power and keeps the tamper record while mains is cut.',
+    ask: 'The meter class, the channels you measure, the tamper events your tender names and the backup supply are what we need to answer.',
     headline: 'For the national smart-meter rollout, one chip measures the power and records tampering.',
     lede: 'Tamper detection is a tender requirement, so the chip keeps an always-on clock domain that logs a magnet or an opened case while mains power is cut.',
     items: [
@@ -282,6 +292,8 @@ export const areas: {
   },
   {
     id: 'boards', name: 'On nearly every board',
+    fit: 'Supervision and the bus link decide whether a board starts and talks predictably, below firmware.',
+    ask: 'The rails to supervise, the bus and its wiring, and the reset behaviour your board needs are what we need to answer.',
     headline: 'Some parts go on nearly every circuit board, which is where the volume is.',
     lede: 'A supervisor watches a board’s power rails and a transceiver connects it to its bus. Neither is glamorous, and both ship with almost everything.',
     items: [

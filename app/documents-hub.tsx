@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import {groundedDocuments, GroundedDoc} from './documents-data';
 
+const NUMW: Record<number, string> = {6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten', 11: 'eleven', 12: 'twelve'};
+
 export default function GroundedDocumentsHub({go}: {go?: (hash: string) => void}) {
   const [filterGroup, setFilterGroup] = useState<'all' | 'core' | 'platform'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -96,8 +98,8 @@ export default function GroundedDocumentsHub({go}: {go?: (hash: string) => void}
     <section className="dr-docs-hub" aria-label="Source documents and specifications">
       <header className="dr-docs-hub-header">
         <div>
-          <p className="dr-lib-kicker">SOURCE DOCUMENTS · 6 PDFS AND SPECIFICATIONS</p>
-          <h2>Every figure on this site traces to one of these six documents</h2>
+          <p className="dr-lib-kicker">SOURCE DOCUMENTS · {groundedDocuments.length} PDFS AND SPECIFICATIONS</p>
+          <h2>Every figure on this site traces to one of these {NUMW[groundedDocuments.length] ?? groundedDocuments.length} documents</h2>
           <p className="dr-docs-lead">
             Simulation results, timing budgets, clock partitions and pin assignments all come from these
             documents. Download a PDF, read its specification, or check a figure against its section in{' '}

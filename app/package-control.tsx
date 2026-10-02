@@ -33,7 +33,7 @@ export function ControlLoop({go}:{go:(hash:string)=>void}){
  const r=loopRates[rate],period=CLOCK_HZ/(r.khz*1000),budget=period-HW_FIXED_CYCLES,hwPct=HW_FIXED_CYCLES/period*100;
  const maxF=180,target=50;
  return <section className="page-wrap"><SectionHead title="The CPU runs two regulators, not the loop" copy="Each field-oriented-control tick samples current, transforms it, regulates it and updates the bridge. DG32 moves every expensive step into hardware, so the loop cost is fixed and known."/>
-  <h2 className="sr-only">One control tick, stage by stage</h2>
+  <h2 className="sr-only">Six stages per control tick, and the CPU computes only the two regulators</h2>
   <ol className="dr-loop">{loopStages.map(([n,t,d,c])=><li key={n}><span className="dr-loop-n">{n}</span><div><h3>{t}</h3><p>{d}</p></div><strong>{c}</strong></li>)}</ol>
   <ControlWaveform khz={r.khz}/>
   <p className="disclaimer">Cycle costs measured in simulation at the 50 MHz clock, where one cycle is 20 ns.</p>
