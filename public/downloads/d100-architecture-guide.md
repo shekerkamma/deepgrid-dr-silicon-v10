@@ -50,7 +50,7 @@ aircraft can navigate where GPS is unavailable.
 Why it is geometry: the sheet describes the odometry as geometry, not learned perception, so it
 needs no trained model to hold a pose.
 
-- **MIPI CSI-2**: two lanes × 2, a stereo pair at 720p60.
+- **MIPI CSI-2**: two lanes, up to 1080p60.
 - **ISP**: rectification and lens-shading correction.
 - **FEATURE**: FAST corners with BRIEF descriptors, about 2k points per frame.
 - **POSE ENGINE**: an EKF with IMU pre-integration and sliding-window bundle adjustment, producing a 30 Hz, six-degree-of-freedom pose.
@@ -113,6 +113,12 @@ cannot run as a task inside that software.
 | Product | 130 nm ASIC, SkyWater SKY130 / IHP SG13G2 open PDK, 200 MHz fixed | The shipping part |
 
 FPGA timing closure is a prototype milestone; it is not a measurement of the ASIC.
+
+## Where the values come from
+
+Structure follows the annex figure. For the camera interface, the annex figure (a stereo pair at 720p60) and the
+compendium chapter (two lanes, up to 1080p60) differ; the diagram uses the chapter value, which is the one the
+product page states.
 
 ## Package
 

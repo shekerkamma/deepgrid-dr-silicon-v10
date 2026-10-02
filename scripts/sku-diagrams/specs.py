@@ -1,7 +1,7 @@
 # One spec per SKU, read off its figure in the Technical Annex v3 (sheet number in `sheet`).
 # Blocks are (key, title, subtitle[, column span]). Edges are (from, to, marker, colour).
-# `conflicts` lists every value the figure and the compendium chapter disagree on; those values stay
-# off the drawing. Certification wording on a figure is not drawn; `toward` repeats the product page.
+# Where the figure and the compendium chapter the product page is written from disagree, the drawing
+# follows the product page; `followed` names those values for the guide. Certification wording on a figure is not drawn; `toward` repeats the product page.
 
 TI_FOC = {'title': 'Field Orientated Control of 3-Phase AC-Motors (TI BPRA073)', 'note': 'The Clarke and Park transforms, the PI regulator and PWM behind the control datapath.', 'href': 'https://www.ti.com/lit/an/bpra073/bpra073.pdf', 'meta': 'Texas Instruments · PDF'}
 CORDIC = {'title': 'The CORDIC trigonometric computing technique', 'note': 'Volder, IRE Transactions on Electronic Computers, 1959: the shift-and-add method behind the CORDIC block.', 'href': 'https://doi.org/10.1109/TEC.1959.5222693', 'meta': 'IEEE · DOI'}
@@ -93,9 +93,7 @@ SPECS = [
   'subtitle': 'Input conditioning, a peak-current-mode pre-regulator, four monitored rails and an upset-hardened sequencer for a 28 V aircraft bus · from Technical Annex v3, sheet 4',
   'frame': 'SKU-3  ·  180 nm BCD production, 130 nm 20 V devices for prototyping',
   'input': '28 V aircraft bus',
-  'about': 'SKU-3 turns a 28 V aircraft or vehicle bus into four sequenced, monitored rails. It conditions the input, pre-regulates with a synchronous buck under peak-current-mode control, and supervises every rail with window monitors, current limits and an upset-hardened sequencer.',
-  'conflicts': ['rail regulators and currents: the figure draws 3V3 and 1V8 LDOs at 2 A and 3 A and 1V2 and 0V9 bucks at 5 A and 6 A, the chapter 5 V and 3.3 V bucks at 2 A and 3 A and 1.8 V and 1.2/0.9 V LDOs at 500 mA and 300 mA',
-                'telemetry ADC resolution: 12-bit in the figure, 10-bit in the chapter', 'sequencer depth: 8 slots in the figure, 4 steps in the chapter'],
+  'followed': 'rail regulators and currents, the telemetry ADC and the sequencer depth', 'about': 'SKU-3 turns a 28 V aircraft or vehicle bus into four sequenced, monitored rails. It conditions the input, pre-regulates with a synchronous buck under peak-current-mode control, and supervises every rail with window monitors, current limits and an upset-hardened sequencer.',
   'rows': [
    {'h': 230, 'zones': [
      {'key': 'Z1', 'name': 'Input conditioning', 'color': 'green', 'cols': 2, 'w': 1,
@@ -105,22 +103,22 @@ SPECS = [
      {'key': 'Z2', 'name': 'Pre-regulator · synchronous buck', 'color': 'red', 'cols': 3, 'w': 1.5,
       'what': 'A type-III error amplifier, a PWM comparator with slope compensation, an adaptive dead-time gate driver, an LDMOS half-bridge power stage and sense-FET current sensing.',
       'why': 'Peak-current-mode control limits current cycle by cycle, so a fault downstream cannot run away.',
-      'blocks': [('EA', 'Error amp', 'type-III comp · 60 dB DC'), ('PC', 'PWM comp', '+ slope comp · 500 kHz'), ('GD', 'Gate driver', 'adaptive dead-time · 20 ns non-overlap'), ('CS', 'Current sense', 'sense-FET + amp · cycle-by-cycle limit'), ('PS', 'Power stage', 'LDMOS half-bridge', 2)]},
+      'blocks': [('EA', 'Error amp', 'type-III comp · 60 dB DC'), ('PC', 'PWM comp', '+ slope comp · 500 kHz to 2 MHz'), ('GD', 'Gate driver', 'adaptive dead-time · 20 ns non-overlap'), ('CS', 'Current sense', 'sense-FET + amp · cycle-by-cycle limit'), ('PS', 'Power stage', 'LDMOS half-bridge', 2)]},
      {'key': 'Z3', 'name': 'Reference + bias', 'color': 'amber', 'cols': 2, 'w': 1,
       'what': 'A Brokaw bandgap at 1.20 V and 12 ppm/°C with one-time OTP trim, PTAT and CTAT bias, and an 8 MHz RC oscillator.',
       'blocks': [('BG', 'Bandgap', 'Brokaw cell · 1.20 V · 12 ppm/°C'), ('TRIM', 'Trim', 'OTP 6-bit · one-time, post-package'), ('BIAS', 'Bias', 'PTAT + CTAT'), ('OSC', 'Osc', 'RC 8 MHz · ±2% trimmed')]},
    ]},
    {'h': 330, 'zones': [
      {'key': 'Z4', 'name': 'Rail generation', 'color': 'blue', 'cols': 3, 'w': 2.2,
-      'what': 'Four regulated rails, each followed by an over- and under-voltage window monitor and a foldback current limit that reports power-good.',
-      'blocks': [('R1', 'Rail 1 regulator', 'soft-start ramp'), ('W1', 'Window monitor', 'OV / UV · ±3% window'), ('O1', 'OC limit', 'foldback'),
-                 ('R2', 'Rail 2 regulator', 'soft-start ramp'), ('W2', 'Window monitor', 'OV / UV · ±3% window'), ('O2', 'OC limit', 'foldback'),
-                 ('R3', 'Rail 3 regulator', 'soft-start ramp'), ('W3', 'Window monitor', 'OV / UV · ±3% window'), ('O3', 'OC limit', 'foldback'),
-                 ('R4', 'Rail 4 regulator', 'soft-start ramp'), ('W4', 'Window monitor', 'OV / UV · ±3% window'), ('O4', 'OC limit', 'foldback')]},
+      'what': 'Four sequenced rails, two bucks at 5 V and 3.3 V and two LDOs at 1.8 V and 1.2 or 0.9 V, each followed by an over- and under-voltage window monitor and a foldback current limit that reports power-good.',
+      'blocks': [('R1', 'Buck · 5 V', '2 A · soft-start ramp'), ('W1', 'Window monitor', 'OV / UV · ±3% window'), ('O1', 'OC limit', 'foldback → PG'),
+                 ('R2', 'Buck · 3.3 V', '3 A · soft-start ramp'), ('W2', 'Window monitor', 'OV / UV · ±3% window'), ('O2', 'OC limit', 'foldback → PG'),
+                 ('R3', 'LDO · 1.8 V', '500 mA · soft-start ramp'), ('W3', 'Window monitor', 'OV / UV · ±3% window'), ('O3', 'OC limit', 'foldback → PG'),
+                 ('R4', 'LDO · 1.2 / 0.9 V', '300 mA · soft-start ramp'), ('W4', 'Window monitor', 'OV / UV · ±3% window'), ('O4', 'OC limit', 'foldback → PG')]},
      {'key': 'Z5', 'name': 'Supervision · sequencing · telemetry', 'color': 'purple', 'cols': 2, 'w': 1,
-      'what': 'A programmable sequencer, a SAR telemetry ADC for voltage and current per rail over SPI, a windowed watchdog, and DICE latches with TMR on the sequencer state machine.',
+      'what': 'A programmable four-step sequencer, a 10-bit 500 kSPS telemetry ADC for voltage, current and die temperature over SPI, a windowed watchdog, and DICE latches with TMR on the sequencer state machine.',
       'why': 'A single-event upset must not reorder or drop a rail, so the sequencer state is hardened by design.',
-      'blocks': [('SEQ', 'Sequencer', 'programmable order · 1 ms step · FSM + delay counter'), ('TEL', 'Telemetry', 'SAR ADC · V/I per rail · SPI · MUX 8:1'), ('WDG', 'Watchdog', 'windowed · 1 ms / 10 ms'), ('SEU', 'SEU harden', 'DICE latches · TMR on the FSM')]},
+      'blocks': [('SEQ', 'Sequencer', 'programmable 4-step order · FSM + delay counter · TMR'), ('TEL', 'Telemetry', '10-bit SAR ADC · 500 kSPS · V / I / die temp · SPI'), ('WDG', 'Watchdog', 'windowed · 1 ms / 10 ms'), ('SEU', 'SEU harden', 'DICE latches · TMR on the FSM')]},
    ]},
   ],
   'edges': [('IN', 'Z1', '①', 'green', 'exitX=0.5;exitY=1;entryX=0.65;entryY=0;'), ('EMI', 'INR', '', 'green'), ('INR', 'UV', '', 'green'), ('Z1', 'Z2', '②', 'red', 'exitX=1;exitY=0.75;entryX=0;entryY=0.75;'), ('EA', 'PC', '', 'red'), ('PC', 'GD', '', 'red'), ('Z2', 'Z4', '③', 'red', 'exitX=0.5;exitY=1;entryX=0.62;entryY=0;'), ('R1', 'W1', '', 'blue'), ('W1', 'O1', '', 'blue'), ('O1', 'SEQ', '④', 'amber'), ('CS', 'EA', '⑤', 'amber')],
@@ -128,7 +126,7 @@ SPECS = [
               ('④', 'Each rail reports power-good to the sequencer through its window monitor and current limit.'), ('⑤', 'Current sense closes the peak-current-mode inner loop.')],
   'toward': ['DO-160 sections 16 and 17', 'MIL-STD-704F', 'MIL-STD-1275D', 'MIL-STD-461G', 'MIL-STD-883 Class B'],
   'alt': 'SKU-3 hi-rel PMIC architecture diagram: input conditioning, a synchronous-buck pre-regulator, reference and bias, four monitored rails, and supervision, sequencing and telemetry',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 4. Numbered circles trace power from the 28 V bus to the rails and the sequencer. Rail values are left off where the sources disagree.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 4, with rail values from the product specification. Numbered circles trace power from the 28 V bus to the rails and the sequencer.',
   'background': [BROKAW, {'title': 'Upset hardened memory design for submicron CMOS technology', 'note': 'Calin, Nicolaidis and Velazco, IEEE Transactions on Nuclear Science, 1996: the DICE latch.', 'href': 'https://doi.org/10.1109/23.556880', 'meta': 'IEEE · DOI'},
                  {'title': 'Compensating the current-mode-controlled boost (TI SLVA452)', 'note': 'Slope compensation and type-II/III loop compensation for peak-current-mode converters.', 'href': 'https://www.ti.com/lit/an/slva452/slva452.pdf', 'meta': 'Texas Instruments · PDF'}]},
 
@@ -167,8 +165,7 @@ SPECS = [
   'title': 'SKU-6 quad-rail voltage supervisor system architecture',
   'subtitle': 'Four sense chains, a latched fault matrix, open-drain outputs, a trimmed reference and a windowed watchdog · from Technical Annex v3, sheet 7',
   'frame': 'SKU-6  ·  130 nm CMOS prototype, 180 nm production',
-  'about': 'SKU-6 watches four supply rails and the processor that depends on them. Each rail runs through a matched divider, a chopper-stabilised comparator and a digital deglitch counter into a latched fault matrix that drives FAULT_N and RESET_N; a windowed watchdog catches a hung or runaway processor.',
-  'conflicts': ['watchdog window: 1 ms / 10 ms in the figure, adjustable 100 ms to 1.6 s in the chapter'],
+  'followed': 'the watchdog window', 'about': 'SKU-6 watches four supply rails and the processor that depends on them. Each rail runs through a matched divider, a chopper-stabilised comparator and a digital deglitch counter into a latched fault matrix that drives FAULT_N and RESET_N; a windowed watchdog catches a hung or runaway processor.',
   'rows': [
    {'h': 380, 'zones': [
      {'key': 'Z1', 'name': 'Sense chain · one per rail', 'color': 'blue', 'cols': 4, 'w': 2.4,
@@ -191,8 +188,8 @@ SPECS = [
       'why': 'The bandgap and trimmed polysilicon resistors are what make the threshold accuracy possible on a mature node.',
       'blocks': [('BG', 'Bandgap', 'curvature-corrected · 1.20 V · 10 ppm/°C · PTAT + CTAT'), ('TRIM', 'Trim', 'OTP 5-bit · ±0.5% after trim'), ('OSC', 'Osc', 'RC 8 MHz · ±2% over −40 to 125 °C · ref current')]},
      {'key': 'Z5', 'name': 'Watchdog', 'color': 'red', 'cols': 3, 'w': 1,
-      'what': 'A windowed watchdog: an open and close window, a kick input, and a timeout counter that drives RESET_N.',
-      'blocks': [('WL', 'Window logic', 'open + close'), ('WDI', 'WDI', 'kick input'), ('TO', 'Timeout', 'counter → RESET_N')]},
+      'what': 'A windowed watchdog adjustable from 100 ms to 1.6 s: an open and close window, a kick input, and a timeout counter that drives RESET_N.',
+      'blocks': [('WL', 'Window logic', 'open + close · 100 ms to 1.6 s'), ('WDI', 'WDI', 'kick input'), ('TO', 'Timeout', 'counter → RESET_N')]},
    ]},
   ],
   'edges': [('V1', 'D1', '①', 'blue'), ('D1', 'C1', '', 'blue'), ('C1', 'G1', '', 'blue'), ('G1', 'FM', '②', 'blue'), ('FM', 'FLT', '③', 'purple'), ('Z4', 'Z1', '④', 'green', 'exitX=0.5;exitY=0;entryX=0.62;entryY=1;'), ('WDI', 'TO', '', 'red'), ('TO', 'Z3', '⑤', 'red', 'exitX=0.5;exitY=0;entryX=0.5;entryY=1;')],
@@ -200,15 +197,15 @@ SPECS = [
               ('④', 'The trimmed bandgap sets every comparator threshold.'), ('⑤', 'A missed or early watchdog kick times out to RESET_N.')],
   'toward': ['MIL-STD-883K Class B screening flow'],
   'alt': 'SKU-6 voltage supervisor architecture diagram: four rail sense chains into a latched fault matrix, open-drain FAULT_N and RESET_N outputs, a trimmed reference and timebase, and a windowed watchdog',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 7. Numbered circles trace a rail fault to FAULT_N and RESET_N. The watchdog window is left off where the sources disagree.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 7, with the watchdog range from the product specification. Numbered circles trace a rail fault to FAULT_N and RESET_N.',
   'background': [BROKAW, HERCULES]},
 
  {'id': 'sku7', 'slug': 'sku-7', 'code': 'SKU-7', 'sheet': '8', 'name': '77 GHz MIMO radar',
   'title': 'SKU-7 77 GHz MIMO radar system architecture',
   'subtitle': 'A SiGe HBT front end for chirp synthesis, transmit and four receive channels, and a 130 nm CMOS baseband for FFTs, detection and tracking · from Technical Annex v3, sheet 8',
   'frame': 'SKU-7  ·  two dies: SiGe HBT front end (IHP SG13G2) + 130 nm CMOS baseband at 200 MHz',
-  'output': 'To the ECU · CAN-FD / Ethernet',
-  'about': 'SKU-7 is a two-transmit, four-receive FMCW radar for the 76 to 81 GHz band. A SiGe HBT die synthesises the chirp, transmits it and mixes the four echoes down; a 130 nm CMOS die digitises the result and runs range and Doppler FFTs, CFAR detection, angle estimation and a target list.',
+  'output': 'To the ECU · CAN-FD · 100BASE-T1 · MIPI CSI-2',
+  'followed': 'the ECU interfaces', 'about': 'SKU-7 is a two-transmit, four-receive FMCW radar for the 76 to 81 GHz band. A SiGe HBT die synthesises the chirp, transmits it and mixes the four echoes down; a 130 nm CMOS die digitises the result and runs range and Doppler FFTs, CFAR detection, angle estimation and a target list.',
   'rows': [
    {'h': 210, 'zones': [
      {'key': 'Z1', 'name': 'Chirp synthesis + transmit · SiGe die', 'color': 'amber', 'cols': 4, 'w': 1.5, 'dashed': False,
@@ -233,7 +230,7 @@ SPECS = [
   'edges': [('XT', 'RG', '①', 'amber'), ('RG', 'PLL', '', 'amber'), ('PLL', 'VCO', '', 'amber'), ('VCO', 'X2', '', 'amber'), ('X2', 'PA1', '②', 'red'), ('PA1', 'PA2', '', 'red'), ('X2', 'MIX', 'LO', 'purple', 'exitX=0.5;exitY=1;entryX=0.5;entryY=0;'), ('LNA', 'MIX', '③', 'blue'), ('MIX', 'IF', '', 'blue'), ('IF', 'AAF', '', 'blue'), ('AAF', 'ADC', '', 'blue'),
             ('ADC', 'Z2', '④', 'amber', 'exitX=1;exitY=0.5;entryX=0;entryY=0.6;'), ('RF', 'DF', '', 'green'), ('DF', 'RD', '', 'green'), ('RD', 'CF', '⑤', 'purple'), ('CF', 'AE', '', 'purple'), ('TL', 'OUT', '⑥', 'main')],
   'markers': [('①', 'The crystal, ramp generator, PLL and VCO synthesise the chirp.'), ('②', 'The doubler reaches 77 GHz and the two PAs transmit.'), ('③', 'Each of four echoes is amplified, mixed with the LO, filtered and digitised.'),
-              ('④', 'The 12-bit samples cross to the CMOS die for the range FFT.'), ('⑤', 'The range-Doppler map feeds CFAR detection and angle estimation.'), ('⑥', 'The target list goes to the ECU.')],
+              ('④', 'The 12-bit samples cross to the CMOS die for the range FFT.'), ('⑤', 'The range-Doppler map feeds CFAR detection and angle estimation.'), ('⑥', 'The target list goes to the ECU over CAN-FD, 100BASE-T1 or MIPI CSI-2.')],
   'toward': ['ISO 26262 ASIL-B', 'DO-160G', 'MIL-STD-883K'],
   'alt': 'SKU-7 radar architecture diagram: chirp synthesis and two transmitters and a four-channel receive array on a SiGe die, range and Doppler processing and detection on a 130 nm CMOS die',
   'caption': 'Redrawn from the Technical Annex v3, sheet 8. Numbered circles trace one chirp from synthesis to the target list. Values are design targets.',
@@ -246,17 +243,16 @@ SPECS = [
   'frame': 'SKU-8  ·  130 nm high-voltage CMOS  ·  200 MHz',
   'input': 'LVDS · MIPI DSI · parallel RGB',
   'output': 'To the panel · source / gate / VCOM / LED',
-  'about': 'SKU-8 combines a timing controller and a 1280-column source driver for rugged TFT panels. It receives video over LVDS or MIPI DSI, linearises, colour-corrects, gamma-maps and dithers it, and drives each column through a 10-bit DAC and a high-voltage output amplifier, with row, VCOM and backlight control alongside.',
-  'conflicts': ['gamma table depth: 10-bit per channel in the figure, a 14-bit table in the chapter'],
+  'followed': 'the gamma table depth', 'about': 'SKU-8 combines a timing controller and a 1280-column source driver for rugged TFT panels. It receives video over LVDS or MIPI DSI, linearises, colour-corrects, gamma-maps and dithers it, and drives each column through a 10-bit DAC and a high-voltage output amplifier, with row, VCOM and backlight control alongside.',
   'rows': [
    {'h': 230, 'zones': [
      {'key': 'Z1', 'name': 'Video input', 'color': 'blue', 'cols': 2, 'w': 1,
       'what': 'Four-lane LVDS and two-lane MIPI DSI receivers into a dual-port line buffer of four 1280-pixel, 24-bit lines.',
       'blocks': [('LV', 'LVDS RX', '4 lanes + clk · SXGA 1280 × 1024 @ 60 Hz'), ('DSI', 'DSI RX', '2 lanes · 1.5 Gbps/lane'), ('LB', 'Line buffer', 'dual-port SRAM · 4 lines × 1280 × 24 bit', 2)]},
      {'key': 'Z2', 'name': 'Pixel pipeline', 'color': 'purple', 'cols': 2, 'w': 1.2,
-      'what': 'De-gamma, a 3 × 3 colour matrix with white point, a gamma table per channel and temporal and spatial dithering.',
+      'what': 'De-gamma, a 3 × 3 colour matrix with white point, a 14-bit gamma table with temperature feedback, and temporal and spatial dithering.',
       'why': 'LCD response shifts with panel temperature, so the gamma is temperature-compensated.',
-      'blocks': [('DG', 'De-gamma', 'input linearise'), ('COL', 'Colour', '3 × 3 matrix + WP'), ('DI', 'Dither', 'temporal + spatial'), ('GL', 'Gamma LUT', 'per channel · temperature-compensated')]},
+      'blocks': [('DG', 'De-gamma', 'input linearise'), ('COL', 'Colour', '3 × 3 matrix + WP'), ('DI', 'Dither', 'temporal + spatial'), ('GL', 'Gamma LUT', '14-bit table · temperature feedback')]},
      {'key': 'Z3', 'name': 'Timing + test', 'color': 'amber', 'cols': 2, 'w': 1,
       'what': 'A timing controller with programmable porches, a 108 MHz pixel-clock PLL, a colour-bar test pattern and frame-freeze detection.',
       'blocks': [('TC', 'TCON', 'H/V timing gen · programmable porches'), ('PLL', 'PLL', 'pixel clock · 108 MHz SXGA'), ('TP', 'Test pattern', 'colour bars'), ('BIST', 'BIST + safety', 'frame-freeze detect')]},
@@ -277,7 +273,7 @@ SPECS = [
               ('④', 'High-voltage amplifiers drive the 3,840 column outputs.'), ('⑤', 'The timing controller scans the rows through the gate driver.')],
   'toward': ['ISO 26262 ASIL-B', 'MIL-STD-810G', 'DEF-STAN 00-35'],
   'alt': 'SKU-8 display driver architecture diagram: video input, pixel pipeline and timing and test on a control bus, high-voltage column drivers, and row and backlight control',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 9. Numbered circles trace a frame from video input to the panel. The gamma depth is left off where the sources disagree.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 9, with the gamma depth from the product specification. Numbered circles trace a frame from video input to the panel.',
   'background': [{'title': 'LVDS Owner’s Manual (TI SNLA187)', 'note': 'How LVDS links carry video, and their timing and termination.', 'href': 'https://www.ti.com/lit/ug/snla187/snla187.pdf', 'meta': 'Texas Instruments · PDF'},
                  {'title': 'MIPI DSI specification overview', 'note': 'The display serial interface on the second receiver.', 'href': 'https://www.mipi.org/specifications/dsi', 'meta': 'MIPI Alliance'}]},
 
@@ -287,8 +283,7 @@ SPECS = [
   'frame': 'SKU-9  ·  130 nm CMOS and BCD  ·  200 MHz',
   'banner': 'Scope, as the sheet states it: 130 nm at 200 MHz owns the zonal layer: gateway, smart I/O, safety and security edge. Central software-defined-vehicle compute is a sub-10 nm part and is not claimed here.',
   'output': 'To the zone harness · loads, sensors, actuators',
-  'about': 'SKU-9 is the zonal edge of a software-defined vehicle. It receives messages on Ethernet, CAN and LIN, schedules them with time-sensitive networking, and turns them into switched power at sixteen smart fuses, with a lockstep safety island and a hardware security module across every path.',
-  'conflicts': ['network counts: the figure draws CAN-XL × 2, FlexRay × 2 and a 1000BASE-T1 port, the chapter one CAN-XL, one FlexRay and no 1000BASE-T1'],
+  'followed': 'the in-vehicle network port counts', 'about': 'SKU-9 is the zonal edge of a software-defined vehicle. It receives messages on Ethernet, CAN and LIN, schedules them with time-sensitive networking, and turns them into switched power at sixteen smart fuses, with a lockstep safety island and a hardware security module across every path.',
   'rows': [
    {'h': 230, 'zones': [
      {'key': 'Z1', 'name': 'Safety island', 'color': 'red', 'cols': 2, 'w': 1,
@@ -297,7 +292,7 @@ SPECS = [
       'blocks': [('CPU', 'DGridRiscV × 2', 'RV32IM_Zicsr · lockstep · 200 MHz · +2 cycle skew · PMP · ECC'), ('CMP', 'Comparator', 'bus + retire · mismatch → safe state'), ('FFI', 'Freedom from interference', 'MPU + bus firewall', 2)]},
      {'key': 'Z2', 'name': 'Security', 'color': 'purple', 'cols': 2, 'w': 1,
       'what': 'A hardware security module with AES-256 and ECC-256, secure boot from an OTP key store with A/B slots, and an OTA engine with signed-image verification and rollback.',
-      'blocks': [('HSM', 'HSM', 'hardware security module · AES-256 · ECC-256'), ('SB', 'Secure boot', 'root of trust · OTP key store · A/B slots'), ('OTA', 'OTA engine', 'signed image verify + rollback', 2)]},
+      'blocks': [('HSM', 'HSM', 'hardware security module · AES-256 · ECC-256 · true RNG'), ('SB', 'Secure boot', 'root of trust · OTP key store · A/B slots'), ('OTA', 'OTA engine', 'signed image verify + rollback', 2)]},
      {'key': 'Z3', 'name': 'Real-time control', 'color': 'blue', 'cols': 2, 'w': 1,
       'what': 'A TSN switch with an 802.1Qbv time-aware shaper, 802.1AS precision time, and a SOME/IP and DoIP service router.',
       'why': 'Brake-by-wire messages need bounded latency on a shared link.',
@@ -306,8 +301,8 @@ SPECS = [
    {'bus': 'AXI4 crossbar  ·  64-bit  ·  200 MHz'},
    {'h': 190, 'zones': [
      {'key': 'Z4', 'name': 'In-vehicle network · gateway', 'color': 'green', 'cols': 3, 'w': 1.5,
-      'what': 'The gateway ports: 100BASE-T1 Ethernet, eight CAN-FD, CAN-XL, eight LIN and FlexRay. The gateway routes and rate-limits between domains.',
-      'blocks': [('ETH', '100BASE-T1 × 2', ''), ('CANFD', 'CAN-FD × 8', ''), ('CANXL', 'CAN-XL', ''), ('LIN', 'LIN × 8', ''), ('FR', 'FlexRay', '')]},
+      'what': 'The gateway ports: two 100BASE-T1, eight CAN-FD, one CAN-XL, eight LIN and one FlexRay. The gateway routes and rate-limits between domains.',
+      'blocks': [('ETH', '100BASE-T1 × 2', 'automotive Ethernet'), ('CANFD', 'CAN-FD × 8', ''), ('CANXL', 'CAN-XL × 1', ''), ('LIN', 'LIN × 8', 'masters'), ('FR', 'FlexRay × 1', '')]},
      {'key': 'Z5', 'name': 'Zonal power + I/O', 'color': 'amber', 'cols': 2, 'w': 1,
       'what': 'Sixteen smart electronic fuses with sensing, eight high-side drivers, a 24-channel 12-bit sense ADC and twelve PWM actuator outputs.',
       'why': 'Switching 12 V and 48 V loads in the harness needs BCD power devices beside the logic.',
@@ -319,6 +314,6 @@ SPECS = [
               ('④', 'They become switched power at the smart fuses.'), ('⑤', 'A lockstep mismatch drives the safe state.')],
   'toward': ['ISO 26262 ASIL-D', 'EVITA Full', 'AUTOSAR Classic 4.4', 'AEC-Q100 Grade 1'],
   'alt': 'SKU-9 zonal controller architecture diagram: a lockstep safety island, security and real-time control on a 64-bit AXI4 crossbar, the in-vehicle network gateway and zonal power and I/O',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 10. Numbered circles trace a message from the vehicle network to a switched load. Network counts are left off where the sources disagree.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 10, with network counts from the product specification. Numbered circles trace a message from the vehicle network to a switched load.',
   'background': [{'title': 'IEEE 802.1Qbv: enhancements for scheduled traffic', 'note': 'The time-aware shaper behind bounded-latency TSN.', 'href': 'https://standards.ieee.org/ieee/802.1Qbv/6068/', 'meta': 'IEEE Standards'}, CAN, HERCULES, AMBA]},
 ]

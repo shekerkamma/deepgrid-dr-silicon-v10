@@ -3,8 +3,7 @@
 Each spec in specs.py is read off that SKU's figure in the SKU Architecture Compendium, Technical
 Annex v3 (public/downloads/docs/deepgrid-sku-compendium-technical-annex-v3.pdf, one sheet per SKU).
 Structure follows the figure. Where the figure and the compendium chapter the product page is
-written from give different values, the value is left off the drawing and `conflicts` says so on
-the page. Certification wording on the figure becomes the page's "designed toward" line.
+written from differ, the drawing follows the product page and the guide says so (`followed`). Certification wording on the figure becomes the page's "designed toward" line.
 
     python3 scripts/sku-diagrams/build.py            # writes .drawio, guide .md, app/sku-diagram-notes.ts
     then export each .drawio to public/diagrams/<slug>-architecture.svg with the draw.io CLI
@@ -156,11 +155,10 @@ def guide(s):
     out += ['', '---', '', '## Key Data Flows', '']
     for m, t in s['markers']:
         out.append(f'- {m} {t}')
-    if s.get('conflicts'):
-        out += ['', '## Where the sources disagree', '',
-                'The annex figure and the compendium chapter the product page is written from give different values here. '
-                'The diagram leaves these values off rather than choose one.', '']
-        out += [f'- {c}' for c in s['conflicts']]
+    if s.get('followed'):
+        out += ['', '## Where the values come from', '',
+                f'Structure follows the annex figure. For {s["followed"]}, the annex figure and the compendium chapter differ; '
+                'the diagram uses the chapter values, which are the ones the product page states.']
     out += ['', '## Designed toward', '', 'Targets the design is developed toward, not certificates held:', '']
     out += [f'- {t}' for t in s['toward']]
     return '\n'.join(out).replace('—', ':') + '\n'
@@ -178,12 +176,10 @@ def ts(all_specs, sizes):
         w, h = sizes.get(s['slug'], (1560, 1000))
         zones = [{'name': z['name'], 'what': z['what'], **({'why': z['why']} if z.get('why') else {}), 'section': f'Component: {z["name"]}'} for z in zones_of(s)]
         notes = (f'{{guide: {j(g)}, zones: {j(zones)}, markers: {j([{"mark": m, "text": t} for m, t in s["markers"]])}, '
-                 f'primary: [{{title: {j(s["code"] + " architecture guide")}, note: "Every block group, the data flows, where the sources disagree, and the design targets.", href: readHref({j(g)}), meta: "Opens in the site"}}, '
+                 f'primary: [{{title: {j(s["code"] + " architecture guide")}, note: "Every block group, the data flows, where the values come from, and the design targets.", href: readHref({j(g)}), meta: "Opens in the site"}}, '
                  f'{{title: "SKU Architecture Compendium, Technical Annex v3", note: {j("Sheet " + s["sheet"] + " carries the figure this diagram is redrawn from.")}, href: ANNEX, meta: "PDF · 14 pages"}}], '
                  f'background: {j(s["background"])}}} satisfies DiagramNotes')
         note = s.get('note', '')
-        if s.get('conflicts'):
-            note = (note + ' ' if note else '') + 'Where the annex figure and the compendium chapter give different values, the diagram leaves them off: ' + '; '.join(s['conflicts']) + '.'
         lines.append(f'  {s["id"]}: {{notes: {notes}, src: {j("/diagrams/" + s["slug"] + "-architecture.svg")}, title: {j(s["code"] + " system architecture")}, '
                      f'width: {w}, height: {h}, drawio: {j("/downloads/" + s["slug"] + "-architecture.drawio")}, guide: {j(g)}, alt: {j(s["alt"])}, '
                      f'caption: {j(s["caption"])}' + (f', note: {j(note)}' if note else '') + '},')

@@ -16,7 +16,7 @@ SKU-6 watches four supply rails and the processor that depends on them. Each rai
 2. **Fault logic**: A maskable, latched fault matrix with a priority encoder, mask register, latch and I²C registers.
 3. **Output stage**: Open-drain FAULT_N, which asserts before RESET_N, an open-drain RESET_N with a trimmed 200 ms delay, and a manual-reset input.
 4. **Reference + timebase**: A curvature-corrected bandgap at 1.20 V and 10 ppm/°C, a 5-bit OTP trim to ±0.5%, and an 8 MHz RC oscillator with a reference current.
-5. **Watchdog**: A windowed watchdog: an open and close window, a kick input, and a timeout counter that drives RESET_N.
+5. **Watchdog**: A windowed watchdog adjustable from 100 ms to 1.6 s: an open and close window, a kick input, and a timeout counter that drives RESET_N.
 
 ## Component: Sense chain · one per rail
 
@@ -67,9 +67,9 @@ Why it exists: The bandgap and trimmed polysilicon resistors are what make the t
 
 ## Component: Watchdog
 
-What it does: A windowed watchdog: an open and close window, a kick input, and a timeout counter that drives RESET_N.
+What it does: A windowed watchdog adjustable from 100 ms to 1.6 s: an open and close window, a kick input, and a timeout counter that drives RESET_N.
 
-- **Window logic**: open + close
+- **Window logic**: open + close · 100 ms to 1.6 s
 - **WDI**: kick input
 - **Timeout**: counter → RESET_N
 
@@ -83,11 +83,9 @@ What it does: A windowed watchdog: an open and close window, a kick input, and a
 - ④ The trimmed bandgap sets every comparator threshold.
 - ⑤ A missed or early watchdog kick times out to RESET_N.
 
-## Where the sources disagree
+## Where the values come from
 
-The annex figure and the compendium chapter the product page is written from give different values here. The diagram leaves these values off rather than choose one.
-
-- watchdog window: 1 ms / 10 ms in the figure, adjustable 100 ms to 1.6 s in the chapter
+Structure follows the annex figure. For the watchdog window, the annex figure and the compendium chapter differ; the diagram uses the chapter values, which are the ones the product page states.
 
 ## Designed toward
 

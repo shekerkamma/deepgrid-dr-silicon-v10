@@ -15,7 +15,7 @@ SKU-9 is the zonal edge of a software-defined vehicle. It receives messages on E
 1. **Safety island**: Two DGridRiscV cores in lockstep with a two-cycle skew, memory protection and ECC, a bus and retire comparator, and a freedom-from-interference firewall.
 2. **Security**: A hardware security module with AES-256 and ECC-256, secure boot from an OTP key store with A/B slots, and an OTA engine with signed-image verification and rollback.
 3. **Real-time control**: A TSN switch with an 802.1Qbv time-aware shaper, 802.1AS precision time, and a SOME/IP and DoIP service router.
-4. **In-vehicle network · gateway**: The gateway ports: 100BASE-T1 Ethernet, eight CAN-FD, CAN-XL, eight LIN and FlexRay. The gateway routes and rate-limits between domains.
+4. **In-vehicle network · gateway**: The gateway ports: two 100BASE-T1, eight CAN-FD, one CAN-XL, eight LIN and one FlexRay. The gateway routes and rate-limits between domains.
 5. **Zonal power + I/O**: Sixteen smart electronic fuses with sensing, eight high-side drivers, a 24-channel 12-bit sense ADC and twelve PWM actuator outputs.
 
 ## Component: Safety island
@@ -32,7 +32,7 @@ Why it exists: Safety-critical and comfort functions share one chip, so the isla
 
 What it does: A hardware security module with AES-256 and ECC-256, secure boot from an OTP key store with A/B slots, and an OTA engine with signed-image verification and rollback.
 
-- **HSM**: hardware security module · AES-256 · ECC-256
+- **HSM**: hardware security module · AES-256 · ECC-256 · true RNG
 - **Secure boot**: root of trust · OTP key store · A/B slots
 - **OTA engine**: signed image verify + rollback
 
@@ -48,13 +48,13 @@ Why it exists: Brake-by-wire messages need bounded latency on a shared link.
 
 ## Component: In-vehicle network · gateway
 
-What it does: The gateway ports: 100BASE-T1 Ethernet, eight CAN-FD, CAN-XL, eight LIN and FlexRay. The gateway routes and rate-limits between domains.
+What it does: The gateway ports: two 100BASE-T1, eight CAN-FD, one CAN-XL, eight LIN and one FlexRay. The gateway routes and rate-limits between domains.
 
-- **100BASE-T1 × 2**
+- **100BASE-T1 × 2**: automotive Ethernet
 - **CAN-FD × 8**
-- **CAN-XL**
-- **LIN × 8**
-- **FlexRay**
+- **CAN-XL × 1**
+- **LIN × 8**: masters
+- **FlexRay × 1**
 
 ## Component: Zonal power + I/O
 
@@ -77,11 +77,9 @@ Why it exists: Switching 12 V and 48 V loads in the harness needs BCD power devi
 - ④ They become switched power at the smart fuses.
 - ⑤ A lockstep mismatch drives the safe state.
 
-## Where the sources disagree
+## Where the values come from
 
-The annex figure and the compendium chapter the product page is written from give different values here. The diagram leaves these values off rather than choose one.
-
-- network counts: the figure draws CAN-XL × 2, FlexRay × 2 and a 1000BASE-T1 port, the chapter one CAN-XL, one FlexRay and no 1000BASE-T1
+Structure follows the annex figure. For the in-vehicle network port counts, the annex figure and the compendium chapter differ; the diagram uses the chapter values, which are the ones the product page states.
 
 ## Designed toward
 

@@ -69,7 +69,11 @@ What it does: Cell-averaging CFAR detection, digital-beamforming angle estimatio
 - ③ Each of four echoes is amplified, mixed with the LO, filtered and digitised.
 - ④ The 12-bit samples cross to the CMOS die for the range FFT.
 - ⑤ The range-Doppler map feeds CFAR detection and angle estimation.
-- ⑥ The target list goes to the ECU.
+- ⑥ The target list goes to the ECU over CAN-FD, 100BASE-T1 or MIPI CSI-2.
+
+## Where the values come from
+
+Structure follows the annex figure. For the ECU interfaces, the annex figure and the compendium chapter differ; the diagram uses the chapter values, which are the ones the product page states.
 
 ## Designed toward
 

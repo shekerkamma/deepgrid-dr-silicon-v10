@@ -13,7 +13,7 @@ SKU-8 combines a timing controller and a 1280-column source driver for rugged TF
 ## Architecture Overview
 
 1. **Video input**: Four-lane LVDS and two-lane MIPI DSI receivers into a dual-port line buffer of four 1280-pixel, 24-bit lines.
-2. **Pixel pipeline**: De-gamma, a 3 × 3 colour matrix with white point, a gamma table per channel and temporal and spatial dithering.
+2. **Pixel pipeline**: De-gamma, a 3 × 3 colour matrix with white point, a 14-bit gamma table with temperature feedback, and temporal and spatial dithering.
 3. **Timing + test**: A timing controller with programmable porches, a 108 MHz pixel-clock PLL, a colour-bar test pattern and frame-freeze detection.
 4. **Column (source) drivers · high-voltage**: One 10-bit resistor-string DAC per column and rail-to-rail high-voltage amplifiers swinging 0 to 12 V, driving 3,840 sub-pixel outputs with charge-sharing precharge.
 5. **Row + backlight**: A gate-driver interface with a 24 V level shift, the VCOM electrode, an LED backlight with eight local-dimming zones, and ambient light and temperature sensing.
@@ -28,14 +28,14 @@ What it does: Four-lane LVDS and two-lane MIPI DSI receivers into a dual-port li
 
 ## Component: Pixel pipeline
 
-What it does: De-gamma, a 3 × 3 colour matrix with white point, a gamma table per channel and temporal and spatial dithering.
+What it does: De-gamma, a 3 × 3 colour matrix with white point, a 14-bit gamma table with temperature feedback, and temporal and spatial dithering.
 
 Why it exists: LCD response shifts with panel temperature, so the gamma is temperature-compensated.
 
 - **De-gamma**: input linearise
 - **Colour**: 3 × 3 matrix + WP
 - **Dither**: temporal + spatial
-- **Gamma LUT**: per channel · temperature-compensated
+- **Gamma LUT**: 14-bit table · temperature feedback
 
 ## Component: Timing + test
 
@@ -75,11 +75,9 @@ What it does: A gate-driver interface with a 24 V level shift, the VCOM electrod
 - ④ High-voltage amplifiers drive the 3,840 column outputs.
 - ⑤ The timing controller scans the rows through the gate driver.
 
-## Where the sources disagree
+## Where the values come from
 
-The annex figure and the compendium chapter the product page is written from give different values here. The diagram leaves these values off rather than choose one.
-
-- gamma table depth: 10-bit per channel in the figure, a 14-bit table in the chapter
+Structure follows the annex figure. For the gamma table depth, the annex figure and the compendium chapter differ; the diagram uses the chapter values, which are the ones the product page states.
 
 ## Designed toward
 

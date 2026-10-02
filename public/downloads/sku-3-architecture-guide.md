@@ -15,8 +15,8 @@ SKU-3 turns a 28 V aircraft or vehicle bus into four sequenced, monitored rails.
 1. **Input conditioning**: EMI filter and TVS clamp, an ideal-diode reverse-polarity stage, soft-start inrush limiting, and hysteretic under- and over-voltage lockout.
 2. **Pre-regulator · synchronous buck**: A type-III error amplifier, a PWM comparator with slope compensation, an adaptive dead-time gate driver, an LDMOS half-bridge power stage and sense-FET current sensing.
 3. **Reference + bias**: A Brokaw bandgap at 1.20 V and 12 ppm/°C with one-time OTP trim, PTAT and CTAT bias, and an 8 MHz RC oscillator.
-4. **Rail generation**: Four regulated rails, each followed by an over- and under-voltage window monitor and a foldback current limit that reports power-good.
-5. **Supervision · sequencing · telemetry**: A programmable sequencer, a SAR telemetry ADC for voltage and current per rail over SPI, a windowed watchdog, and DICE latches with TMR on the sequencer state machine.
+4. **Rail generation**: Four sequenced rails, two bucks at 5 V and 3.3 V and two LDOs at 1.8 V and 1.2 or 0.9 V, each followed by an over- and under-voltage window monitor and a foldback current limit that reports power-good.
+5. **Supervision · sequencing · telemetry**: A programmable four-step sequencer, a 10-bit 500 kSPS telemetry ADC for voltage, current and die temperature over SPI, a windowed watchdog, and DICE latches with TMR on the sequencer state machine.
 
 ## Component: Input conditioning
 
@@ -36,7 +36,7 @@ What it does: A type-III error amplifier, a PWM comparator with slope compensati
 Why it exists: Peak-current-mode control limits current cycle by cycle, so a fault downstream cannot run away.
 
 - **Error amp**: type-III comp · 60 dB DC
-- **PWM comp**: + slope comp · 500 kHz
+- **PWM comp**: + slope comp · 500 kHz to 2 MHz
 - **Gate driver**: adaptive dead-time · 20 ns non-overlap
 - **Current sense**: sense-FET + amp · cycle-by-cycle limit
 - **Power stage**: LDMOS half-bridge
@@ -52,29 +52,29 @@ What it does: A Brokaw bandgap at 1.20 V and 12 ppm/°C with one-time OTP trim, 
 
 ## Component: Rail generation
 
-What it does: Four regulated rails, each followed by an over- and under-voltage window monitor and a foldback current limit that reports power-good.
+What it does: Four sequenced rails, two bucks at 5 V and 3.3 V and two LDOs at 1.8 V and 1.2 or 0.9 V, each followed by an over- and under-voltage window monitor and a foldback current limit that reports power-good.
 
-- **Rail 1 regulator**: soft-start ramp
+- **Buck · 5 V**: 2 A · soft-start ramp
 - **Window monitor**: OV / UV · ±3% window
-- **OC limit**: foldback
-- **Rail 2 regulator**: soft-start ramp
+- **OC limit**: foldback → PG
+- **Buck · 3.3 V**: 3 A · soft-start ramp
 - **Window monitor**: OV / UV · ±3% window
-- **OC limit**: foldback
-- **Rail 3 regulator**: soft-start ramp
+- **OC limit**: foldback → PG
+- **LDO · 1.8 V**: 500 mA · soft-start ramp
 - **Window monitor**: OV / UV · ±3% window
-- **OC limit**: foldback
-- **Rail 4 regulator**: soft-start ramp
+- **OC limit**: foldback → PG
+- **LDO · 1.2 / 0.9 V**: 300 mA · soft-start ramp
 - **Window monitor**: OV / UV · ±3% window
-- **OC limit**: foldback
+- **OC limit**: foldback → PG
 
 ## Component: Supervision · sequencing · telemetry
 
-What it does: A programmable sequencer, a SAR telemetry ADC for voltage and current per rail over SPI, a windowed watchdog, and DICE latches with TMR on the sequencer state machine.
+What it does: A programmable four-step sequencer, a 10-bit 500 kSPS telemetry ADC for voltage, current and die temperature over SPI, a windowed watchdog, and DICE latches with TMR on the sequencer state machine.
 
 Why it exists: A single-event upset must not reorder or drop a rail, so the sequencer state is hardened by design.
 
-- **Sequencer**: programmable order · 1 ms step · FSM + delay counter
-- **Telemetry**: SAR ADC · V/I per rail · SPI · MUX 8:1
+- **Sequencer**: programmable 4-step order · FSM + delay counter · TMR
+- **Telemetry**: 10-bit SAR ADC · 500 kSPS · V / I / die temp · SPI
 - **Watchdog**: windowed · 1 ms / 10 ms
 - **SEU harden**: DICE latches · TMR on the FSM
 
@@ -88,13 +88,9 @@ Why it exists: A single-event upset must not reorder or drop a rail, so the sequ
 - ④ Each rail reports power-good to the sequencer through its window monitor and current limit.
 - ⑤ Current sense closes the peak-current-mode inner loop.
 
-## Where the sources disagree
+## Where the values come from
 
-The annex figure and the compendium chapter the product page is written from give different values here. The diagram leaves these values off rather than choose one.
-
-- rail regulators and currents: the figure draws 3V3 and 1V8 LDOs at 2 A and 3 A and 1V2 and 0V9 bucks at 5 A and 6 A, the chapter 5 V and 3.3 V bucks at 2 A and 3 A and 1.8 V and 1.2/0.9 V LDOs at 500 mA and 300 mA
-- telemetry ADC resolution: 12-bit in the figure, 10-bit in the chapter
-- sequencer depth: 8 slots in the figure, 4 steps in the chapter
+Structure follows the annex figure. For rail regulators and currents, the telemetry ADC and the sequencer depth, the annex figure and the compendium chapter differ; the diagram uses the chapter values, which are the ones the product page states.
 
 ## Designed toward
 
