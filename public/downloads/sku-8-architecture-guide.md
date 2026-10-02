@@ -12,18 +12,18 @@ SKU-8 combines a timing controller and a 1280-column source driver for rugged TF
 
 ## Architecture Overview
 
-1. **Video input**: Four-lane LVDS and two-lane MIPI DSI receivers into a dual-port line buffer of four 1280-pixel, 24-bit lines.
+1. **Video input**: Dual-link LVDS at 655 Mbps per lane and four-lane MIPI DSI receivers into a dual-port line buffer of four 1280-pixel, 24-bit lines.
 2. **Pixel pipeline**: De-gamma, a 3 × 3 colour matrix with white point, a 14-bit gamma table with temperature feedback, and temporal and spatial dithering.
-3. **Timing + test**: A timing controller with programmable porches, a 108 MHz pixel-clock PLL, a colour-bar test pattern and frame-freeze detection.
+3. **Timing + test**: A timing controller with programmable porches, a 100 MHz pixel-clock PLL, a colour-bar test pattern and frame-freeze detection that alerts within two frames.
 4. **Column (source) drivers · high-voltage**: One 10-bit resistor-string DAC per column and rail-to-rail high-voltage amplifiers swinging 0 to 12 V, driving 3,840 sub-pixel outputs with charge-sharing precharge.
 5. **Row + backlight**: A gate-driver interface with a 24 V level shift, the VCOM electrode, an LED backlight with eight local-dimming zones, and ambient light and temperature sensing.
 
 ## Component: Video input
 
-What it does: Four-lane LVDS and two-lane MIPI DSI receivers into a dual-port line buffer of four 1280-pixel, 24-bit lines.
+What it does: Dual-link LVDS at 655 Mbps per lane and four-lane MIPI DSI receivers into a dual-port line buffer of four 1280-pixel, 24-bit lines.
 
-- **LVDS RX**: 4 lanes + clk · SXGA 1280 × 1024 @ 60 Hz
-- **DSI RX**: 2 lanes · 1.5 Gbps/lane
+- **LVDS RX**: dual link · 655 Mbps per lane · SXGA 1280 × 1024 @ 60 Hz
+- **DSI RX**: four-lane MIPI DSI
 - **Line buffer**: dual-port SRAM · 4 lines × 1280 × 24 bit
 
 ## Component: Pixel pipeline
@@ -39,10 +39,10 @@ Why it exists: LCD response shifts with panel temperature, so the gamma is tempe
 
 ## Component: Timing + test
 
-What it does: A timing controller with programmable porches, a 108 MHz pixel-clock PLL, a colour-bar test pattern and frame-freeze detection.
+What it does: A timing controller with programmable porches, a 100 MHz pixel-clock PLL, a colour-bar test pattern and frame-freeze detection that alerts within two frames.
 
 - **TCON**: H/V timing gen · programmable porches
-- **PLL**: pixel clock · 108 MHz SXGA
+- **PLL**: pixel clock · 100 MHz
 - **Test pattern**: colour bars
 - **BIST + safety**: frame-freeze detect
 
@@ -77,7 +77,7 @@ What it does: A gate-driver interface with a 24 V level shift, the VCOM electrod
 
 ## Where this differs from the annex sheet
 
-Structure follows the annex figure on sheet 9. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the gamma table (10-bit per channel on the sheet, a 14-bit table here).
+Structure follows the annex figure on sheet 9. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the gamma table (10-bit per channel on the sheet, a 14-bit table here), the LVDS input (4 lanes + clock on the sheet, dual link at 655 Mbps per lane here), the MIPI DSI input (2 lanes at 1.5 Gbps on the sheet, four lanes here) and the PLL (108 MHz on the sheet, 100 MHz here).
 
 ## Designed toward
 
