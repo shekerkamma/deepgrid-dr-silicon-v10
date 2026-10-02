@@ -13,8 +13,8 @@ SKU-7 is a two-transmit, four-receive FMCW radar for the 76 to 81 GHz band. A Si
 ## Architecture Overview
 
 1. **Chirp synthesis + transmit · SiGe die**: A 40 MHz crystal, a ramp generator, a fractional-N PLL, a 38.5 GHz SiGe VCO and a doubler to 77 GHz, feeding two 13 dBm power amplifiers.
-2. **Signal processing · CMOS die**: A 1024-point radix-4 range FFT, a 128-point Doppler FFT across chirps, a range-Doppler map in 512 KB of SRAM, and windowing.
-3. **Receive array · 4 channels · SiGe die**: Four identical channels: a 3.5 dB noise-figure LNA, a mixer fed by the LO, an IF amplifier, a 10 MHz anti-alias filter and a 12-bit 40 MSPS ADC.
+2. **Signal processing · CMOS die**: Four 12-bit 40 MSPS converters digitise the IF signals as they cross the die boundary; windowing, a 1024-point radix-4 range FFT, a 128-point Doppler FFT and a range-Doppler map in 512 KB of SRAM follow.
+3. **Receive array · 4 channels · SiGe die**: Four identical channels: a 3.5 dB noise-figure LNA, a mixer fed by the LO, an IF amplifier and a 10 MHz anti-alias filter; the IF signals leave the SiGe die for the converters.
 4. **Detection + output · CMOS die**: Cell-averaging CFAR detection, digital-beamforming angle estimation at 15° resolution from four receivers, and a target list of up to 64 tracks per frame.
 
 ## Component: Chirp synthesis + transmit · SiGe die
@@ -33,16 +33,17 @@ Why it exists: A 4 GHz sweep gives 3.75 cm range resolution, and only a SiGe HBT
 
 ## Component: Signal processing · CMOS die
 
-What it does: A 1024-point radix-4 range FFT, a 128-point Doppler FFT across chirps, a range-Doppler map in 512 KB of SRAM, and windowing.
+What it does: Four 12-bit 40 MSPS converters digitise the IF signals as they cross the die boundary; windowing, a 1024-point radix-4 range FFT, a 128-point Doppler FFT and a range-Doppler map in 512 KB of SRAM follow.
 
-- **Range FFT**: 1024-pt radix-4 · 26 µs per chirp
-- **Doppler FFT**: 128-pt across chirps · velocity bins
+- **ADC × 4**: 12-bit · 40 MSPS
 - **Windowing**: Hann / Blackman
+- **Doppler FFT**: 128-pt across chirps · velocity bins
+- **Range FFT**: 1024-pt radix-4 · 26 µs per chirp
 - **Range-Doppler**: map buffer · SRAM 512 KB
 
 ## Component: Receive array · 4 channels · SiGe die
 
-What it does: Four identical channels: a 3.5 dB noise-figure LNA, a mixer fed by the LO, an IF amplifier, a 10 MHz anti-alias filter and a 12-bit 40 MSPS ADC.
+What it does: Four identical channels: a 3.5 dB noise-figure LNA, a mixer fed by the LO, an IF amplifier and a 10 MHz anti-alias filter; the IF signals leave the SiGe die for the converters.
 
 Why it exists: The beat frequency carries range; the phase across the four receivers carries the angle of arrival.
 
@@ -50,7 +51,6 @@ Why it exists: The beat frequency carries range; the phase across the four recei
 - **Mixer × 4**: LO from the × 2
 - **IF amp × 4**
 - **AAF × 4**: 10 MHz LP
-- **ADC × 4**: 12-bit · 40 MSPS
 
 ## Component: Detection + output · CMOS die
 
@@ -66,14 +66,14 @@ What it does: Cell-averaging CFAR detection, digital-beamforming angle estimatio
 
 - ① The crystal, ramp generator, PLL and VCO synthesise the chirp.
 - ② The doubler reaches 77 GHz and the two PAs transmit.
-- ③ Each of four echoes is amplified, mixed with the LO, filtered and digitised.
-- ④ The 12-bit samples cross to the CMOS die for the range FFT.
+- ③ Each of four echoes is amplified, mixed with the LO, filtered.
+- ④ The IF signals cross the die boundary and four 12-bit converters digitise them for the range FFT.
 - ⑤ The range-Doppler map feeds CFAR detection and angle estimation.
 - ⑥ The target list goes to the ECU over CAN-FD, 100BASE-T1 or MIPI CSI-2.
 
 ## Where this differs from the annex sheet
 
-Structure follows the annex figure on sheet 8. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the ECU interfaces (the sheet names CAN-FD and Ethernet; this page states CAN-FD, 100BASE-T1 and MIPI CSI-2).
+Structure follows the annex figure on sheet 8. Some values on that sheet differ from the product page; where they do, the diagram follows the product page, and anyone opening the sheet will see the other value. The differences: the ECU interfaces (the sheet names CAN-FD and Ethernet; this page states CAN-FD, 100BASE-T1 and MIPI CSI-2) and the converters (drawn with the SiGe receive chain on the sheet; on the CMOS die here).
 
 ## Designed toward
 
