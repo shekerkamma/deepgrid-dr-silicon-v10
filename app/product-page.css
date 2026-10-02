@@ -65,6 +65,8 @@
 .pp-sources svg { color: var(--copper); }
 .pp-cite { font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); color: var(--ink-3); }
 .pp-pdf { display: inline-flex; align-items: center; min-height: 28px; color: var(--copper); font-size: var(--sc-t-control); }
+.pp-sec .dr-diagram { left: auto; translate: none; width: 100%; }
+.pp-note { max-width: var(--sc-measure); }
 .pp-differs { flex-basis: 100%; margin: 0; font-size: var(--sc-t-control); line-height: 1.55; color: var(--ink-2); max-width: var(--sc-measure); }
 
 .pp-close { margin-top: clamp(3.5rem, 6vh, 5rem); padding: clamp(2rem, 4vw, 3rem); border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); }

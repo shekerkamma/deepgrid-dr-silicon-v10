@@ -63,3 +63,4 @@ verify-shots/
 # Playwright MCP screenshots from review sessions
 /.playwright-mcp/
 __pycache__/
+qa/

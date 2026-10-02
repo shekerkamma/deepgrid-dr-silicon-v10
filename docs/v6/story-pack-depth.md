@@ -126,3 +126,24 @@ its page; no section under 40 words unless it is a caption, a form or a link lis
 - Can a reader describe SKU-3 (job, physics, architecture, open questions, status) without opening a PDF?
 - Is every number on a product page either a labelled architecture target or a graded claim?
 - Is anything from `withheld` or the cuts list visible?
+
+## 11. Architecture diagrams (story-architect, 2026-10-02)
+Extends §6 row 3 ("Inside the part") and the /technology and /resources diagrams. Does not change the spine.
+
+- **BLUF.** Each part's architecture is one native diagram in the site's design, followed by notes that say
+  what each zone does and why, so a reader needs neither the PDF nor a separate drawing to follow the signal path.
+- **Audience decision.** An equipment-maker engineer can trace signal in to signal out on any phone or desk,
+  then decide whether the part belongs in an evaluation.
+- **Tension it resolved.** The first pass (draw.io exports as `<img>`) repeated the block list, painted a white
+  multi-hue panel inside a dark site, and needed ~4.7 screens of sideways scroll on a phone.
+- **Spine, per diagram.** Zones as cards (teal edge only for safety zones), blocks inside, numbered markers on
+  the blocks of the reading path; then: marker legend, "How to read" (what / why / guide section), primary
+  sources, background reading collapsed. The draw.io drawing stays one click away as the full diagram.
+- **Evidence map.** Structure: the annex sheet figure (direct). Values: the product page, which follows the
+  compendium chapter (decision, 2026-10-02). Where the sheet differs, the Sources section states each
+  difference beside the PDF; other PDF links point to it. Background reading explains technique only.
+- **Content cuts.** Certification wording on figures (stated only as "designed toward"); a second copy of the
+  block list; the difference text repeated three times; draw.io raster styling.
+- **Rebuild.** `python3 scripts/sku-diagrams/build.py` regenerates `.drawio`, guides and
+  `app/sku-diagram-notes.ts` (notes + `nativeDiagrams`) from `specs.py` and `specs_native.py`;
+  `scripts/sku-diagrams/export.sh` re-exports the SVGs. Components: `NativeDiagram`, `DiagramNotes` (app/detail.tsx).

@@ -1,9 +1,8 @@
 'use client';
-import {useEffect,useRef,useState} from 'react';
-import {ArrowUpRight,Download,Maximize2,Minimize2} from 'lucide-react';
+import {ArrowUpRight,Download} from 'lucide-react';
 import {url} from './routes';
 import {readHref} from './doc-links';
-import type {DiagramNotes as DiagramNotesData,DiagramRef} from './diagram-notes';
+import {nbspUnits as nb, type DiagramNotes as DiagramNotesData, type DiagramRef, type NativeDiagramData} from './diagram-notes';
 import type {Explained,Step} from './detail-content';
 
 // Layout primitives for the detailed sections. Content lives in detail-content.ts.
@@ -37,15 +36,40 @@ export function Stats({items}:{items:readonly (readonly [string,string])[]}){ret
 
 // A draw.io diagram at its native size (its labels are drawn at 10 px), in a frame wider than the
 // text column, with a fit-to-width toggle and the full-size and source links.
-export function Diagram({src,title,alt,width,height,drawio,guide,caption,notes}:{src:string;title:string;alt:string;width:number;height:number;drawio?:string;guide?:string;caption?:React.ReactNode;notes?:DiagramNotesData}){
- const [fit,setFit]=useState(false),[more,setMore]=useState(false);
- const body=useRef<HTMLDivElement>(null);
- // fade the right edge while part of the diagram is still off to the side
- useEffect(()=>{const el=body.current;if(!el)return;const check=()=>setMore(el.scrollLeft+el.clientWidth<el.scrollWidth-4);check();const img=el.querySelector('img');el.addEventListener('scroll',check,{passive:true});img?.addEventListener('load',check);const ro=new ResizeObserver(check);ro.observe(el);return ()=>{el.removeEventListener('scroll',check);img?.removeEventListener('load',check);ro.disconnect();};},[fit]);
- return <figure className="dr-diagram">
-  <div className="dr-diagram-bar"><div><span className="mono">ARCHITECTURE DIAGRAM · DRAW.IO</span><strong>{title}</strong></div>
-   <div className="dr-diagram-actions"><button className="small-button" onClick={()=>setFit(!fit)} aria-pressed={fit}>{fit?<><Maximize2 size={14}/>Actual size</>:<><Minimize2 size={14}/>Fit to width</>}</button><a className="text-link" href={src} target="_blank" rel="noreferrer">Open full size <ArrowUpRight size={15}/></a>{drawio&&<a className="text-link" href={drawio} download>Source (.drawio) <Download size={15}/></a>}{guide&&<a className="text-link" href={url(guide)}>Read architecture guide <Download size={15}/></a>}</div></div>
-  <div ref={body} className="dr-diagram-body" data-more={more?'':undefined} tabIndex={0} role="region" aria-label={title+'. Scroll sideways to see all of it.'}><img src={src} alt={alt} width={width} height={height} loading="lazy" style={{minWidth:fit?0:width}}/></div>
+
+const MARK_NAMES: Record<string, string> = {'①': '1', '②': '2', '③': '3', '④': '4', '⑤': '5', '⑥': '6', F: 'fault path'};
+
+/** One architecture diagram in the site's own design (docs/v6/story-pack-depth.md §6 row 3: native, labelled
+ *  stages, no raster text). Zones are cards, blocks sit inside them, and the numbered markers of the reading
+ *  path sit on the blocks they name; the legend is the first thing in the notes below. On a phone every zone
+ *  stacks, so nothing scrolls sideways. The draw.io drawing stays one click away as the full diagram. */
+export function NativeDiagram({data,title,label,svg,drawio,guide,caption,notes}:{data:NativeDiagramData;title:string;label?:string;svg?:string;drawio?:string;guide?:string;caption?:React.ReactNode;notes?:DiagramNotesData}){
+ return <figure className="nd" aria-label={title}>
+  <div className="nd-bar"><div><span className="mono">{label??'ARCHITECTURE DIAGRAM'}</span><strong>{title}</strong></div>
+   <div className="nd-actions">{svg&&<a className="text-link" href={svg} target="_blank" rel="noreferrer">Open full diagram <ArrowUpRight size={15} aria-hidden="true"/></a>}{drawio&&<a className="text-link" href={drawio} download>Source (.drawio) <Download size={15} aria-hidden="true"/></a>}{guide&&<a className="text-link" href={url(guide)}>Read architecture guide <ArrowUpRight size={15} aria-hidden="true"/></a>}</div></div>
+  <div className="nd-body">
+   {data.banner&&<p className="nd-banner">{nb(data.banner)}</p>}
+   {data.input&&<p className="nd-io"><span className="mono">IN</span>{nb(data.input)}</p>}
+   <div className="nd-frame"><p className="nd-frame-label mono">{data.frame}</p>
+    {data.rows.map((r,i)=>'bus' in r
+     ? <p className="nd-bus" key={i}>{nb(r.bus)}</p>
+     : <div className="nd-row" key={i} style={{gridTemplateColumns:r.zones.map(z=>`minmax(0,${z.w}fr)`).join(' ')}}>
+        {r.zones.map(z=><section key={z.name} className={'nd-zone'+(z.tone?' is-'+z.tone:'')} aria-label={z.name}>
+         <p className="nd-zone-name">{z.name}</p>
+         <ul className="nd-blocks" style={{'--c':z.cols,'--cm':z.mcols??Math.min(z.cols,2)} as React.CSSProperties}>
+          {z.blocks.map((b,j)=>b
+           ? <li key={j} className="nd-block" style={b.span?{'--s':b.span,'--sm':Math.min(b.span,2)} as React.CSSProperties:undefined}>
+              {b.marks&&<span className="nd-marks">{b.marks.map(m=><span key={m} className={'nd-mark'+(m==='F'?' is-fault':'')} aria-label={'Marker '+(MARK_NAMES[m]??m)}>{m}</span>)}</span>}
+              <strong>{b.t}</strong>{b.s&&<span>{nb(b.s)}</span>}</li>
+           : <li key={j} className="nd-gap" aria-hidden="true"/>)}
+         </ul>
+         {z.note&&<p className="nd-zone-note">{nb(z.note)}</p>}
+        </section>)}
+       </div>)}
+   </div>
+   {data.output&&<p className="nd-io"><span className="mono">OUT</span>{nb(data.output)}</p>}
+   {data.strip&&<p className="nd-strip"><span><b className="mono">PROTOTYPE</b> {nb(data.strip[0])}</span><span><b className="mono">PRODUCT</b> {nb(data.strip[1])}</span></p>}
+  </div>
   {caption&&<figcaption>{caption}</figcaption>}
   {notes&&<DiagramNotes notes={notes}/>}
  </figure>;
@@ -54,20 +78,21 @@ export function Diagram({src,title,alt,width,height,drawio,guide,caption,notes}:
 /** The reading notes under an architecture diagram: what each zone is and why it exists, what the
  *  numbered markers mean, then the primary documents and background reading. Data: diagram-notes.ts. */
 export function DiagramNotes({notes}:{notes:DiagramNotesData}){
- const refs=(items:DiagramRef[],external:boolean)=><ul className="dr-dnotes-list">{items.map(r=><li key={r.href}><a href={r.href} {...(external?{target:'_blank',rel:'noreferrer'}:{})}><strong>{r.title}{external&&<ArrowUpRight size={14} aria-hidden="true"/>}</strong><span>{r.note}</span>{r.meta&&<small className="mono">{r.meta}</small>}</a></li>)}</ul>;
+ const refs=(items:DiagramRef[],external:boolean)=><ul className="dr-dnotes-list">{items.map(r=><li key={r.href}><a href={r.href} {...(external?{target:'_blank',rel:'noreferrer'}:{})}><strong>{r.title}{external&&<ArrowUpRight size={14} aria-hidden="true"/>}</strong><span>{nb(r.note)}</span>{r.meta&&<small className="mono">{r.meta}</small>}</a></li>)}</ul>;
  return <div className="dr-dnotes">
   <section aria-label="How to read this diagram">
-   <p className="dr-kicker">HOW TO READ THIS DIAGRAM</p>
-   <dl className="dr-dnotes-zones">{notes.zones.map(z=><div key={z.name}><dt>{z.name}</dt><dd><p>{z.what}</p>{z.why&&<p className="dr-dnotes-why"><b>Why</b> {z.why}</p>}<a className="dr-dnotes-cite" href={readHref(notes.guide,z.section)}>Guide: {z.section.replace(/^Component: /,'')}</a></dd></div>)}</dl>
-   <p className="dr-kicker dr-dnotes-gap">THE NUMBERED MARKERS</p>
-   <ol className="dr-dnotes-marks">{notes.markers.map(m=><li key={m.mark}><b aria-hidden="true">{m.mark}</b><span><span className="sr-only">Marker {m.mark}: </span>{m.text}</span></li>)}</ol>
+   <p className="dr-kicker">THE NUMBERED MARKERS</p>
+   <ol className="dr-dnotes-marks">{notes.markers.map(m=><li key={m.mark}><b aria-hidden="true">{m.mark}</b><span><span className="sr-only">Marker {m.mark}: </span>{nb(m.text)}</span></li>)}</ol>
+   <p className="dr-kicker dr-dnotes-gap">HOW TO READ THIS DIAGRAM</p>
+   <dl className="dr-dnotes-zones">{notes.zones.map(z=><div key={z.name}><dt>{z.name}</dt><dd><p>{nb(z.what)}</p>{z.why&&<p className="dr-dnotes-why"><b>Why</b> {nb(z.why)}</p>}<a className="dr-dnotes-cite" href={readHref(notes.guide,z.section)}>Guide: {z.section.replace(/^Component: /,'')}</a></dd></div>)}</dl>
   </section>
   <section aria-label="Sources and further reading" className="dr-dnotes-refs">
    <p className="dr-kicker">PRIMARY SOURCES</p>
    {refs(notes.primary,false)}
-   <p className="dr-kicker dr-dnotes-gap">BACKGROUND READING</p>
-   {refs(notes.background,true)}
-   <p className="disclaimer">Background reading explains the general technique each block uses. None of it describes DG32 or implies its certification.</p>
+   <details className="dr-dnotes-more"><summary className="dr-kicker">BACKGROUND READING · {notes.background.length}</summary>
+    {refs(notes.background,true)}
+    <p className="disclaimer">Background reading explains the general technique each block uses. None of it describes this part or implies its certification.</p>
+   </details>
   </section>
  </div>;
 }

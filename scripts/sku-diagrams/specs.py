@@ -51,7 +51,7 @@ SPECS = [
               ('③', 'PWM drives the three half-bridge pre-drivers.'), ('④', 'Current and angle feedback closes the PID loop.'), ('F', 'A thermal, overcurrent or overvoltage fault shuts the gates and latches.')],
   'toward': ['AEC-Q100 Grade 0', 'ISO 26262 ASIL-B/C', 'UL94'],
   'alt': 'SKU-1 BLDC motor controller architecture diagram: host control plane, mixed signal and power path on an AXI bus, the field-oriented-control datapath and the sensor feedback that closes the PID loop',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 2. Numbered circles trace the control loop; the red dashed line is the latched protection trip. Values are design targets.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 2. Numbered markers trace the control loop; F marks the latched protection trip. Values are design targets.',
   'background': [TI_FOC, CORDIC, RISCV, AMBA]},
 
  {'id': 'sku2', 'slug': 'sku-2', 'code': 'SKU-2', 'sheet': '3', 'name': 'smart-meter SoC',
@@ -86,7 +86,7 @@ SPECS = [
               ('④', 'Results cross the 32-bit bus to the core and DMA.'), ('⑤', 'Readings leave on the DLMS/COSEM UART.')],
   'toward': ['IEC metering accuracy Class 0.5S'],
   'alt': 'SKU-2 smart-meter SoC architecture diagram: six-channel metrology, compute and security, and an always-on PMU and RTC on an AHB-Lite bus, with six peripherals below',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 3. Numbered circles trace one measurement from the sense inputs to the meter UART. Values are design targets.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 3. Numbered markers trace one measurement from the sense inputs to the meter UART. Values are design targets.',
   'background': [{'title': 'DLMS User Association', 'note': 'The DLMS/COSEM metering protocol the UART speaks.', 'href': 'https://www.dlms.com/', 'meta': 'DLMS UA'}, RISCV, AMBA]},
 
  {'id': 'sku3', 'slug': 'sku-3', 'code': 'SKU-3', 'sheet': '4', 'name': 'hi-rel power-management IC',
@@ -110,7 +110,7 @@ SPECS = [
       'blocks': [('BG', 'Bandgap', 'Brokaw cell · 1.20 V · 12 ppm/°C'), ('TRIM', 'Trim', 'OTP 6-bit · one-time, post-package'), ('BIAS', 'Bias', 'PTAT + CTAT'), ('OSC', 'Osc', 'RC 8 MHz · ±2% trimmed')]},
    ]},
    {'h': 330, 'zones': [
-     {'key': 'Z4', 'name': 'Rail generation', 'color': 'blue', 'cols': 3, 'w': 2.2,
+     {'key': 'Z4', 'name': 'Rail generation', 'color': 'blue', 'cols': 3, 'mcols': 3, 'w': 2.2,
       'what': 'Four sequenced rails, two bucks at 5 V and 3.3 V and two LDOs at 1.8 V and 1.2 or 0.9 V, each followed by an over- and under-voltage window monitor and a foldback current limit that reports power-good.',
       'blocks': [('R1', 'Buck · 5 V', '2 A · soft-start ramp'), ('W1', 'Window monitor', 'OV / UV · ±3% window'), ('O1', 'OC limit', 'foldback → PG'),
                  ('R2', 'Buck · 3.3 V', '3 A · soft-start ramp'), ('W2', 'Window monitor', 'OV / UV · ±3% window'), ('O2', 'OC limit', 'foldback → PG'),
@@ -127,7 +127,7 @@ SPECS = [
               ('④', 'Each rail reports power-good to the sequencer through its window monitor and current limit.'), ('⑤', 'Current sense closes the peak-current-mode inner loop.')],
   'toward': ['DO-160 sections 16 and 17', 'MIL-STD-704F', 'MIL-STD-1275D', 'MIL-STD-461G', 'MIL-STD-883 Class B'],
   'alt': 'SKU-3 hi-rel PMIC architecture diagram: input conditioning, a synchronous-buck pre-regulator, reference and bias, four monitored rails, and supervision, sequencing and telemetry',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 4, with rail values from the product specification. Numbered circles trace power from the 28 V bus to the rails and the sequencer.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 4, with rail values from the product specification. Numbered markers trace power from the 28 V bus to the rails and the sequencer.',
   'background': [BROKAW, {'title': 'Upset hardened memory design for submicron CMOS technology', 'note': 'Calin, Nicolaidis and Velazco, IEEE Transactions on Nuclear Science, 1996: the DICE latch.', 'href': 'https://doi.org/10.1109/23.556880', 'meta': 'IEEE · DOI'},
                  {'title': 'Compensating the current-mode-controlled boost (TI SLVA452)', 'note': 'Slope compensation and type-II/III loop compensation for peak-current-mode converters.', 'href': 'https://www.ti.com/lit/an/slva452/slva452.pdf', 'meta': 'Texas Instruments · PDF'}]},
 
@@ -159,7 +159,7 @@ SPECS = [
   'markers': [('①', 'TXD enters the logic interface and is level-shifted to 5 V.'), ('②', 'The pre-driver shapes the edge for the output stage.'), ('③', 'The differential output drives the bus pins.'), ('④', 'The receiver reads the bus back to RXD. Channel 2 follows the same path.')],
   'toward': ['TIA/EIA-485', 'ISO 11898-2', 'IEC 61000-4-2 (system level) and HBM (component level), each rated separately'],
   'alt': 'SKU-5 interface transceiver architecture diagram: an RS-485 channel and a CAN-FD channel, each with logic interface, pre-driver, output stage, receiver, failsafe bias, fault and ESD protection, sharing the bus-pin column',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 6. Numbered circles trace one transmit and receive on channel 1; channel 2 is the same. Bus figures use the corrected forms stated on this page.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 6. Numbered markers trace one transmit and receive on channel 1; channel 2 is the same. Bus figures use the corrected forms stated on this page.',
   'background': [{'title': 'The RS-485 Design Guide (TI SLLA272)', 'note': 'Common-mode range, failsafe biasing, termination and unit loads.', 'href': 'https://www.ti.com/lit/an/slla272d/slla272d.pdf', 'meta': 'Texas Instruments · PDF'}, CAN]},
 
  {'id': 'sku6', 'slug': 'sku-6', 'code': 'SKU-6', 'sheet': '7', 'name': 'quad-rail voltage supervisor',
@@ -198,7 +198,7 @@ SPECS = [
               ('④', 'The trimmed bandgap sets every comparator threshold.'), ('⑤', 'A missed or early watchdog kick times out to RESET_N.')],
   'toward': ['MIL-STD-883K Class B screening flow'],
   'alt': 'SKU-6 voltage supervisor architecture diagram: four rail sense chains into a latched fault matrix, open-drain FAULT_N and RESET_N outputs, a trimmed reference and timebase, and a windowed watchdog',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 7, with the watchdog range from the product specification. Numbered circles trace a rail fault to FAULT_N and RESET_N.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 7, with the watchdog range from the product specification. Numbered markers trace a rail fault to FAULT_N and RESET_N.',
   'background': [BROKAW, HERCULES]},
 
  {'id': 'sku7', 'slug': 'sku-7', 'code': 'SKU-7', 'sheet': '8', 'name': '77 GHz MIMO radar',
@@ -234,7 +234,7 @@ SPECS = [
               ('④', 'The 12-bit samples cross to the CMOS die for the range FFT.'), ('⑤', 'The range-Doppler map feeds CFAR detection and angle estimation.'), ('⑥', 'The target list goes to the ECU over CAN-FD, 100BASE-T1 or MIPI CSI-2.')],
   'toward': ['ISO 26262 ASIL-B', 'DO-160G', 'MIL-STD-883K'],
   'alt': 'SKU-7 radar architecture diagram: chirp synthesis and two transmitters and a four-channel receive array on a SiGe die, range and Doppler processing and detection on a 130 nm CMOS die',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 8. Numbered circles trace one chirp from synthesis to the target list. Values are design targets.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 8. Numbered markers trace one chirp from synthesis to the target list. Values are design targets.',
   'background': [{'title': 'The fundamentals of millimeter wave radar sensors (TI SPYY005)', 'note': 'FMCW chirps, beat frequency, range and velocity FFTs and angle estimation.', 'href': 'https://www.ti.com/lit/wp/spyy005a/spyy005a.pdf', 'meta': 'Texas Instruments · PDF'},
                  {'title': 'IHP SG13G2 open PDK', 'note': 'The open SiGe BiCMOS process the front end is drawn on.', 'href': 'https://github.com/IHP-GmbH/IHP-Open-PDK', 'meta': 'IHP · GitHub'}]},
 
@@ -274,7 +274,7 @@ SPECS = [
               ('④', 'High-voltage amplifiers drive the 3,840 column outputs.'), ('⑤', 'The timing controller scans the rows through the gate driver.')],
   'toward': ['ISO 26262 ASIL-B', 'MIL-STD-810G', 'DEF-STAN 00-35'],
   'alt': 'SKU-8 display driver architecture diagram: video input, pixel pipeline and timing and test on a control bus, high-voltage column drivers, and row and backlight control',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 9, with the gamma depth from the product specification. Numbered circles trace a frame from video input to the panel.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 9, with the gamma depth from the product specification. Numbered markers trace a frame from video input to the panel.',
   'background': [{'title': 'LVDS Owner’s Manual (TI SNLA187)', 'note': 'How LVDS links carry video, and their timing and termination.', 'href': 'https://www.ti.com/lit/ug/snla187/snla187.pdf', 'meta': 'Texas Instruments · PDF'},
                  {'title': 'MIPI DSI specification overview', 'note': 'The display serial interface on the second receiver.', 'href': 'https://www.mipi.org/specifications/dsi', 'meta': 'MIPI Alliance'}]},
 
@@ -287,7 +287,7 @@ SPECS = [
   'differs': 'the network ports (the sheet draws CAN-XL × 2, FlexRay × 2 and a 1000BASE-T1 port; this page states one CAN-XL, one FlexRay and no 1000BASE-T1)', 'about': 'SKU-9 is the zonal edge of a software-defined vehicle. It receives messages on Ethernet, CAN and LIN, schedules them with time-sensitive networking, and turns them into switched power at sixteen smart fuses, with a lockstep safety island and a hardware security module across every path.',
   'rows': [
    {'h': 230, 'zones': [
-     {'key': 'Z1', 'name': 'Safety island', 'color': 'red', 'cols': 2, 'w': 1,
+     {'key': 'Z1', 'name': 'Safety island', 'color': 'red', 'tone': 'safe', 'cols': 2, 'w': 1,
       'what': 'Two DGridRiscV cores in lockstep with a two-cycle skew, memory protection and ECC, a bus and retire comparator, and a freedom-from-interference firewall.',
       'why': 'Safety-critical and comfort functions share one chip, so the island is isolated by an MPU and a bus firewall.',
       'blocks': [('CPU', 'DGridRiscV × 2', 'RV32IM_Zicsr · lockstep · 200 MHz · +2 cycle skew · PMP · ECC'), ('CMP', 'Comparator', 'bus + retire · mismatch → safe state'), ('FFI', 'Freedom from interference', 'MPU + bus firewall', 2)]},
@@ -315,6 +315,6 @@ SPECS = [
               ('④', 'They become switched power at the smart fuses.'), ('⑤', 'A lockstep mismatch drives the safe state.')],
   'toward': ['ISO 26262 ASIL-D', 'EVITA Full', 'AUTOSAR Classic 4.4', 'AEC-Q100 Grade 1'],
   'alt': 'SKU-9 zonal controller architecture diagram: a lockstep safety island, security and real-time control on a 64-bit AXI4 crossbar, the in-vehicle network gateway and zonal power and I/O',
-  'caption': 'Redrawn from the Technical Annex v3, sheet 10, with network counts from the product specification. Numbered circles trace a message from the vehicle network to a switched load.',
+  'caption': 'Redrawn from the Technical Annex v3, sheet 10, with network counts from the product specification. Numbered markers trace a message from the vehicle network to a switched load.',
   'background': [{'title': 'IEEE 802.1Qbv: enhancements for scheduled traffic', 'note': 'The time-aware shaper behind bounded-latency TSN.', 'href': 'https://standards.ieee.org/ieee/802.1Qbv/6068/', 'meta': 'IEEE Standards'}, CAN, HERCULES, AMBA]},
 ]

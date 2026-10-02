@@ -5,7 +5,8 @@ import {ArrowLeft,ArrowRight,ArrowUpRight,Download,Play} from 'lucide-react';
 import {packages,fmtTime} from './library-data';
 import {tabIndexFor, tablistKeys} from './tablist';
 import GroundedDocumentsHub from './documents-hub';
-import {DiagramNotes} from './detail';
+import {DiagramNotes, NativeDiagram} from './detail';
+import {nativeDiagrams} from './sku-diagram-notes';
 import {diagramNotes} from './diagram-notes';
 
 type Update=(changes:Record<string,string|undefined>)=>void;
@@ -56,8 +57,8 @@ export default function Library({pkgId,slide,onChange,go}:{pkgId:string;slide:nu
 
   {pkg.diagram&&<section className="dr-lib-diagram" aria-label={`${pkg.name} architecture diagram`}>
    <div><p className="dr-lib-kicker">ARCHITECTURE DIAGRAM · DRAW.IO</p><h2>The whole {pkg.name} system on one page</h2><p>Component-flow diagram behind the deck, with the numbered data path. Open the source in draw.io to edit it.</p>
-    <div className="dr-lib-links"><a className="text-link" href={pkg.diagram} target="_blank" rel="noreferrer">Open full size <ArrowUpRight size={16}/></a>{pkg.drawio&&<a className="text-link" href={pkg.drawio} download>Diagram source (.drawio) <Download size={15}/></a>}{pkg.guide&&<a className="text-link" href={url(pkg.guide)}>Read architecture guide <Download size={15}/></a>}</div></div>
-   <div className="figure-scroll"><img src={pkg.diagram} alt={`${pkg.name} system architecture diagram`} loading="lazy" width={1600} height={900}/></div>
+    <div className="dr-lib-links"><a className="text-link" href={pkg.diagram} target="_blank" rel="noreferrer">Open full diagram <ArrowUpRight size={16}/></a>{pkg.drawio&&<a className="text-link" href={pkg.drawio} download>Diagram source (.drawio) <Download size={15}/></a>}{pkg.guide&&<a className="text-link" href={url(pkg.guide)}>Read architecture guide <ArrowUpRight size={16}/></a>}</div></div>
+   {nativeDiagrams[pkg.id] ? <NativeDiagram data={nativeDiagrams[pkg.id]} title={`${pkg.name} system architecture`}/> : <div className="figure-scroll"><img src={pkg.diagram} alt={`${pkg.name} system architecture diagram`} loading="lazy" width={1600} height={900}/></div>}
   </section>}
   {pkg.diagram&&(pkg.id==='lite'||pkg.id==='2dom')&&<div className="dr-lib-dnotes">{/* this page already holds the deck and film, so drop the reference that points back here */}<DiagramNotes notes={{...diagramNotes[pkg.id],primary:diagramNotes[pkg.id].primary.filter(r=>!r.href.includes('/resources?pkg='))}}/></div>}
 

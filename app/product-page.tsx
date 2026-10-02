@@ -3,8 +3,9 @@
  *  product-pages-data.ts (authored from the annex), maturity and boundary from portfolio-story-data.ts,
  *  status and evidence from applications-story-data.ts, so every surface states the same thing. */
 import {ArrowRight, ArrowUpRight, FileText} from 'lucide-react';
-import {Sec, DataTable, Diagram} from './detail';
-import {productDiagrams} from './diagram-notes';
+import {Sec, DataTable, NativeDiagram} from './detail';
+import {nativeDiagrams} from './sku-diagram-notes';
+import {productDiagrams, nbspUnits} from './diagram-notes';
 import {productBySlug, productSlugById, type ProductPage} from './product-pages-data';
 import {portfolioParts} from './portfolio-story-data';
 import {products, areas} from './applications-story-data';
@@ -30,6 +31,7 @@ export default function ProductPageView({slug}: {slug: string}) {
   const doc = groundedDocuments.find(d => d.id === record.evidenceDoc)!;
   const annex = groundedDocuments.find(d => d.id === 'doc2')!;
   const dg = productDiagrams[p.id];
+  const nd = nativeDiagrams[p.id === 'sku4' ? 'lite' : p.id];
   const fits = areas.flatMap(a => a.items.filter(i => i.product === p.id).map(i => ({area: a, role: i.role})));
   const sheet = `Sheet ${String(record.sheet).padStart(2, '0')}`;
   const contact = url('/contact') + '?part=' + encodeURIComponent(`${part.code} ${part.name}`);
@@ -63,18 +65,20 @@ export default function ProductPageView({slug}: {slug: string}) {
 
       <section id="pp-inside" className="pp-sec">
         <Sec kicker="INSIDE THE PART" title="From signal in to signal out." copy={p.blockNote}>
-          <ol className="pp-blocks" aria-label={`${part.code} block architecture`}>
-            {p.blocks.map(b => (
-              <li key={b.name}>
-                <h3>{b.name}</h3>
-                <ul>{b.items.map(i => <li key={i}>{i}</li>)}</ul>
-              </li>
-            ))}
-          </ol>
-          <p className="pp-note">Block architecture from the annex, {sheet}. A functional view, not a floorplan.</p>
-          {dg && <>
-            {dg.note && <p className="pp-note">{dg.note}</p>}
-            <Diagram src={dg.src} title={dg.title} alt={dg.alt} width={dg.width} height={dg.height} drawio={dg.drawio} guide={dg.guide} caption={dg.caption} notes={dg.notes}/>
+          {dg && nd ? <>
+            {dg.note && <p className="pp-note">{nbspUnits(dg.note)}</p>}
+            <NativeDiagram data={nd} title={dg.title} svg={dg.src} drawio={dg.drawio} guide={dg.guide} caption={dg.caption} notes={dg.notes}/>
+            <p className="pp-note">Architecture from the annex, {sheet}. A functional view, not a floorplan.</p>
+          </> : <>
+            <ol className="pp-blocks" aria-label={`${part.code} block architecture`}>
+              {p.blocks.map(b => (
+                <li key={b.name}>
+                  <h3>{b.name}</h3>
+                  <ul>{b.items.map(i => <li key={i}>{i}</li>)}</ul>
+                </li>
+              ))}
+            </ol>
+            <p className="pp-note">Block architecture from the annex, {sheet}. A functional view, not a floorplan.</p>
           </>}
         </Sec>
       </section>
@@ -139,7 +143,7 @@ export default function ProductPageView({slug}: {slug: string}) {
             <li>
               <a href={readHref(annex.specFile, part.source.section.includes('§3') ? undefined : '2. Complete 14-Sheet Portfolio Matrix')}><FileText size={15} aria-hidden="true"/><span>{annex.title}</span><span className="pp-cite">{sheet}{part.source.section ? ' · ' + part.source.section : ''}</span></a>
               <a className="pp-pdf" href={url(annex.pdfFile)}>PDF · {annex.pdfPageCount}{dg?.annexDiffers ? ' · values differ from this page' : ''}</a>
-              {dg?.annexDiffers && <p className="pp-differs">Some values on {sheet.toLowerCase()} differ from this page, which follows the product specification: {dg.annexDiffers}.</p>}
+              {dg?.annexDiffers && <p className="pp-differs">Some values on {sheet.toLowerCase()} differ from this page, which follows the product specification: {nbspUnits(dg.annexDiffers)}.</p>}
             </li>
             {doc.id !== annex.id && (
               <li>

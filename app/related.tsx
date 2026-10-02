@@ -50,7 +50,7 @@ export default function Related({route}: {route: RouteId}) {
                   <span className="dr-related-doc-title">{d.title}</span>
                   <span className="dr-related-doc-meta">PDF · {d.pdfPageCount}{annexDiffers && d.id === 'doc2' ? ' · values differ from this page' : ''}</span>
                 </a>
-                {annexDiffers && d.id === 'doc2' && <p className="dr-related-doc-differs">Some sheet values differ from this page: {annexDiffers}.</p>}
+                {annexDiffers && d.id === 'doc2' && <p className="dr-related-doc-differs">Some sheet values differ from this page; <a href="#pp-sources">Sources</a> lists each one.</p>}
                 <a className="dr-related-doc-spec" href={readHref(d.specFile)}>Read in the library</a>
               </li>
             ))}
