@@ -10,6 +10,7 @@
  *  was opened and checked on 2026-10-02. */
 import {readHref} from './doc-links';
 import {url} from './routes';
+import {skuDiagrams} from './sku-diagram-notes';
 
 export type DiagramZone = {name: string; what: string; why?: string; section: string};
 export type DiagramMarker = {mark: string; text: string};
@@ -176,10 +177,11 @@ export const diagramNotes: Record<'lite' | '2dom' | 'd100', DiagramNotes> = {
 };
 
 /** The architecture diagram each product page shows, keyed by product id. SKU-4 shows DG32-LITE because
- *  DG32-LITE is the implemented SKU-4 part; `note` says so on the page. Parts whose only drawing is a
- *  generated diagram with claims the annex does not carry get none until it is redrawn from the annex. */
+ *  DG32-LITE is the implemented SKU-4 part; `note` says so on the page. The other SKUs are redrawn from
+ *  their annex sheets by scripts/sku-diagrams/ into sku-diagram-notes.ts. */
 export type ProductDiagram = {notes: DiagramNotes; src: string; title: string; alt: string; width: number; height: number; drawio: string; guide: string; caption: string; note?: string};
 export const productDiagrams: Partial<Record<string, ProductDiagram>> = {
+  ...skuDiagrams,
   d100: {
     notes: diagramNotes.d100, src: '/diagrams/d100-architecture.svg', title: 'D100 system architecture', width: 1553, height: 945,
     drawio: '/downloads/d100-architecture.drawio', guide: D100_GUIDE,
