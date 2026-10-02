@@ -45,7 +45,7 @@ const REGIONS_LITE: Region[] = [
 
 // DG32-2DOM adds the 114 MHz Attention Engine & CDC Isolation Bridge
 const REGIONS_2DOM_EXTRA: Region[] = [
-  {group: 6, w: 0.18, d: 3.4, x: 0.98, z: 0, tone: '#b45309', name: 'CDC Asynchronous Bridge (50 <-> 114 MHz)', shortLabel: 'CDC'},
+  {group: 6, w: 0.18, d: 3.4, x: 0.98, z: 0, tone: '#b45309', name: 'Clock-domain bridges (50 <-> 114 MHz)', shortLabel: 'CDC'},
   {group: 6, w: 0.76, d: 1.6, x: 1.48, z: -0.85, tone: '#164e63', name: 'INT8 Matrix Multiplier Array (QK^T)', shortLabel: 'QK^T'},
   {group: 6, w: 0.76, d: 1.2, x: 1.48, z: 0.75, tone: '#155e75', name: 'Softmax Exponent LUT & Requantizer', shortLabel: 'SOFTMAX'},
   {group: 6, w: 0.76, d: 0.45, x: 1.48, z: 1.65, tone: '#0e7490', name: 'Key/Value Burst SRAM Buffers', shortLabel: 'KV-SRAM'},

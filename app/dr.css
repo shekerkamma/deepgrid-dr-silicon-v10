@@ -304,6 +304,30 @@
 .dr-diagram-body{overflow-x:auto;background:#fbfaf6}
 .dr-diagram-body img{display:block;width:100%;height:auto;margin:0 auto}
 .dr-diagram figcaption{padding:12px 18px 14px;color:var(--ink-2);font-size:var(--sc-t-body);line-height:1.6}
+/* Reading notes under an architecture diagram (DiagramNotes in detail.tsx) */
+.dr-dnotes{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:28px 40px;padding:22px 18px 24px;border-top:1px solid var(--rule)}
+.dr-dnotes-gap{margin-top:26px}
+.dr-dnotes-zones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px;margin:14px 0 0}
+.dr-dnotes-zones>div{border-top:1px solid var(--rule);padding-top:12px}
+.dr-dnotes-zones dt{font:500 var(--sc-t-block) var(--serif);color:var(--ink)}
+.dr-dnotes-zones dd{margin:6px 0 0}
+.dr-dnotes-zones p{color:var(--ink-2);font-size:var(--sc-t-body);line-height:var(--sc-lh-body)}
+.dr-dnotes-why{margin-top:6px}
+.dr-dnotes-why b{font:var(--text-meta) var(--font-mono);letter-spacing:1px;color:var(--copper);text-transform:uppercase;margin-right:6px}
+.dr-dnotes-cite{display:inline-block;margin-top:8px;font:var(--text-meta) var(--font-mono);letter-spacing:.5px;color:var(--copper);text-decoration:underline;text-underline-offset:3px;padding:6px 0}
+.dr-dnotes-cite:hover{color:var(--ink)}
+.dr-dnotes-marks{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.dr-dnotes-marks li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:baseline;color:var(--ink-2);font-size:var(--sc-t-body);line-height:var(--sc-lh-body)}
+.dr-dnotes-marks b{font:500 var(--sc-t-block) var(--serif);color:var(--copper);text-align:center}
+.dr-dnotes-refs .disclaimer{margin:18px 0 0}
+.dr-dnotes-list{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:4px}
+.dr-dnotes-list a{display:grid;gap:3px;padding:10px 0;border-top:1px solid var(--rule)}
+.dr-dnotes-list strong{display:inline-flex;align-items:center;gap:6px;font-weight:500;font-size:var(--sc-t-body);color:var(--ink)}
+.dr-dnotes-list span{color:var(--ink-2);font-size:var(--sc-t-control);line-height:1.55}
+.dr-dnotes-list small{color:var(--ink-2)}
+.dr-dnotes-list a:hover strong{color:var(--copper)}
+@media(max-width:1100px){.dr-dnotes{grid-template-columns:1fr}}
+@media(max-width:640px){.dr-dnotes-zones{grid-template-columns:1fr}}
 .dr-costbars{display:grid;gap:10px;margin-bottom:36px;border:1px solid var(--rule);padding:22px 24px;border-radius:var(--sc-radius-md,6px)}
 .dr-cost-row{display:grid;grid-template-columns:12rem minmax(0,1fr) 5rem;gap:16px;align-items:center}
 .dr-cost-row>span:first-child{color:#ddd6c6;font-size:var(--sc-t-body)}
@@ -4742,3 +4766,4 @@ input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-sea
   }
 }
 .dr-lib-media{scroll-margin-top:80px;margin-top:64px}
+.dr-lib-dnotes{border:1px solid var(--rule);border-radius:var(--sc-radius-md,6px);background:var(--surface)}

@@ -6,6 +6,7 @@ import {blocks} from './content';
 import {tabIndexFor, tablistKeys} from './tablist';
 import {SceneFigure} from './scene-figure';
 import {Eyebrow,Sec,ExplainedGrid,Steps,Flows,DataTable,Callout,Stats,Diagram} from './detail';
+import {diagramNotes} from './diagram-notes';
 import {litePremises,liteDecisions,groupMembers,liteFlows,faultPath,isolationInvariant,domPremises,enginePipeline,engineParts,engineCost,engineLimits,domFlows,domTiming,domDecisions,tapeinStats,tapeinSections,padPlan,signoffGates,whyConnectivityGate} from './detail-content';
 
 type Update=(changes:Record<string,string|undefined>)=>void;
@@ -49,7 +50,7 @@ function Lite({block,reduced,setReduced,exploded,setExploded,update,go}:Props){
    <DataTable caption="Design premises and what they set" head={['Constraint','What it means','What the design does']} rows={litePremises} wide/>
   </Sec>
 
-  <Diagram src="/diagrams/dg32-lite-architecture.svg" title="DG32-LITE system architecture" width={1518} height={1045} drawio="/downloads/dg32-lite-architecture.drawio" guide="/downloads/dg32-lite-architecture-guide.md"
+  <Diagram src="/diagrams/dg32-lite-architecture.svg" title="DG32-LITE system architecture" width={1518} height={1045} drawio="/downloads/dg32-lite-architecture.drawio" guide="/downloads/dg32-lite-architecture-guide.md" notes={diagramNotes.lite}
    alt="DG32-LITE system architecture diagram: safety core, memory and boot, supervision, on-chip bus, motor drive, sensing and math, connectivity and test, with the numbered current-control loop and the hardware fault path"
    caption={<>Numbered circles trace one current-control loop: ① the PWM fires the ADC sample, ② phase current goes to the CORDIC, ③ the transforms go to the CPU, ④ the PI output sets the PWM duty. The dashed red line is the hardware fault trip from the fault latch to the gate driver. Dashed boxes are off-chip.</>}/>
 
@@ -88,7 +89,7 @@ function Dom({go,update,reduced,setReduced,exploded,setExploded}:Props){
    <div className="dr-links"><button className="text-link" onClick={()=>go('library?pkg=2dom')}>Architecture deck and film <ArrowUpRight size={16}/></button><button className="text-link" onClick={()=>go('library?pkg=2dom-datasheet')}>Datasheet deck and film <ArrowUpRight size={16}/></button></div>
   </Intro>
   <Stats items={[['114 MHz','COMPUTE CLOCK'],['50 MHz','CONTROL DOMAIN'],['Bit-exact','TO THE SOFTWARE MODEL'],['400','KEYS PER HEAD'],['~3,242','CYCLES PER ROW, ANALYTIC'],['0','PADS ADDED']]}/>
-  <Diagram src="/diagrams/dg32-2dom-architecture.svg" title="DG32-2DOM system architecture" width={1453} height={895} drawio="/downloads/dg32-2dom-architecture.drawio" guide="/downloads/dg32-2dom-architecture-guide.md"
+  <Diagram src="/diagrams/dg32-2dom-architecture.svg" title="DG32-2DOM system architecture" width={1453} height={895} drawio="/downloads/dg32-2dom-architecture.drawio" guide="/downloads/dg32-2dom-architecture-guide.md" notes={diagramNotes['2dom']}
    alt="DG32-2DOM system architecture diagram: the 50 MHz control domain identical to DG32-LITE, three clock-domain bridges, and the 114 MHz compute domain with the six-stage INT8 attention engine and its key, value and weight-table buffers"
    caption={<>One attention kick: ① the CPU programs the shapes through the lite bridge, ② keys and values load once through the burst read bridge, ③ the INT8 output writes back through the burst write bridge, ④ a done interrupt reaches both cores. The engine reaches memory only through the bridges.</>}/>
 
@@ -124,8 +125,8 @@ function Dom({go,update,reduced,setReduced,exploded,setExploded}:Props){
      </div>
      <div style={{padding:'16px',background:'rgba(217,119,6,0.05)',border:'1px solid rgba(217,119,6,0.3)',borderRadius:'8px'}}>
       <span className="mono" style={{color:'#d97706',fontWeight:600,fontSize:'12px',letterSpacing:'0.05em'}}>ISOLATION BARRIER</span>
-      <strong style={{display:'block',margin:'6px 0 4px',fontSize:'15px'}}>CDC Asynchronous Bridges</strong>
-      <p style={{fontSize:'12px',color:'var(--ink-2)',lineHeight:1.5,margin:0}}>Dual-clock asynchronous FIFOs isolate the 50 MHz control core from the 114 MHz accelerator. The attention engine never stalls the motor control loop.</p>
+      <strong style={{display:'block',margin:'6px 0 4px',fontSize:'15px'}}>Clock-domain bridges</strong>
+      <p style={{fontSize:'12px',color:'var(--ink-2)',lineHeight:1.5,margin:0}}>Three AXI bridges cross between the 50 MHz control core and the 114 MHz engine with a four-phase request and acknowledge through two-flop synchronisers, not a FIFO. The attention engine never stalls the motor control loop.</p>
      </div>
     </aside>
    </div>

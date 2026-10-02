@@ -5,6 +5,8 @@ import {ArrowLeft,ArrowRight,ArrowUpRight,Download,Play} from 'lucide-react';
 import {packages,fmtTime} from './library-data';
 import {tabIndexFor, tablistKeys} from './tablist';
 import GroundedDocumentsHub from './documents-hub';
+import {DiagramNotes} from './detail';
+import {diagramNotes} from './diagram-notes';
 
 type Update=(changes:Record<string,string|undefined>)=>void;
 const groups:[string,'architecture'|'datasheet'][]=[['Architecture packages','architecture'],['Datasheet and tape-in packages','datasheet']];
@@ -57,6 +59,7 @@ export default function Library({pkgId,slide,onChange,go}:{pkgId:string;slide:nu
     <div className="dr-lib-links"><a className="text-link" href={pkg.diagram} target="_blank" rel="noreferrer">Open full size <ArrowUpRight size={16}/></a>{pkg.drawio&&<a className="text-link" href={pkg.drawio} download>Diagram source (.drawio) <Download size={15}/></a>}{pkg.guide&&<a className="text-link" href={url(pkg.guide)}>Read architecture guide <Download size={15}/></a>}</div></div>
    <div className="figure-scroll"><img src={pkg.diagram} alt={`${pkg.name} system architecture diagram`} loading="lazy" width={1600} height={900}/></div>
   </section>}
+  {pkg.diagram&&(pkg.id==='lite'||pkg.id==='2dom')&&<div className="dr-lib-dnotes">{/* this page already holds the deck and film, so drop the reference that points back here */}<DiagramNotes notes={{...diagramNotes[pkg.id],primary:diagramNotes[pkg.id].primary.filter(r=>!r.href.includes('/resources?pkg='))}}/></div>}
 
   </div>
 
