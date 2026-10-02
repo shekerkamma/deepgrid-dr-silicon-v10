@@ -366,7 +366,7 @@ export const productPages: ProductPage[] = [
       ['Process', '130 nm CMOS at 200 MHz; proposed 28 nm accelerator die in the same package'],
       ['Flight control', 'Dual DGridRiscV, hard real-time PX4 or ArduPilot'],
       ['Navigation', 'Hardware VIO, six-DoF EKF at 30 Hz'],
-      ['Vision input', 'MIPI CSI-2, two lanes, to 1080p60, with ISP'],
+      ['Vision input', 'MIPI CSI-2, two lanes × 2, stereo 720p60, with ISP'],
       ['AI (phase 2)', 'Optional 10 TOPS INT8/INT4, 2 MB SRAM'],
       ['Failsafe', 'Independent watchdog and safe-state machine, isolated power and clock, direct ESC link'],
       ['Memory', 'LPDDR4 32-bit, eMMC or NAND'],

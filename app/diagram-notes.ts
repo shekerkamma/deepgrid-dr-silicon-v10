@@ -25,6 +25,14 @@ export type DiagramNotes = {
 const DOCS = '/downloads/docs/';
 const LITE_GUIDE = '/downloads/dg32-lite-architecture-guide.md';
 const DOM_GUIDE = '/downloads/dg32-2dom-architecture-guide.md';
+const D100_GUIDE = '/downloads/d100-architecture-guide.md';
+
+const DSHOT: DiagramRef = {
+  title: 'DShot and bidirectional DShot',
+  note: 'The digital ESC protocol the DShot channels speak.',
+  href: 'https://brushlesswhoop.com/dshot-and-bidirectional-dshot/',
+  meta: 'Explainer',
+};
 
 const AMBA: DiagramRef = {
   title: 'Arm AMBA specifications, including AXI',
@@ -33,7 +41,7 @@ const AMBA: DiagramRef = {
   meta: 'Arm',
 };
 
-export const diagramNotes: Record<'lite' | '2dom', DiagramNotes> = {
+export const diagramNotes: Record<'lite' | '2dom' | 'd100', DiagramNotes> = {
   lite: {
     guide: LITE_GUIDE,
     zones: [
@@ -80,7 +88,7 @@ export const diagramNotes: Record<'lite' | '2dom', DiagramNotes> = {
       {title: 'The CORDIC trigonometric computing technique', note: 'Volder, IRE Transactions on Electronic Computers, 1959: the shift-and-add method the CORDIC block uses.', href: 'https://doi.org/10.1109/TEC.1959.5222693', meta: 'IEEE · DOI'},
       {title: 'RISC-V ratified specifications', note: 'The RV32IM instruction set both cores execute.', href: 'https://riscv.org/specifications/ratified/', meta: 'RISC-V International'},
       AMBA,
-      {title: 'DShot and bidirectional DShot', note: 'The digital ESC protocol the four DShot channels speak.', href: 'https://brushlesswhoop.com/dshot-and-bidirectional-dshot/', meta: 'Explainer'},
+      DSHOT,
       {title: 'SkyWater SKY130 PDK documentation', note: 'The open 130 nm process the datasheet names.', href: 'https://skywater-pdk.readthedocs.io/en/main/', meta: 'SkyWater · Google'},
     ],
   },
@@ -120,5 +128,69 @@ export const diagramNotes: Record<'lite' | '2dom', DiagramNotes> = {
       {title: 'Quantization for integer-arithmetic-only inference', note: 'Jacob et al., 2018: the INT8 quantise and requantise scheme that integer engines follow.', href: 'https://arxiv.org/abs/1712.05877', meta: 'arXiv'},
       AMBA,
     ],
+  },
+  d100: {
+    guide: D100_GUIDE,
+    zones: [
+      {name: 'Flight control', section: 'Component: Flight control',
+        what: 'Two DGridRiscV cores, one for flight control and one for navigation, run the PX4 or ArduPilot loop. The IMU, magnetometer and barometer arrive over three SPI links; motor commands leave as DShot600 on eight channels.'},
+      {name: 'Visual-inertial odometry', section: 'Component: Visual-inertial odometry',
+        what: 'A stereo camera pair enters over MIPI CSI-2, passes the ISP and a FAST and BRIEF feature extractor, and the pose engine fuses it with the IMU into a 30 Hz six-degree-of-freedom pose.',
+        why: 'The odometry is geometry, not learned perception, so estimating a pose needs neither GPS nor a trained model.'},
+      {name: 'AI, variant 2 only', section: 'Component: AI accelerator (variant 2)',
+        what: 'An INT8 and INT4 NPU of about 10 TOPS class, with 2 MB of SRAM, runs object detection and segmentation for obstacle avoidance. It sits on a 28 nm die in the same package.',
+        why: 'Vision AI needs dense logic that 130 nm cannot supply, so it is a separate die the flight functions never depend on.'},
+      {name: 'AXI4 crossbar', section: 'Architecture Overview',
+        what: 'A 128-bit crossbar at 200 MHz joins the flight cores, the pose engine, the NPU and the platform blocks.'},
+      {name: 'Failsafe island', section: 'Component: Failsafe island',
+        what: 'A link monitor detects RC loss, GPS loss and IMU fault in hardware. It trips a safe-state machine that chooses return to home or land, and an independent path drives the ESCs directly.',
+        why: 'Recovery has to work when the flight software is what failed, so it runs on isolated power and clock and bypasses the flight cores, the odometry and the AI.'},
+      {name: 'Platform', section: 'Component: Platform',
+        what: '2 GB of LPDDR4, eMMC or NAND for logging, a five-domain PMU, secure boot, Ethernet and USB3 for payload and ground link, CAN-FD, SPI and I²C for gimbal and payload, and JTAG.'},
+      {name: 'Prototype and product strip', section: 'Prototype and product',
+        what: 'An Artix-7 FPGA at 81.25 MHz validates the design; the product is a 130 nm ASIC at a fixed 200 MHz. FPGA timing closure is a prototype milestone, not a measurement of the ASIC.'},
+    ],
+    markers: [
+      {mark: '①', text: 'The IMU, magnetometer, barometer and RC link reach the flight cores.'},
+      {mark: '②', text: 'The stereo cameras run through the ISP and the feature extractor to the pose engine.'},
+      {mark: '③', text: 'The 30 Hz pose reaches the flight loop over the crossbar.'},
+      {mark: '④', text: 'In normal flight, motor commands leave on ESC OUT.'},
+      {mark: '⑤', text: 'The link monitor trips the safe-state machine on RC loss, GPS loss or an IMU fault.'},
+      {mark: 'F', text: 'The red dashed line: the independent path takes the ESCs directly, without the flight computer.'},
+    ],
+    primary: [
+      {title: 'D100 architecture guide', note: 'Every block group, both data flows, prototype versus product, and what the architecture does not establish.', href: readHref(D100_GUIDE), meta: 'Opens in the site'},
+      {title: 'SKU Architecture Compendium, Technical Annex v3', note: 'Sheet 11 carries the D100 figure this diagram is redrawn from; the SiP sheet covers the package.', href: url(DOCS + 'deepgrid-sku-compendium-technical-annex-v3.pdf'), meta: 'PDF · 14 pages'},
+    ],
+    background: [
+      {title: 'A Multi-State Constraint Kalman Filter for vision-aided inertial navigation', note: 'Mourikis and Roumeliotis, ICRA 2007: the EKF over a sliding window of camera poses that visual-inertial pose engines build on.', href: 'https://www-users.cse.umn.edu/~stergios/papers/ICRA07-MSCKF.pdf', meta: 'University of Minnesota · PDF'},
+      {title: 'Machine learning for high-speed corner detection', note: 'Rosten and Drummond, ECCV 2006: the FAST corner detector.', href: 'https://doi.org/10.1007/11744023_34', meta: 'Springer · DOI'},
+      {title: 'BRIEF: Binary Robust Independent Elementary Features', note: 'Calonder et al., ECCV 2010: the binary descriptor paired with FAST.', href: 'https://doi.org/10.1007/978-3-642-15561-1_56', meta: 'Springer · DOI'},
+      {title: 'PX4 autopilot user guide', note: 'One of the two open flight stacks the flight cores run.', href: 'https://docs.px4.io/main/en/', meta: 'PX4 · Dronecode'},
+      {title: 'ArduPilot Copter documentation', note: 'The other open flight stack the flight cores run.', href: 'https://ardupilot.org/copter/', meta: 'ArduPilot'},
+      {title: 'MIPI CSI-2 specification overview', note: 'The camera interface the stereo pair arrives on.', href: 'https://www.mipi.org/specifications/csi-2', meta: 'MIPI Alliance'},
+      DSHOT,
+      AMBA,
+    ],
+  }
+};
+
+/** The architecture diagram each product page shows, keyed by product id. SKU-4 shows DG32-LITE because
+ *  DG32-LITE is the implemented SKU-4 part; `note` says so on the page. Parts whose only drawing is a
+ *  generated diagram with claims the annex does not carry get none until it is redrawn from the annex. */
+export type ProductDiagram = {notes: DiagramNotes; src: string; title: string; alt: string; width: number; height: number; drawio: string; guide: string; caption: string; note?: string};
+export const productDiagrams: Partial<Record<string, ProductDiagram>> = {
+  d100: {
+    notes: diagramNotes.d100, src: '/diagrams/d100-architecture.svg', title: 'D100 system architecture', width: 1553, height: 945,
+    drawio: '/downloads/d100-architecture.drawio', guide: D100_GUIDE,
+    alt: 'D100 system architecture diagram: flight control, visual-inertial odometry and a variant-2 AI die on a 128-bit AXI4 crossbar, the platform blocks, and a failsafe island with its own path to the ESCs',
+    caption: 'Redrawn from the Technical Annex v3, sheet 11. Numbered circles trace normal flight; the red dashed line is the failsafe path to the ESCs. Dashed boxes are off-chip, and the grey dashed zone exists in variant 2 only.',
+  },
+  sku4: {
+    notes: diagramNotes.lite, src: '/diagrams/dg32-lite-architecture.svg', title: 'DG32-LITE system architecture', width: 1518, height: 1045,
+    drawio: '/downloads/dg32-lite-architecture.drawio', guide: LITE_GUIDE,
+    alt: 'DG32-LITE system architecture diagram: safety core, memory and boot, supervision, on-chip bus, motor drive, sensing and math, connectivity and test, with the numbered current-control loop and the hardware fault path',
+    caption: 'Numbered circles trace one current-control loop; the dashed red line is the hardware fault trip from the fault latch to the gate driver. Dashed boxes are off-chip.',
+    note: 'DG32-LITE is the implemented SKU-4 part, so this is its diagram: 50 MHz, boot from ROM, no on-die flash. The specification below states the SKU-4 family targets, which go beyond it.',
   },
 };

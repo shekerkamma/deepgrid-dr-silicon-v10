@@ -3,7 +3,8 @@
  *  product-pages-data.ts (authored from the annex), maturity and boundary from portfolio-story-data.ts,
  *  status and evidence from applications-story-data.ts, so every surface states the same thing. */
 import {ArrowRight, ArrowUpRight, FileText} from 'lucide-react';
-import {Sec, DataTable} from './detail';
+import {Sec, DataTable, Diagram} from './detail';
+import {productDiagrams} from './diagram-notes';
 import {productBySlug, productSlugById, type ProductPage} from './product-pages-data';
 import {portfolioParts} from './portfolio-story-data';
 import {products, areas} from './applications-story-data';
@@ -28,6 +29,7 @@ export default function ProductPageView({slug}: {slug: string}) {
   const record = products[p.id];
   const doc = groundedDocuments.find(d => d.id === record.evidenceDoc)!;
   const annex = groundedDocuments.find(d => d.id === 'doc2')!;
+  const dg = productDiagrams[p.id];
   const fits = areas.flatMap(a => a.items.filter(i => i.product === p.id).map(i => ({area: a, role: i.role})));
   const sheet = `Sheet ${String(record.sheet).padStart(2, '0')}`;
   const contact = url('/contact') + '?part=' + encodeURIComponent(`${part.code} ${part.name}`);
@@ -70,6 +72,10 @@ export default function ProductPageView({slug}: {slug: string}) {
             ))}
           </ol>
           <p className="pp-note">Block architecture from the annex, {sheet}. A functional view, not a floorplan.</p>
+          {dg && <>
+            {dg.note && <p className="pp-note">{dg.note}</p>}
+            <Diagram src={dg.src} title={dg.title} alt={dg.alt} width={dg.width} height={dg.height} drawio={dg.drawio} guide={dg.guide} caption={dg.caption} notes={dg.notes}/>
+          </>}
         </Sec>
       </section>
 
