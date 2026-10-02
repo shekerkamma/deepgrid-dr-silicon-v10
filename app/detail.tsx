@@ -1,5 +1,7 @@
 'use client';
+import {useEffect,useRef} from 'react';
 import {ArrowUpRight,Download} from 'lucide-react';
+import {attach} from './nd-interact';
 import {url} from './routes';
 import {readHref} from './doc-links';
 import {nbspUnits as nb, type DiagramNotes as DiagramNotesData, type DiagramRef, type NativeDiagramData} from './diagram-notes';
@@ -43,33 +45,41 @@ const MARK_NAMES: Record<string, string> = {'①': '1', '②': '2', '③': '3', 
  *  stages, no raster text). Zones are cards, blocks sit inside them, and the numbered markers of the reading
  *  path sit on the blocks they name; the legend is the first thing in the notes below. On a phone every zone
  *  stacks, so nothing scrolls sideways. The draw.io drawing stays one click away as the full diagram. */
-export function NativeDiagram({data,title,label,svg,drawio,guide,caption,notes}:{data:NativeDiagramData;title:string;label?:string;svg?:string;drawio?:string;guide?:string;caption?:React.ReactNode;notes?:DiagramNotesData}){
+export function NativeDiagram({data,title,label,svg,drawio,guide,html,caption,notes}:{data:NativeDiagramData;title:string;label?:string;svg?:string;drawio?:string;guide?:string;html?:string;caption?:React.ReactNode;notes?:DiagramNotesData}){
+ const body=useRef<HTMLDivElement>(null);
+ // Connections, hover detail and click-to-highlight are drawn by nd-interact once the blocks are laid out.
+ useEffect(()=>{const el=body.current;return el&&data.edges?.length?attach(el,data.edges):undefined;},[data]);
+ const interactive=!!data.edges?.length;
  return <figure className="nd" aria-label={title}>
-  <div className="nd-bar"><div><span className="mono">{label??'ARCHITECTURE DIAGRAM'}</span><strong>{title}</strong></div>
-   <div className="nd-actions">{svg&&<a className="text-link" href={svg} target="_blank" rel="noreferrer">Open full diagram <ArrowUpRight size={15} aria-hidden="true"/></a>}{drawio&&<a className="text-link" href={drawio} download>Source (.drawio) <Download size={15} aria-hidden="true"/></a>}{guide&&<a className="text-link" href={url(guide)}>Read architecture guide <ArrowUpRight size={15} aria-hidden="true"/></a>}</div></div>
-  <div className="nd-body">
+  <div className="nd-bar"><div><span className="mono">{label??'SYSTEM ARCHITECTURE · INTERACTIVE'}</span><strong>{title}</strong></div>
+   <div className="nd-actions">{svg&&<a className="text-link" href={svg} target="_blank" rel="noreferrer">Open full diagram <ArrowUpRight size={15} aria-hidden="true"/></a>}{drawio&&<a className="text-link" href={drawio} download>Source (.drawio) <Download size={15} aria-hidden="true"/></a>}{html&&<a className="text-link" href={html} target="_blank" rel="noreferrer">Interactive diagram (HTML) <ArrowUpRight size={15} aria-hidden="true"/></a>}{guide&&<a className="text-link" href={url(guide)}>Read architecture guide <ArrowUpRight size={15} aria-hidden="true"/></a>}</div></div>
+  {interactive&&<p className="nd-hint">Select a block to see what it receives and feeds; the arrows show each connection.</p>}
+  <div className="nd-body" ref={body}>
+   <svg className="nd-wires" aria-hidden="true"/>
    {data.banner&&<p className="nd-banner">{nb(data.banner)}</p>}
-   {data.input&&<p className="nd-io"><span className="mono">IN</span>{nb(data.input)}</p>}
+   {data.input&&<p className="nd-io" data-k="IN" data-t="External inputs" data-s={data.input}><span className="mono">IN</span>{nb(data.input)}</p>}
    <div className="nd-frame"><p className="nd-frame-label mono">{data.frame}</p>
     {data.rows.map((r,i)=>'bus' in r
-     ? <p className="nd-bus" key={i}>{nb(r.bus)}</p>
+     ? <p className="nd-bus" key={i} data-k={r.k} data-t={r.bus.split('·')[0].trim()} data-s={r.bus}>{nb(r.bus)}</p>
      : <div className="nd-row" key={i} style={{gridTemplateColumns:r.zones.map(z=>`minmax(0,${z.w}fr)`).join(' ')}}>
-        {r.zones.map(z=><section key={z.name} className={'nd-zone'+(z.tone?' is-'+z.tone:'')} aria-label={z.name}>
+        {r.zones.map(z=><section key={z.name} className={'nd-zone'+(z.tone?' is-'+z.tone:'')} aria-label={z.name} data-k={z.k} data-t={z.name}>
          <p className="nd-zone-name">{z.name}</p>
-         <ul className="nd-blocks" style={{'--c':z.cols,'--cm':z.mcols??Math.min(z.cols,2)} as React.CSSProperties}>
+         <div className="nd-blocks" role="group" aria-label={z.name} style={{'--c':z.cols,'--cm':z.mcols??Math.min(z.cols,2)} as React.CSSProperties}>
           {z.blocks.map((b,j)=>b
-           ? <li key={j} className="nd-block" style={b.span?{'--s':b.span,'--sm':Math.min(b.span,2)} as React.CSSProperties:undefined}>
+           ? <div key={j} className="nd-block" data-k={b.k} data-t={b.t} data-s={b.s} {...(interactive?{role:'button',tabIndex:0,'aria-pressed':false}:{})} style={b.span?{'--s':b.span,'--sm':Math.min(b.span,2)} as React.CSSProperties:undefined}>
               {b.marks&&<span className="nd-marks">{b.marks.map(m=><span key={m} className={'nd-mark'+(m==='F'?' is-fault':'')} aria-label={'Marker '+(MARK_NAMES[m]??m)}>{m}</span>)}</span>}
-              <strong>{b.t}</strong>{b.s&&<span>{nb(b.s)}</span>}</li>
-           : <li key={j} className="nd-gap" aria-hidden="true"/>)}
-         </ul>
+              <strong>{b.t}</strong>{b.s&&<span>{nb(b.s)}</span>}</div>
+           : <div key={j} className="nd-gap" aria-hidden="true"/>)}
+         </div>
          {z.note&&<p className="nd-zone-note">{nb(z.note)}</p>}
         </section>)}
        </div>)}
    </div>
-   {data.output&&<p className="nd-io"><span className="mono">OUT</span>{nb(data.output)}</p>}
+   {data.output&&<p className="nd-io" data-k="OUT" data-t="External outputs" data-s={data.output}><span className="mono">OUT</span>{nb(data.output)}</p>}
    {data.strip&&<p className="nd-strip"><span><b className="mono">PROTOTYPE</b> {nb(data.strip[0])}</span><span><b className="mono">PRODUCT</b> {nb(data.strip[1])}</span></p>}
+   <div className="nd-tip" hidden role="tooltip"/>
   </div>
+  {interactive&&<p className="nd-live sr-only" aria-live="polite"/>}
   {caption&&<figcaption>{caption}</figcaption>}
   {notes&&<DiagramNotes notes={notes}/>}
  </figure>;

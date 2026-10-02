@@ -221,26 +221,35 @@ def native(s):
     rows = []
     for r in s['rows']:
         if 'bus' in r:
-            rows.append({'bus': r['bus']})
+            rows.append({'bus': r['bus'], 'k': r.get('key', 'BUS')})
             continue
         zs = []
         for z in r['zones']:
             t = z.get('tone')  # teal is the safe state only (DESIGN.md); set it explicitly, never from a drawing colour
-            zd = {'name': z['name'], 'cols': z.get('cols', 2), 'w': z.get('w', 1), 'blocks': []}
+            zd = {'k': z['key'], 'name': z['name'], 'cols': z.get('cols', 2), 'w': z.get('w', 1), 'blocks': []}
             if t: zd['tone'] = t
             if z.get('mcols'): zd['mcols'] = z['mcols']
             if z.get('note'): zd['note'] = z['note']
             for b in z['blocks']:
                 if not b:
                     zd['blocks'].append(None); continue
-                bd = {'t': b[1]}
+                bd = {'k': b[0], 't': b[1]}
                 if len(b) > 2 and b[2]: bd['s'] = b[2]
                 if len(b) > 3 and b[3] > 1: bd['span'] = b[3]
                 if b[0] in marks: bd['marks'] = marks[b[0]]
                 zd['blocks'].append(bd)
             zs.append(zd)
         rows.append({'zones': zs})
-    out = {'frame': s['frame'], 'rows': rows}
+    # Connections for the interactive layer: (from, to, marker, what flows). Endpoints are block or zone keys,
+    # or IN / OUT / a bus key. SKU specs carry no data label, so the marker's reading-path text stands in.
+    mtext = dict(s.get('markers', []))
+    edges = []
+    for ed in s.get('edges', []):
+        a, b, lab, *rest = list(ed) + ['', '']
+        what = rest[0] if rest and isinstance(rest[0], str) and rest[0] and not rest[0] in ECOL else ''
+        if not what and lab in mtext: what = mtext[lab]
+        edges.append({'a': a, 'b': b, **({'m': lab} if MARK_RE.match(lab or '') else {}), **({'d': what} if what else {})})
+    out = {'frame': s['frame'], 'rows': rows, 'edges': edges}
     for k in ('input', 'output', 'banner'):
         if s.get(k): out[k] = s[k]
     if s.get('strip'): out['strip'] = list(s['strip'])

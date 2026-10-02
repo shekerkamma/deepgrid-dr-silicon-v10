@@ -9,6 +9,8 @@ NATIVE = [
   'frame': 'DG32-LITE  ·  one 50 MHz clock domain  ·  130 nm CMOS  ·  QFN-64',
   'output': 'Off-chip: QSPI NOR flash · gate driver + 3-phase bridge · motor sensors · host, sensors, test',
   'marks': {'PWM': ['①', '⑤'], 'ADC': ['②'], 'CORDIC': ['③'], 'MAIN': ['④'], 'LATCH': ['F']},
+  'edges': [('PWM', 'ADC', '①', 'sample trigger at the period centre'), ('ADC', 'CORDIC', '②', 'phase current'), ('ENC', 'CORDIC', '', 'rotor angle'), ('CORDIC', 'MAIN', '③', 'Clarke / Park transforms'), ('MAIN', 'PWM', '④', 'PI output to duty registers'), ('PWM', 'OUT', '⑤', 'gate signals'),
+            ('MAIN', 'CMP', '', 'committed stores'), ('CHK', 'CMP', '', 'same stores, 2 cycles later'), ('CMP', 'LATCH', '', 'mismatch'), ('LATCH', 'OUT', 'F', 'FAULT_N trips the bridge'), ('ROM', 'SRAM', '', 'application image'), ('QSPI', 'ROM', '', 'flash image at boot')],
   'rows': [
    {'zones': [
      {'key': 'S', 'name': 'Safety core', 'tone': 'safe', 'cols': 2, 'w': 1.2,
@@ -32,6 +34,7 @@ NATIVE = [
  {'id': '2dom', 'code': 'DG32-2DOM',
   'frame': 'DG32-2DOM  ·  3.4 × 4.5 mm die  ·  two clock domains  ·  same QFN-64 pinout as DG32-LITE',
   'marks': {'CPU': ['①'], 'LITEB': ['①'], 'RD': ['②'], 'WR': ['③'], 'IRQ': ['④']},
+  'edges': [('CPU', 'LITEB', '①', 'job shapes over AXI-lite'), ('LITEB', 'P1', '', 'programmed geometry'), ('MEM', 'RD', '②', 'keys and values, once per kick'), ('RD', 'K', '', 'keys'), ('RD', 'V', '', 'values'), ('P1', 'P2', '', ''), ('P2', 'P3', '', 'scores'), ('P3', 'P4', '', '15-bit weights'), ('P4', 'P5', '', '40-bit sums'), ('P5', 'P6', '', 'INT8 row'), ('P6', 'WR', '③', 'INT8 output'), ('WR', 'MEM', '', 'written back'), ('P6', 'IRQ', '④', 'done interrupt'), ('IRQ', 'CPU', '', 'to both cores'), ('EXP', 'P3', '', 'softmax weights'), ('DMA', 'RD', '', 'idle SRAM read port')],
   'rows': [
    {'zones': [
      {'key': 'C', 'name': '50 MHz control domain · identical to DG32-LITE', 'cols': 2, 'w': 1.3,
@@ -54,6 +57,8 @@ NATIVE = [
   'input': 'Cameras · IMU, magnetometer, barometer · RC receiver and telemetry radio  (external)',
   'output': 'ESCs and motors  (external)',
   'marks': {'IMU': ['①'], 'MIPI': ['②'], 'POSE': ['③'], 'ESC': ['④'], 'LM': ['⑤'], 'IND': ['F']},
+  'edges': [('IN', 'IMU', '', 'inertial sensors'), ('IMU', 'CPU', '①', 'attitude, 8 kHz'), ('RC', 'CPU', '', 'pilot and telemetry'), ('IN', 'MIPI', '②', 'camera frames'), ('MIPI', 'ISP', '', 'raw frames'), ('ISP', 'FEAT', '', 'rectified frames'), ('FEAT', 'POSE', '', '2k features per frame'), ('POSE', 'CPU', '③', '30 Hz pose over the crossbar'), ('CPU', 'ESC', '', 'motor commands'), ('ESC', 'OUT', '④', 'DShot600'),
+            ('NPU', 'YOLO', '', 'detections'), ('NPU', 'SEG', '', 'segmentation'), ('LM', 'FSM', '⑤', 'link or sensor loss'), ('FSM', 'IND', '', 'return-to-home / land'), ('IND', 'OUT', 'F', 'direct ESC control')],
   'rows': [
    {'zones': [
      {'key': 'FC', 'name': 'Flight control · hard real-time', 'cols': 2, 'w': 1,
