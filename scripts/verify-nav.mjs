@@ -88,6 +88,10 @@ async function landed(p, want, via) {
   for (const id of ids) {
     if (!(await p.locator(`[aria-controls="${id}"]`).first().isVisible())) continue;
     await p.click(`[aria-controls="${id}"]`);
+    // Wait for the panel to open before measuring it. Reading the box on the next line raced the opening on
+    // a slow CI runner and reported "spans null..null" for a panel that fits (run 37117308383, 2026-10-03).
+    const opened = await p.locator('#' + id).waitFor({ state: 'visible', timeout: 3000 }).then(() => true, () => false);
+    if (!opened) { fail(`1024px: panel ${id} did not open within 3 s of a click`); await p.keyboard.press('Escape'); continue; }
     const r = await p.locator('#' + id).boundingBox();
     if (!r || r.x < 0 || r.x + r.width > 1024 + 1) fail(`1024px: panel ${id} spans ${r && Math.round(r.x)}..${r && Math.round(r.x + r.width)}`);
     await p.keyboard.press('Escape');
