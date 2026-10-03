@@ -1,0 +1,58 @@
+WEBVTT
+
+00:00:00.450 --> 00:00:06.045
+In a motor drive, one wrong value becomes one wrong PWM edge.
+
+00:00:06.045 --> 00:00:08.797
+and that can destroy a bridge.
+
+00:00:08.797 --> 00:00:12.374
+DG32-LITE checks itself on every store.
+
+00:00:13.424 --> 00:00:19.094
+Each period, the PWM itself starts the converter at its quietest moment.
+
+00:00:19.094 --> 00:00:22.717
+Reading current then costs a pulse and a poll.
+
+00:00:23.767 --> 00:00:31.575
+The transforms run in a hardware CORDIC at a fixed cost, because the core is too slow to spend on them.
+
+00:00:32.625 --> 00:00:36.546
+The processor keeps only the two PI regulators.
+
+00:00:36.546 --> 00:00:42.386
+At 10 kilohertz, firmware still has about 4,700 of every 5,000 cycles.
+
+00:00:43.436 --> 00:00:50.689
+A new duty value waits for the next period to begin, so the bridge never sees half an update.
+
+00:00:51.739 --> 00:01:00.400
+Six gate signals leave the package for an external bridge, and a hardware brake can force all six off within two cycles.
+
+00:01:01.450 --> 00:01:04.437
+A checker core runs two cycles behind.
+
+00:01:04.437 --> 00:01:09.782
+On the first mismatch the fault pin drops, and the bridge turns off.
+
+00:01:09.782 --> 00:01:11.747
+In simulation, 39 cycles.
+
+00:01:12.797 --> 00:01:19.118
+A windowed watchdog, interrupts that reach both cores, and a bus that errors instead of hanging.
+
+00:01:19.118 --> 00:01:20.633
+Nothing fails silently.
+
+00:01:21.683 --> 00:01:23.860
+DG32-LITE is pre-silicon.
+
+00:01:23.860 --> 00:01:29.780
+Its figures come from simulation, and no part has been measured yet.
+
+00:01:29.780 --> 00:01:33.263
+Bring us your safety case and loop rate.
+
+00:01:33.263 --> 00:01:37.007
+We will tell you what DG32-LITE must prove.

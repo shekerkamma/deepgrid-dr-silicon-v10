@@ -1,0 +1,46 @@
+WEBVTT
+
+00:00:00.450 --> 00:00:04.844
+A vehicle zone today is a relay box and a loom of wires.
+
+00:00:04.844 --> 00:00:06.806
+Replace it with one chip.
+
+00:00:06.806 --> 00:00:11.985
+and brake messages and comfort traffic now share the same silicon.
+
+00:00:13.035 --> 00:00:24.145
+Ethernet, CAN, LIN and FlexRay all arrive at one gateway, which rate-limits each domain, so a flood on one bus cannot starve another.
+
+00:00:25.195 --> 00:00:35.883
+A switch that keeps precise time reserves slots for brake-by-wire on a shared link, so its latency is bounded by hardware, not by software scheduling.
+
+00:00:36.933 --> 00:00:44.335
+A router turns each incoming message into a request, and hands it to whichever block will act on it.
+
+00:00:44.335 --> 00:00:47.148
+Every message rides the same crossbar.
+
+00:00:48.198 --> 00:00:56.689
+Sixteen smart fuses replace the relay box, switching 12 and 48 volt loads right beside the logic that commands them.
+
+00:00:57.739 --> 00:00:59.610
+Two cores run in lockstep.
+
+00:00:59.610 --> 00:01:07.020
+A mismatch drives the zone to its safe state, and a firewall keeps lighting away from safety registers.
+
+00:01:08.070 --> 00:01:16.561
+Every image is checked before it runs, and a failed update rolls back, so a bad update never replaces the working bank.
+
+00:01:17.611 --> 00:01:19.512
+SKU-9 is pre-silicon.
+
+00:01:19.512 --> 00:01:25.669
+Its highest safety level is a design target here, not a certificate.
+
+00:01:25.669 --> 00:01:29.290
+Bring us your zone's loads and networks.
+
+00:01:29.290 --> 00:01:32.821
+We will tell you what SKU-9 must prove.

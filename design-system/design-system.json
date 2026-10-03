@@ -1,0 +1,64 @@
+{
+ "v": 3,
+ "layout": "files",
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-10-03T02:31:20Z"
+ },
+ "title": "DeepGrid Semi",
+ "namespace": "DeepGrid",
+ "libraries": [],
+ "sections": {},
+ "groups": [
+  "Logos"
+ ],
+ "assetGroups": {
+  "Logos": {
+   "name": "Logos",
+   "tile": "l",
+   "order": [
+    "deepgrid-semi-wordmark.png",
+    "deepgrid-d-192.png",
+    "deepgrid-d-64.png",
+    "favicon.svg"
+   ],
+   "files": {
+    "deepgrid-semi-wordmark.png": {
+     "name": "deepgrid-semi-wordmark.png",
+     "blob": "8755795f4f4b53bccb433582693c63f7",
+     "size": 9361,
+     "type": "image/png"
+    },
+    "deepgrid-d-192.png": {
+     "name": "deepgrid-d-192.png",
+     "blob": "d64090198328749c4c967ad1cadb0c45",
+     "size": 27916,
+     "type": "image/png"
+    },
+    "deepgrid-d-64.png": {
+     "name": "deepgrid-d-64.png",
+     "blob": "a63e7305b4307eb76e7bf747ba90ae6a",
+     "size": 6822,
+     "type": "image/png"
+    },
+    "favicon.svg": {
+     "name": "favicon.svg",
+     "blob": "18523a8ef6a45a0912d09ae2887aa7e6",
+     "size": 390,
+     "type": "image/svg+xml"
+    }
+   }
+  }
+ },
+ "blobs": {},
+ "docs": {
+  "readme": "project/README.md",
+  "sections": []
+ },
+ "lastChange": {
+  "by": "sheker",
+  "at": "2026-10-03T02:31:20Z",
+  "via": "Claude Code",
+  "note": "Built from the v6 site code: DESIGN.md, globals.css, portfolio-v6.css, dr.css, public/brand."
+ }
+}

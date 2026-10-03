@@ -1,0 +1,14 @@
+<!-- @dsCard group="Navigation" height=90 -->
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
+.wrap{padding:20px 24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.lbl{font:500 .75rem/1.4 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground)}
+:focus-visible{outline:var(--focus-width) solid var(--copper-ring);outline-offset:3px}
+</style></head><body>
+<nav class="bar" aria-label="Sections"><div class="prog"></div>
+<a class="tab" aria-current="page" href="#">Products</a><a class="tab" href="#">Technology</a><a class="tab" href="#">Strategy</a><a class="tab" href="#">Resources</a></nav>
+<style>.bar{position:relative;display:flex;border-bottom:1px solid var(--rule);background:var(--ink);padding:0 24px}
+.prog{position:absolute;top:0;left:0;height:1px;width:38%;background:var(--copper)}
+.tab{font:500 .75rem/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground);text-decoration:none;padding:20px 16px;border-top:3px solid transparent;border-radius:0;transition:color .15s,border-color .15s}
+.tab[aria-current=page]{color:var(--paper-bright);border-top-color:var(--copper)}</style>
+</body></html>

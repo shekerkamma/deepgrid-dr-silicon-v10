@@ -1,0 +1,1 @@
+The signature end of every route: a hairline-separated list of sibling sections, each with a one-line reason a reader would act on, then the source documents with page counts. Typeset as part of the document: no cards, no accent bar.

@@ -10,7 +10,9 @@ import { url } from './routes';
 import { useReduced } from './shell';
 import { MotorScene } from './three/scenes';
 import AppModel3D from './app-model-3d';
-import { films, type Film as DGFilm } from './dg32-films';
+import { films } from './dg32-films';
+import { explainers } from './explainers';
+import { FilmPlayer as Player } from './film-player';
 import { CHANNEL, type Video } from './resources-data';
 import type { CompanyPage, Person, Section } from './company-pages';
 
@@ -137,14 +139,6 @@ function Flow({ steps, label }: { steps: FlowStep[]; label?: string }) {
 // Site paths in the data are written root-relative ('contact', '/evidence'); resolve them under the Pages base.
 const link = (h: string) => (/^(https?:|mailto:|#)/.test(h) ? h : url(h.startsWith('/') ? h : '/' + h));
 
-function Player({ film }: { film: DGFilm }) {
-  return (
-    <video controls preload="none" poster={film.poster} playsInline width={1600} height={900}>
-      <source src={film.src} type="video/mp4" />
-      <track kind="captions" src={film.vtt} srcLang="en" label="English" default />
-    </video>
-  );
-}
 
 const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
 
@@ -307,7 +301,7 @@ function Block({ s }: { s: Section }) {
             {s.lede && <p className="cp-lede">{s.lede}</p>}
           </header>
           <div className={'cp-films' + (s.ids.length > 1 ? ' cp-films-multi' : '')}>
-            {s.ids.map((id) => films.find((f) => f.id === id)).filter((f) => !!f).map((f) => (
+            {s.ids.map((id) => [...films, ...explainers].find((f) => f.id === id)).filter((f) => !!f).map((f) => (
               <figure key={f.id} className="cp-film">
                 <Player film={f} />
                 <figcaption><strong>{f.title}</strong><span>{f.sub} · {f.length}</span></figcaption>

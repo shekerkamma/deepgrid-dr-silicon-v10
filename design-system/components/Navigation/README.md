@@ -1,0 +1,1 @@
+The sticky top bar: mono labels on square buttons, the active route marked by a 3px `copper` top border, a page-progress hairline along its top edge. Below 800px it collapses into a sheet behind a labelled menu button.

@@ -1,0 +1,1 @@
+One beat of a part storyboard beside its architecture diagram: a copper marker disc naming the diagram's numbered marker, a `card` assertion heading, a `body` paragraph in `ink-2`, and zone chips. Beats are separated by a `rule` hairline, two columns on desktop, one on phone. The same beat drives one scene of a part explainer film.

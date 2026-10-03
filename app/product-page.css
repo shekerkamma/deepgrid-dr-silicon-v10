@@ -85,3 +85,6 @@
 }
 /* On a phone the bar holds the name and the action only; a long name truncates rather than widening the page. */
 @media (max-width: 540px) { .pp-bar { gap: .75rem; } .pp-bar-name { flex: 1; font-size: var(--sc-t-control); } .pp-bar-cta { padding: 0 .7rem; } }
+
+/* the part explainer film at the top of "Inside the part": a readable width, set off from the lead and the diagram */
+.pp-explainer { margin: 28px 0 8px; max-width: 60rem; }

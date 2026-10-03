@@ -5,6 +5,8 @@
 import {ArrowRight, ArrowUpRight, FileText} from 'lucide-react';
 import {Sec, DataTable, Diagram, Storyboard, DiagramNotes} from './detail';
 import {archStories} from './arch-stories';
+import {explainers} from './explainers';
+import {FilmPlayer} from './film-player';
 import {productDiagrams, nbspUnits} from './diagram-notes';
 import {productBySlug, productSlugById, type ProductPage} from './product-pages-data';
 import {portfolioParts} from './portfolio-story-data';
@@ -32,6 +34,7 @@ export default function ProductPageView({slug}: {slug: string}) {
   const annex = groundedDocuments.find(d => d.id === 'doc2')!;
   const dg = productDiagrams[p.id];
   const story = archStories[p.id];
+  const explainer = explainers.find(e => e.slug === p.slug);
   const S = story?.sections;
   const base = p.id === 'sku4' ? 'dg32-lite' : p.slug;
   const fits = areas.flatMap(a => a.items.filter(i => i.product === p.id).map(i => ({area: a, role: i.role})));
@@ -68,6 +71,7 @@ export default function ProductPageView({slug}: {slug: string}) {
       <section id="pp-inside" className="pp-sec">
         <Sec kicker="INSIDE THE PART" title={story?.headline ?? 'From signal in to signal out.'} copy={story?.lead ?? p.blockNote}>
           {dg && story ? <>
+            {explainer && <figure className="cp-film pp-explainer"><FilmPlayer film={explainer}/><figcaption><strong>{explainer.title}</strong><span>{explainer.sub} · {explainer.length} · pre-silicon, every figure a design target</span></figcaption></figure>}
             {dg.note && <p className="pp-note">{nbspUnits(dg.note)}</p>}
             <Diagram src={dg.src} title={dg.title} alt={dg.alt} width={dg.width} height={dg.height} drawio={dg.drawio} guide={dg.guide} html={`/downloads/${base}-workflow.html`} deck={`/downloads/${base}-architecture.pptx`}/>
             <Storyboard story={story} questionsHref="#pp-questions"/>

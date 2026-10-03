@@ -1,0 +1,3 @@
+- `deepgrid-semi-wordmark.png` (480 × 96): the "Deepgrid Semi" wordmark, white ink on transparent. Use on `ink` only, in the site header and on film end cards; never on bone.
+- `deepgrid-d-192.png` and `deepgrid-d-64.png`: the company's "D" mark in its own blue-cyan gradient. Use at icon sizes (menu, favicon, apple-touch). Its blue is the logo's alone; never sample it for UI.
+- `favicon.svg`: the four-square grid mark: three `mark-copper` squares and an offset `mark-paper` square on `mark-ground`. The header's CSS brand mark draws the same figure.

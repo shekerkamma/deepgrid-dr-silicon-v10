@@ -1,0 +1,49 @@
+WEBVTT
+
+00:00:00.450 --> 00:00:05.998
+A cockpit display has to stay readable in direct sun at 85 degrees.
+
+00:00:05.998 --> 00:00:10.470
+and a picture that quietly stops updating is a hazard.
+
+00:00:10.470 --> 00:00:13.534
+SKU-8 checks every frame in hardware.
+
+00:00:14.584 --> 00:00:25.848
+Video arrives over LVDS, MIPI or parallel RGB, and lands in a small line buffer, so the link never has to keep the panel's pace.
+
+00:00:26.898 --> 00:00:30.327
+Liquid crystal changes its response as it heats.
+
+00:00:30.327 --> 00:00:37.470
+So every pixel is corrected against a temperature sensor on the chip, and contrast holds in the sun.
+
+00:00:38.520 --> 00:00:42.029
+Every column of the panel has its own converter.
+
+00:00:42.029 --> 00:00:46.926
+Here, the fine digital work ends and the high-voltage drive begins.
+
+00:00:47.976 --> 00:00:59.731
+High-voltage amplifiers swing 3,840 outputs across 12 volts, voltages the finest chips cannot reach, and sharing charge between columns saves power.
+
+00:01:00.781 --> 00:01:10.232
+A timing controller paces every frame and scans the rows at up to 24 volts, while the backlight dims in eight local zones.
+
+00:01:11.282 --> 00:01:14.576
+Hardware compares each frame with the one before.
+
+00:01:14.576 --> 00:01:19.416
+If the picture stops changing, the operator is warned within two frames.
+
+00:01:20.466 --> 00:01:22.277
+SKU-8 is pre-silicon.
+
+00:01:22.277 --> 00:01:28.314
+No frame has been driven on silicon yet, and every figure is a target.
+
+00:01:28.314 --> 00:01:31.850
+Bring us your panel and your environment.
+
+00:01:31.850 --> 00:01:35.213
+We will tell you what SKU-8 must prove.

@@ -1,0 +1,14 @@
+<!-- @dsCard group="Controls" height=150 -->
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
+.wrap{padding:20px 24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.lbl{font:500 .75rem/1.4 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground)}
+:focus-visible{outline:var(--focus-width) solid var(--copper-ring);outline-offset:3px}
+</style></head><body>
+<div class="wrap" style="align-items:flex-start">
+<label class="f"><span class="lbl">Company</span><input value="Equipment maker"></label>
+<label class="f"><span class="lbl">Work email</span><input aria-invalid="true" aria-describedby="e1" value="name@"><span id="e1" class="err">Enter a full email address.</span></label>
+</div>
+<style>.f{display:grid;gap:6px;flex:1 1 220px}.f input{font:400 .9375rem/1.3 var(--font-sans);color:var(--paper);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--pad-input-y) var(--pad-input-x);min-height:var(--control-min);box-sizing:border-box}
+.f input:focus-visible{outline-offset:2px}.f input[aria-invalid=true]{border-color:var(--error)}.err{font-size:.875rem;color:var(--paper)}</style>
+</body></html>
