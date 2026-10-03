@@ -1,0 +1,101 @@
+WEBVTT
+
+1
+00:00:00.040 --> 00:00:02.860
+Avionics power starts on a 28 volt bus.
+
+2
+00:00:02.860 --> 00:00:08.340
+One that carries 80 volt surges, and 100 volt spikes
+
+3
+00:00:09.020 --> 00:00:12.940
+Yet every rail on the board must still come up in order.
+
+4
+00:00:12.940 --> 00:00:15.081
+First, the surges stop at the door.
+
+5
+00:00:15.141 --> 00:00:19.201
+The input stage clamps them, refuses a reversed supply,
+
+6
+00:00:19.201 --> 00:00:23.221
+and shuts out any bus that drifts outside its range.
+
+7
+00:00:23.221 --> 00:00:27.695
+Next, one buck brings the bus down, limiting current on every cycle,
+
+8
+00:00:27.695 --> 00:00:30.815
+so a short downstream cannot run away.
+
+9
+00:00:30.815 --> 00:00:34.165
+That one output then feeds four regulators.
+
+10
+00:00:34.165 --> 00:00:40.565
+5 volts, 3.3, 1.8, and a last rail at 1.2 or 0.9.
+
+11
+00:00:40.565 --> 00:00:45.365
+Each one ramps up gently, not all at once.
+
+12
+00:00:45.365 --> 00:00:48.324
+Every rail reports back from inside a narrow window.
+
+13
+00:00:48.864 --> 00:00:52.444
+Only then does the sequencer let the next one start.
+
+14
+00:00:52.444 --> 00:00:55.604
+Inside the buck, current sense closes a fast inner loop.
+
+15
+00:00:56.684 --> 00:01:01.264
+Whether it holds steady from minus 55 to 125 degrees is not
+
+16
+00:01:01.264 --> 00:01:02.164
+yet shown.
+
+17
+00:01:02.193 --> 00:01:07.033
+And because one particle strike must never reorder a rail,
+
+18
+00:01:07.293 --> 00:01:11.113
+the sequencer's logic is hardened, and triple-voted.
+
+19
+00:01:11.113 --> 00:01:12.712
+None of this is silicon yet.
+
+20
+00:01:12.712 --> 00:01:14.812
+Every figure is a target.
+
+21
+00:01:14.812 --> 00:01:19.272
+The surge clamp, the loop margins, the upset spacing.
+
+22
+00:01:19.272 --> 00:01:21.612
+All of it must still be proven
+
+23
+00:01:22.592 --> 00:01:24.312
+So bring us your bus profile.
+
+24
+00:01:24.312 --> 00:01:25.792
+Bring your rail list.
+
+25
+00:01:25.792 --> 00:01:29.572
+And we will tell you exactly what SKU-3 must prove.

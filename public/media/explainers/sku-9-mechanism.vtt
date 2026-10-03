@@ -1,0 +1,101 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:03.220
+A vehicle zone today is a relay box and a loom of
+
+2
+00:00:03.220 --> 00:00:03.680
+wires.
+
+3
+00:00:04.380 --> 00:00:09.860
+Replace it with one chip and brake messages and comfort traffic now
+
+4
+00:00:09.860 --> 00:00:11.500
+share the same silicon.
+
+5
+00:00:11.535 --> 00:00:16.475
+Ethernet, CAN, LIN and FlexRay all arrive at one gateway,
+
+6
+00:00:16.475 --> 00:00:21.975
+which rate-limits each domain, so a flood on one bus cannot starve
+
+7
+00:00:21.975 --> 00:00:22.635
+another.
+
+8
+00:00:22.645 --> 00:00:27.245
+A switch that keeps precise time reserves slots for brake-by-wire on a
+
+9
+00:00:27.245 --> 00:00:31.245
+shared link, so its latency is bounded by hardware,
+
+10
+00:00:31.245 --> 00:00:33.325
+not by software scheduling.
+
+11
+00:00:33.333 --> 00:00:36.753
+A router turns each incoming message into a request,
+
+12
+00:00:36.753 --> 00:00:39.973
+and hands it to whichever block will act on it.
+
+13
+00:00:40.653 --> 00:00:43.553
+Every message rides the same crossbar.
+
+14
+00:00:43.553 --> 00:00:48.878
+Sixteen smart fuses replace the relay box, switching 12 and 48 volt
+
+15
+00:00:48.878 --> 00:00:52.028
+loads right beside the logic that commands them.
+
+16
+00:00:52.039 --> 00:00:54.319
+Two cores run in lockstep.
+
+17
+00:00:54.559 --> 00:00:57.459
+A mismatch drives the zone to its safe state,
+
+18
+00:00:57.459 --> 00:01:01.319
+and a firewall keeps lighting away from safety registers.
+
+19
+00:01:01.320 --> 00:01:05.580
+Every image is checked before it runs, and a failed update rolls
+
+20
+00:01:05.580 --> 00:01:09.820
+back, so a bad update never replaces the working bank.
+
+21
+00:01:09.831 --> 00:01:11.831
+SKU-9 is pre-silicon.
+
+22
+00:01:11.831 --> 00:01:16.531
+Its highest safety level is a design target here,
+
+23
+00:01:16.531 --> 00:01:17.331
+not a certificate
+
+24
+00:01:18.711 --> 00:01:21.031
+Bring us your zone's loads and networks.
+
+25
+00:01:21.031 --> 00:01:24.911
+We will tell you what SKU-9 must prove.

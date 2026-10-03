@@ -1,0 +1,97 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:03.120
+A meter has to keep measuring, and keep its record,
+
+2
+00:00:03.120 --> 00:00:05.360
+even when the mains is gone.
+
+3
+00:00:06.180 --> 00:00:12.180
+SKU-2 puts measurement, security and an always-on clock on one die.
+
+4
+00:00:12.180 --> 00:00:15.295
+Voltage and current flow into six 24-bit converters.
+
+5
+00:00:16.035 --> 00:00:19.315
+They set billing accuracy, so they are dedicated hardware,
+
+6
+00:00:19.315 --> 00:00:20.715
+calibrated once.
+
+7
+00:00:20.731 --> 00:00:24.771
+A decimator filters each raw bit stream into clean samples,
+
+8
+00:00:24.771 --> 00:00:28.011
+so the processor never touches the measurement chain.
+
+9
+00:00:28.027 --> 00:00:31.767
+What the meter charges for is computed right beside the converters.
+
+10
+00:00:32.347 --> 00:00:37.087
+Real, reactive and apparent power, and harmonics up to the 15th.
+
+11
+00:00:37.136 --> 00:00:40.156
+Results cross the bus to be stored and signed.
+
+12
+00:00:40.616 --> 00:00:43.996
+Secure boot and tamper key wiping protect the code,
+
+13
+00:00:43.996 --> 00:00:47.216
+and the keys, every reading depends on.
+
+14
+00:00:47.245 --> 00:00:51.325
+Readings leave on the meter's own protocol, beside the display,
+
+15
+00:00:51.325 --> 00:00:53.445
+the relay and the LEDs.
+
+16
+00:00:53.685 --> 00:00:56.085
+One die covers the whole meter.
+
+17
+00:00:56.085 --> 00:01:00.410
+An always-on domain keeps the clock and the tamper log alive on
+
+18
+00:01:00.410 --> 00:01:04.030
+a backup cell, drawing under 2 microwatts.
+
+19
+00:01:04.030 --> 00:01:05.626
+SKU-2 is pre-silicon.
+
+20
+00:01:05.626 --> 00:01:08.246
+Every figure is a target.
+
+21
+00:01:08.246 --> 00:01:13.486
+Accuracy over a fifteen-year life, and leakage through a thirty-day outage,
+
+22
+00:01:13.486 --> 00:01:19.006
+must still be proven Bring us your accuracy class and your outage
+
+23
+00:01:19.006 --> 00:01:19.646
+budget.
+
+24
+00:01:20.186 --> 00:01:23.246
+We will tell you what SKU-2 must prove.

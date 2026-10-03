@@ -3,21 +3,20 @@ import { url } from './routes';
 import type { Film } from './dg32-films';
 
 export type Explainer = Film & { slug: string; code: string };
-const e = (slug: string, title: string, length: string): Explainer => ({
-  id: slug + '-explainer', slug, code: slug.toUpperCase(), title, sub: 'The architecture in one narrated walk-through', length,
-  src: url('/media/explainers/' + slug + '-explainer.mp4'), poster: url('/media/explainers/' + slug + '-explainer-poster.jpg'),
-  vtt: url('/media/explainers/' + slug + '-explainer.vtt'),
+const e = (slug: string, title: string, length: string, base: string, sub: string): Explainer => ({
+  id: slug + '-explainer', slug, code: slug.toUpperCase(), title, sub, length,
+  src: url(base + '.mp4'), poster: url(base + '-poster.jpg'), vtt: url(base + '.vtt'),
 });
 
 export const explainers: Explainer[] = [
-  e("sku-1", "One die runs the motor loop and drives its 120 V power stage", "1:27"),
-  e("sku-2", "A meter that keeps measuring and keeps its record without mains", "1:33"),
-  e("sku-3", "One die turns a 28 V bus into four sequenced, supervised rails", "1:39"),
-  e("sku-4", "Two cores, two cycles apart, and a fault path that skips firmware", "1:39"),
-  e("sku-5", "Two bus links on one die, built for what lands on the pins", "1:36"),
-  e("sku-6", "SKU-6 ignores converter ripple and latches a real rail fault", "1:09"),
-  e("sku-7", "SKU-7 puts 77 GHz on SiGe and the target math on CMOS", "1:27"),
-  e("sku-8", "SKU-8 drives a cockpit panel and flags a frozen picture in two frames", "1:37"),
-  e("sku-9", "SKU-9 turns vehicle network traffic into switched power in one zone", "1:34"),
-  e("d100", "D100's failsafe can land the drone without its own flight computer", "1:29"),
+  e("sku-1", "One die runs the motor loop and drives its 120 V power stage", "1:19", "/media/explainers/sku-1-mechanism", "How it works, animated"),
+  e("sku-2", "A meter that keeps measuring and keeps its record without mains", "1:23", "/media/explainers/sku-2-mechanism", "How it works, animated"),
+  e("sku-3", "One die turns a 28 V bus into four sequenced, supervised rails", "1:30", "/media/explainers/sku-3-mechanism", "How it works, animated"),
+  e("sku-4", "Two cores, two cycles apart, and a fault path that skips firmware", "1:29", "/media/dg32-fault-path-explained", "How it works, animated"),
+  e("sku-5", "Two bus links on one die, built for what lands on the pins", "1:27", "/media/explainers/sku-5-mechanism", "How it works, animated"),
+  e("sku-6", "SKU-6 ignores converter ripple and latches a real rail fault", "1:01", "/media/explainers/sku-6-mechanism", "How it works, animated"),
+  e("sku-7", "SKU-7 puts 77 GHz on SiGe and the target math on CMOS", "1:18", "/media/explainers/sku-7-mechanism", "How it works, animated"),
+  e("sku-8", "SKU-8 drives a cockpit panel and flags a frozen picture in two frames", "1:27", "/media/explainers/sku-8-mechanism", "How it works, animated"),
+  e("sku-9", "SKU-9 turns vehicle network traffic into switched power in one zone", "1:25", "/media/explainers/sku-9-mechanism", "How it works, animated"),
+  e("d100", "D100's failsafe can land the drone without its own flight computer", "1:20", "/media/explainers/d100-mechanism", "How it works, animated"),
 ];

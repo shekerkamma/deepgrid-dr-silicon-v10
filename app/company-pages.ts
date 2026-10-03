@@ -195,7 +195,7 @@ export const companyPages: CompanyPage[] = [
     lede: 'Watch DeepGrid Semi’s silicon, autonomous driving, and mobility platforms in action.',
     sections: [
       { kind: 'videos', title: 'By platform', groups: videoGroups, shorts: shortGroups, channel: true, from: 'deepgridsemi.com/resources/videos + youtube.com DeepGrid Semi channel' },
-      { kind: 'films', kicker: 'Ten parts, one walk-through each', title: 'Each architecture, narrated block by block', lede: 'One short film per part: the problem it solves, its diagram beat by beat, and what is still unproven. Pre-silicon; every figure is a design target.', ids: EXPLAINER_IDS, from: 'part explainer films' },
+      { kind: 'films', kicker: 'Ten parts, one film each', title: 'How each part works, animated', lede: 'One short animated film per part: the problem it solves, the mechanism moving on the words that describe it, and what is still unproven. Animations illustrate; they are not simulations. Pre-silicon; every figure is a design target.', ids: EXPLAINER_IDS, from: 'part explainer films' },
       { kind: 'cta', title: 'Simulations and the narrated walkthrough', lede: 'The product lines in their simulators, the silicon films, and the 104-slide portfolio narrated end to end.', from: 'showcase films',
         actions: [ { label: 'Narrated decks & films', href: 'resources', primary: true }, { label: 'Documentation', href: 'resources/docs' } ] },
     ],
