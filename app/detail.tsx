@@ -1,10 +1,9 @@
 'use client';
-import {useEffect,useRef} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {ArrowUpRight,Download} from 'lucide-react';
-import {attach} from './nd-interact';
 import {url} from './routes';
 import {readHref} from './doc-links';
-import {nbspUnits as nb, type DiagramNotes as DiagramNotesData, type DiagramRef, type NativeDiagramData} from './diagram-notes';
+import {nbspUnits as nb, type DiagramNotes as DiagramNotesData, type DiagramRef} from './diagram-notes';
 import type {Explained,Step} from './detail-content';
 
 // Layout primitives for the detailed sections. Content lives in detail-content.ts.
@@ -39,50 +38,37 @@ export function Stats({items}:{items:readonly (readonly [string,string])[]}){ret
 // A draw.io diagram at its native size (its labels are drawn at 10 px), in a frame wider than the
 // text column, with a fit-to-width toggle and the full-size and source links.
 
-const MARK_NAMES: Record<string, string> = {'①': '1', '②': '2', '③': '3', '④': '4', '⑤': '5', '⑥': '6', F: 'fault path'};
-
-/** One architecture diagram in the site's own design (docs/v6/story-pack-depth.md §6 row 3: native, labelled
- *  stages, no raster text). Zones are cards, blocks sit inside them, and the numbered markers of the reading
- *  path sit on the blocks they name; the legend is the first thing in the notes below. On a phone every zone
- *  stacks, so nothing scrolls sideways. The draw.io drawing stays one click away as the full diagram. */
-export function NativeDiagram({data,title,label,svg,drawio,guide,html,deck,caption,notes}:{data:NativeDiagramData;title:string;label?:string;svg?:string;drawio?:string;guide?:string;html?:string;deck?:string;caption?:React.ReactNode;notes?:DiagramNotesData}){
+/** The part's draw.io architecture diagram as the visual of record. It fits the column on a desk; on a phone it
+ *  keeps a readable scale and scrolls sideways, with the full-size image one tap away. */
+export function Diagram({src,title,alt,width,height,drawio,guide,html,deck}:{src:string;title:string;alt:string;width:number;height:number;drawio?:string;guide?:string;html?:string;deck?:string}){
+ const [more,setMore]=useState(false);
  const body=useRef<HTMLDivElement>(null);
- // Connections, hover detail and click-to-highlight are drawn by nd-interact once the blocks are laid out.
- useEffect(()=>{const el=body.current;return el&&data.edges?.length?attach(el,data.edges):undefined;},[data]);
- const interactive=!!data.edges?.length;
- return <figure className="nd" aria-label={title}>
-  <div className="nd-bar"><div><span className="mono">{label??'SYSTEM ARCHITECTURE · INTERACTIVE'}</span><strong>{title}</strong></div>
-   <div className="nd-actions">{svg&&<a className="text-link" href={svg} target="_blank" rel="noreferrer">Open full diagram <ArrowUpRight size={15} aria-hidden="true"/></a>}{drawio&&<a className="text-link" href={drawio} download>Source (.drawio) <Download size={15} aria-hidden="true"/></a>}{html&&<a className="text-link" href={html} target="_blank" rel="noreferrer">Interactive diagram (HTML) <ArrowUpRight size={15} aria-hidden="true"/></a>}{deck&&<a className="text-link" href={deck} download>Architecture deck (.pptx) <Download size={15} aria-hidden="true"/></a>}{guide&&<a className="text-link" href={url(guide)}>Read architecture guide <ArrowUpRight size={15} aria-hidden="true"/></a>}</div></div>
-  {interactive&&<p className="nd-hint">Select a block to see what it receives and feeds; the arrows show each connection.</p>}
-  <div className="nd-body" ref={body}>
-   <svg className="nd-wires" aria-hidden="true"/>
-   {data.banner&&<p className="nd-banner">{nb(data.banner)}</p>}
-   {data.input&&<p className="nd-io" data-k="IN" data-t="External inputs" data-s={data.input}><span className="mono">IN</span>{nb(data.input)}</p>}
-   <div className="nd-frame"><p className="nd-frame-label mono">{data.frame}</p>
-    {data.rows.map((r,i)=>'bus' in r
-     ? <p className="nd-bus" key={i} data-k={r.k} data-t={r.bus.split('·')[0].trim()} data-s={r.bus}>{nb(r.bus)}</p>
-     : <div className="nd-row" key={i} style={{gridTemplateColumns:r.zones.map(z=>`minmax(0,${z.w}fr)`).join(' ')}}>
-        {r.zones.map(z=><section key={z.name} className={'nd-zone'+(z.tone?' is-'+z.tone:'')} aria-label={z.name} data-k={z.k} data-t={z.name}>
-         <p className="nd-zone-name">{z.name}</p>
-         <div className="nd-blocks" role="group" aria-label={z.name} style={{'--c':z.cols,'--cm':z.mcols??Math.min(z.cols,2)} as React.CSSProperties}>
-          {z.blocks.map((b,j)=>b
-           ? <div key={j} className="nd-block" data-k={b.k} data-t={b.t} data-s={b.s} {...(interactive?{role:'button',tabIndex:0,'aria-pressed':false}:{})} style={b.span?{'--s':b.span,'--sm':Math.min(b.span,2)} as React.CSSProperties:undefined}>
-              {b.marks&&<span className="nd-marks">{b.marks.map(m=><span key={m} className={'nd-mark'+(m==='F'?' is-fault':'')} aria-label={'Marker '+(MARK_NAMES[m]??m)}>{m}</span>)}</span>}
-              <strong>{b.t}</strong>{b.s&&<span>{nb(b.s)}</span>}</div>
-           : <div key={j} className="nd-gap" aria-hidden="true"/>)}
-         </div>
-         {z.note&&<p className="nd-zone-note">{nb(z.note)}</p>}
-        </section>)}
-       </div>)}
-   </div>
-   {data.output&&<p className="nd-io" data-k="OUT" data-t="External outputs" data-s={data.output}><span className="mono">OUT</span>{nb(data.output)}</p>}
-   {data.strip&&<p className="nd-strip"><span><b className="mono">PROTOTYPE</b> {nb(data.strip[0])}</span><span><b className="mono">PRODUCT</b> {nb(data.strip[1])}</span></p>}
-   <div className="nd-tip" hidden role="tooltip"/>
-  </div>
-  {interactive&&<p className="nd-live sr-only" aria-live="polite"/>}
-  {caption&&<figcaption>{caption}</figcaption>}
-  {notes&&<DiagramNotes notes={notes}/>}
+ useEffect(()=>{const el=body.current;if(!el)return;const check=()=>setMore(el.scrollLeft+el.clientWidth<el.scrollWidth-4);check();const img=el.querySelector('img');el.addEventListener('scroll',check,{passive:true});img?.addEventListener('load',check);const ro=new ResizeObserver(check);ro.observe(el);return ()=>{el.removeEventListener('scroll',check);img?.removeEventListener('load',check);ro.disconnect();};},[]);
+ return <figure className="dr-diagram sb-diagram">
+  <div className="dr-diagram-bar"><div><span className="mono">SYSTEM ARCHITECTURE</span><strong>{title}</strong></div>
+   <div className="dr-diagram-actions"><a className="text-link" href={src} target="_blank" rel="noreferrer">Open full size <ArrowUpRight size={15} aria-hidden="true"/></a>{html&&<a className="text-link" href={html} target="_blank" rel="noreferrer">Interactive version <ArrowUpRight size={15} aria-hidden="true"/></a>}{deck&&<a className="text-link" href={deck} download>Architecture deck (.pptx) <Download size={15} aria-hidden="true"/></a>}{drawio&&<a className="text-link" href={drawio} download>Source (.drawio) <Download size={15} aria-hidden="true"/></a>}{guide&&<a className="text-link" href={url(guide)}>Architecture guide <ArrowUpRight size={15} aria-hidden="true"/></a>}</div></div>
+  <div ref={body} className="dr-diagram-body" data-more={more?'':undefined} tabIndex={0} role="region" aria-label={title+'. On a narrow screen, scroll sideways or open it full size.'}><img src={src} alt={alt} width={width} height={height} loading="lazy"/></div>
  </figure>;
+}
+
+export type StoryBeat = {marks: string[]; title: string; body: string; zones: string[]};
+type SectionStory = {title: string; copy: string};
+export type ArchStory = {id: string; headline: string; lead: string; beats: StoryBeat[]; closing: {title: string; body: string};
+  /** Part-specific title and lead for every other section of the product page (story-architect). */
+  sections?: Record<'physics' | 'specs' | 'questions' | 'fit' | 'evidence' | 'sources' | 'close', SectionStory>};
+
+/** The storyboard under the diagram: the reading path told beat by beat, each beat carrying the marker it points
+ *  to on the image and the zones it crosses. Data: arch-stories.ts (story-architect, 2026-10-03). */
+export function Storyboard({story,questionsHref}:{story:ArchStory;questionsHref?:string}){
+ return <div className="sb">
+  <p className="dr-kicker">THE STORYBOARD · FOLLOW THE NUMBERED MARKERS ON THE DIAGRAM</p>
+  <ol className="sb-beats">{story.beats.map((b,i)=><li key={i} className="sb-beat">
+   <div className="sb-rail" aria-hidden="true">{b.marks.length?b.marks.map(m=><span key={m} className={'sb-mark'+(m==='F'?' is-fault':'')}>{m}</span>):<span className="sb-mark is-plain">{i+1}</span>}</div>
+   <div className="sb-body"><h3>{b.marks.length?<span className="sr-only">Marker {b.marks.join(', ')}: </span>:null}{b.title}</h3><p>{nb(b.body)}</p>
+    {b.zones.length>0&&<p className="sb-zones">{b.zones.map(z=><span key={z}>{z.split('  ·  ')[0]}</span>)}</p>}</div>
+  </li>)}</ol>
+  <aside className="sb-close"><p className="dr-kicker">WHAT IS STILL UNPROVEN</p><h3>{story.closing.title}</h3><p>{nb(story.closing.body)}</p>{questionsHref&&<a className="text-link" href={questionsHref}>The evaluation questions <ArrowUpRight size={15} aria-hidden="true"/></a>}</aside>
+ </div>;
 }
 
 /** The reading notes under an architecture diagram: what each zone is and why it exists, what the

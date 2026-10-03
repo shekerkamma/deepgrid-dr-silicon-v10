@@ -147,3 +147,19 @@ Extends §6 row 3 ("Inside the part") and the /technology and /resources diagram
 - **Rebuild.** `python3 scripts/sku-diagrams/build.py` regenerates `.drawio`, guides and
   `app/sku-diagram-notes.ts` (notes + `nativeDiagrams`) from `specs.py` and `specs_native.py`;
   `scripts/sku-diagrams/export.sh` re-exports the SVGs. Components: `NativeDiagram`, `DiagramNotes` (app/detail.tsx).
+
+## 12. Product pages, every section (story-architect, 2026-10-03)
+Supersedes §11's "native diagram" decision. User, 2026-10-03: keep the existing architecture block diagrams and
+give them a storyboard and narrative; apply story-architect to every section, not only the diagram.
+
+- **Inside the part:** the draw.io architecture diagram is the visual of record, followed by a storyboard: the
+  part's BLUF as the section headline, the tension as the lead, 5–7 assertion beats that walk the diagram's
+  numbered markers in order, and a closing "what is still unproven" that points to the evaluation questions.
+  Block-by-block notes and sources sit in a collapsed reference.
+- **Every other section** (why its own silicon, specification, evaluation questions, where it fits, evidence,
+  sources, close) carries a part-specific assertion title and lead, so each page reads as one argument:
+  context, tension, proof, implication, action. Nothing generic is shared across the ten pages.
+- **Source of the words:** `content-ideas/runs/2026-10-03-arch-storyboards/<slug>.json` and
+  `<slug>.sections.json`, written from the product page (value authority), the guide, the applications record and
+  the deck story packs; `scripts/sku-diagrams/stories.py` validates lengths and claim rules and writes
+  `app/arch-stories.ts`.

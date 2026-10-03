@@ -3,8 +3,8 @@
  *  product-pages-data.ts (authored from the annex), maturity and boundary from portfolio-story-data.ts,
  *  status and evidence from applications-story-data.ts, so every surface states the same thing. */
 import {ArrowRight, ArrowUpRight, FileText} from 'lucide-react';
-import {Sec, DataTable, NativeDiagram} from './detail';
-import {nativeDiagrams} from './sku-diagram-notes';
+import {Sec, DataTable, Diagram, Storyboard, DiagramNotes} from './detail';
+import {archStories} from './arch-stories';
 import {productDiagrams, nbspUnits} from './diagram-notes';
 import {productBySlug, productSlugById, type ProductPage} from './product-pages-data';
 import {portfolioParts} from './portfolio-story-data';
@@ -31,7 +31,9 @@ export default function ProductPageView({slug}: {slug: string}) {
   const doc = groundedDocuments.find(d => d.id === record.evidenceDoc)!;
   const annex = groundedDocuments.find(d => d.id === 'doc2')!;
   const dg = productDiagrams[p.id];
-  const nd = nativeDiagrams[p.id === 'sku4' ? 'lite' : p.id];
+  const story = archStories[p.id];
+  const S = story?.sections;
+  const base = p.id === 'sku4' ? 'dg32-lite' : p.slug;
   const fits = areas.flatMap(a => a.items.filter(i => i.product === p.id).map(i => ({area: a, role: i.role})));
   const sheet = `Sheet ${String(record.sheet).padStart(2, '0')}`;
   const contact = url('/contact') + '?part=' + encodeURIComponent(`${part.code} ${part.name}`);
@@ -56,7 +58,7 @@ export default function ProductPageView({slug}: {slug: string}) {
       </header>
 
       <section id="pp-physics" className="pp-sec">
-        <Sec kicker="WHY ITS OWN SILICON" title="The physical requirement sets the process." copy="Each requirement below is a property of the socket, not a preference; the right-hand column is what it forces on the silicon.">
+        <Sec kicker="WHY ITS OWN SILICON" title={S?.physics.title ?? 'The physical requirement sets the process.'} copy={S?.physics.copy ?? 'Each requirement below is a property of the socket, not a preference; the right-hand column is what it forces on the silicon.'}>
           <ol className="pp-physics">
             {p.physics.map((x, i) => <li key={i}><p className="pp-req">{x.requirement}</p><ArrowRight size={16} aria-hidden="true"/><p>{x.consequence}</p></li>)}
           </ol>
@@ -64,10 +66,12 @@ export default function ProductPageView({slug}: {slug: string}) {
       </section>
 
       <section id="pp-inside" className="pp-sec">
-        <Sec kicker="INSIDE THE PART" title="From signal in to signal out." copy={p.blockNote}>
-          {dg && nd ? <>
+        <Sec kicker="INSIDE THE PART" title={story?.headline ?? 'From signal in to signal out.'} copy={story?.lead ?? p.blockNote}>
+          {dg && story ? <>
             {dg.note && <p className="pp-note">{nbspUnits(dg.note)}</p>}
-            <NativeDiagram data={nd} title={dg.title} svg={dg.src} html={`/downloads/${p.id === 'sku4' ? 'dg32-lite' : p.slug}-workflow.html`} deck={`/downloads/${p.id === 'sku4' ? 'dg32-lite' : p.slug}-architecture.pptx`} drawio={dg.drawio} guide={dg.guide} caption={dg.caption} notes={dg.notes}/>
+            <Diagram src={dg.src} title={dg.title} alt={dg.alt} width={dg.width} height={dg.height} drawio={dg.drawio} guide={dg.guide} html={`/downloads/${base}-workflow.html`} deck={`/downloads/${base}-architecture.pptx`}/>
+            <Storyboard story={story} questionsHref="#pp-questions"/>
+            <details className="sb-ref"><summary className="dr-kicker">BLOCK BY BLOCK, AND THE SOURCES BEHIND THIS DIAGRAM</summary><DiagramNotes notes={dg.notes}/></details>
             <p className="pp-note">Architecture from the annex, {sheet}. A functional view, not a floorplan.</p>
           </> : <>
             <ol className="pp-blocks" aria-label={`${part.code} block architecture`}>
@@ -84,7 +88,7 @@ export default function ProductPageView({slug}: {slug: string}) {
       </section>
 
       <section id="pp-specs" className="pp-sec">
-        <Sec kicker="SPECIFICATION" title="Architecture targets, not datasheet values." copy={`Every figure is a design target stated in the Technical Annex, ${sheet}. None is a measurement of manufactured silicon.`}>
+        <Sec kicker="SPECIFICATION" title={S?.specs.title ?? 'Architecture targets, not datasheet values.'} copy={S?.specs.copy ?? `Every figure is a design target stated in the Technical Annex, ${sheet}. None is a measurement of manufactured silicon.`}>
           <DataTable caption={`${part.code} architecture targets (Annex v3, ${sheet})`} head={['Parameter', 'Target']} rows={p.specs}/>
           <div className="pp-toward">
             <p className="dr-kicker">DESIGNED TOWARD</p>
@@ -96,7 +100,7 @@ export default function ProductPageView({slug}: {slug: string}) {
       </section>
 
       <section id="pp-questions" className="pp-sec">
-        <Sec kicker="EVALUATION QUESTIONS" title="What an evaluator should ask first." copy={`The annex asks these of its own design. Each is a question silicon, test or layout has to answer before ${part.code} can be relied on.`}>
+        <Sec kicker="EVALUATION QUESTIONS" title={S?.questions.title ?? 'What an evaluator should ask first.'} copy={S?.questions.copy ?? `The annex asks these of its own design. Each is a question silicon, test or layout has to answer before ${part.code} can be relied on.`}>
           <ol className="pp-questions">
             {p.questions.map(q => <li key={q.title}><h3>{q.title}</h3><p>{q.question}</p></li>)}
           </ol>
@@ -104,7 +108,7 @@ export default function ProductPageView({slug}: {slug: string}) {
       </section>
 
       <section id="pp-fit" className="pp-sec">
-        <Sec kicker="WHERE IT FITS" title="The systems it goes into, and the parts beside it." copy={part.evaluation}>
+        <Sec kicker="WHERE IT FITS" title={S?.fit.title ?? 'The systems it goes into, and the parts beside it.'} copy={S?.fit.copy ?? part.evaluation}>
           <div className="pp-fit">
             <ul className="pp-areas">
               {fits.map(f => (
@@ -125,7 +129,7 @@ export default function ProductPageView({slug}: {slug: string}) {
       </section>
 
       <section id="pp-evidence" className="pp-sec">
-        <Sec kicker="EVIDENCE TODAY" title={part.maturity === 'Pre-silicon engineering evidence' ? 'Simulated and implemented, not yet measured.' : 'An architecture, with its evidence named.'} copy={part.boundary}>
+        <Sec kicker="EVIDENCE TODAY" title={S?.evidence.title ?? (part.maturity === 'Pre-silicon engineering evidence' ? 'Simulated and implemented, not yet measured.' : 'An architecture, with its evidence named.')} copy={S?.evidence.copy ?? part.boundary}>
           <dl className="pp-evidence">
             <div><dt>Strongest evidence</dt><dd>{record.evidence}</dd></div>
             {record.status && <div><dt>Development status</dt><dd>{record.status}</dd></div>}
@@ -138,7 +142,7 @@ export default function ProductPageView({slug}: {slug: string}) {
       </section>
 
       <section id="pp-sources" className="pp-sec">
-        <Sec kicker="SOURCES" title="Read the source behind every figure." copy={'Each document opens inside the site at the cited section; the PDF is the edition of record.' + (dg?.annexDiffers ? ' Where the annex sheet differs from this page, the difference is stated beside it.' : '')}>
+        <Sec kicker="SOURCES" title={S?.sources.title ?? 'Read the source behind every figure.'} copy={(S?.sources.copy ?? 'Each document opens inside the site at the cited section; the PDF is the edition of record.') + (dg?.annexDiffers ? ' Where the annex sheet differs from this page, the difference is stated beside it.' : '')}>
           <ul className="pp-sources">
             <li>
               <a href={readHref(annex.specFile, part.source.section.includes('§3') ? undefined : '2. Complete 14-Sheet Portfolio Matrix')}><FileText size={15} aria-hidden="true"/><span>{annex.title}</span><span className="pp-cite">{sheet}{part.source.section ? ' · ' + part.source.section : ''}</span></a>
@@ -159,8 +163,8 @@ export default function ProductPageView({slug}: {slug: string}) {
       </section>
 
       <section className="pp-close">
-        <h2>Bring the socket. We will tell you what {part.code} has to prove for it.</h2>
-        <p>Send the platform, voltage and power environment, interfaces and qualification needs. The reply names what is architecture, what is evidence and what would have to be tested.</p>
+        <h2>{S?.close.title ?? `Bring the socket. We will tell you what ${part.code} has to prove for it.`}</h2>
+        <p>{S?.close.copy ?? 'Send the platform, voltage and power environment, interfaces and qualification needs. The reply names what is architecture, what is evidence and what would have to be tested.'}</p>
         <div className="pp-actions">
           <a className="primary" href={contact}>Discuss {part.code} <ArrowUpRight size={16} aria-hidden="true"/></a>
           <a className="text-link" href={url('/products')}>Compare all ten parts <ArrowUpRight size={15} aria-hidden="true"/></a>

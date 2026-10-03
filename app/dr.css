@@ -4823,3 +4823,28 @@ input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-sea
 .nd>figcaption{padding:12px 18px 14px;color:var(--ink-2);font-size:var(--sc-t-body);line-height:1.6;max-width:calc(var(--sc-measure, 64ch) + 36px);border-top:1px solid var(--rule)}
 @media(max-width:900px){.nd-row{grid-template-columns:minmax(0,1fr)!important}}
 @media(max-width:560px){.nd-body{padding:12px}.nd-frame{padding:10px}.nd-blocks{grid-template-columns:repeat(var(--cm,2),minmax(0,1fr))}.nd-block{grid-column:span var(--sm,1)}}
+/* Storyboard around the draw.io architecture diagram (Diagram + Storyboard in detail.tsx) */
+.sb-diagram{position:static;left:auto;translate:none;width:100%;margin:28px 0 0}
+.sb-diagram .dr-diagram-body img{width:100%;min-width:0}
+@media(max-width:760px){.sb-diagram .dr-diagram-body img{width:1000px;max-width:none}}
+.sb{margin-top:36px}
+.sb-beats{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px}
+.sb-beat{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding-top:16px;border-top:1px solid var(--rule)}
+.sb-rail{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.sb-mark{display:inline-grid;place-items:center;min-width:30px;height:30px;padding:0 6px;border-radius:15px;background:var(--copper);color:var(--background);font:600 var(--sc-t-control)/1 var(--font-mono)}
+.sb-mark.is-fault{background:transparent;color:var(--copper);border:1px solid var(--copper)}
+.sb-mark.is-plain{background:transparent;color:var(--ink-2);border:1px solid var(--border)}
+.sb-body h3{margin:2px 0 8px;font:400 var(--sc-t-card)/var(--sc-lh-card) var(--serif);letter-spacing:var(--sc-track-card);color:var(--ink);text-wrap:balance}
+.sb-body p{margin:0;color:var(--ink-2);font-size:var(--sc-t-body);line-height:var(--sc-lh-body);max-width:var(--sc-measure)}
+.sb-zones{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px!important}
+.sb-zones span{font:var(--text-meta) var(--font-mono);letter-spacing:var(--sc-track-meta);text-transform:uppercase;color:var(--ink-2);border:1px solid var(--border);border-radius:var(--sc-radius-sm,4px);padding:3px 7px}
+.sb-close{margin-top:28px;border:1px solid var(--border);border-radius:var(--sc-radius-md,6px);background:var(--surface);padding:18px 22px}
+.sb-close h3{margin:6px 0 8px;font:400 var(--sc-t-card)/var(--sc-lh-card) var(--serif);color:var(--ink)}
+.sb-close p{margin:0;color:var(--ink-2);font-size:var(--sc-t-body);line-height:var(--sc-lh-body);max-width:var(--sc-measure)}
+.sb-ref{margin-top:28px;border-top:1px solid var(--rule);padding-top:14px}
+.sb-ref>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;min-height:32px}
+.sb-ref>summary::-webkit-details-marker{display:none}
+.sb-ref>summary::before{content:'+';font:var(--text-meta) var(--font-mono);color:var(--copper)}
+.sb-ref[open]>summary::before{content:'−'}
+@media(max-width:900px){.sb-beats{grid-template-columns:minmax(0,1fr)}}
+.sb-caption{margin:12px 0 0;max-width:var(--sc-measure);color:var(--ink-2);font-size:var(--sc-t-control);line-height:1.6}
