@@ -14,9 +14,9 @@
 
 .ps-fault { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
 .ps-fault li { position: relative; padding: 16px 16px 18px; border: 1px solid var(--border); border-radius: var(--sc-radius-md); background: var(--popover); }
-.ps-fault li[data-last='true'] { border-color: var(--cpu); }
+.ps-fault li[data-last='true'] { border-color: var(--safe); }
 .ps-fault-n { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--copper); color: var(--copper); font-size: var(--text-meta); font-variant-numeric: tabular-nums; margin-bottom: 12px; }
-.ps-fault li[data-last='true'] .ps-fault-n { border-color: var(--cpu); color: var(--cpu); }
+.ps-fault li[data-last='true'] .ps-fault-n { border-color: var(--safe); color: var(--safe); }
 .ps-fault h3 { font-family: var(--serif); font-weight: 400; font-size: var(--sc-t-block); margin: 0 0 8px; text-wrap: balance; }
 .ps-fault p { font-size: var(--text-meta); line-height: 1.6; color: var(--ink-2); }
 

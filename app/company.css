@@ -77,8 +77,8 @@
 }
 
 .dr-stress-row[data-state="cut"] .dr-stress-bar i { opacity: .55; }
-.dr-stress-row[data-state="held"] .dr-stress-bar i { background: var(--cpu); }
-.dr-stress-row[data-state="held"] .dr-stress-val { color: var(--cpu); }
+.dr-stress-row[data-state="held"] .dr-stress-bar i { background: var(--safe); }
+.dr-stress-row[data-state="held"] .dr-stress-val { color: var(--safe); }
 .dr-stress-row[data-state="pulled"] .dr-stress-name,
 .dr-stress-row[data-state="pulled"] .dr-stress-val { color: var(--ink-2); text-decoration: line-through; }
 

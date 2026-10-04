@@ -89,6 +89,9 @@
 /* the part explainer film at the top of "Inside the part": a readable width, set off from the lead and the diagram */
 .pp-explainer { margin: 28px 0 8px; max-width: 60rem; }
 
+/* The light ground the draw.io architecture diagrams are drawn on (a colour used twice is a token). */
+:root { --diagram-ground: #f4f2ec; }
+
 /* Product page after deepgridsemi.com's DG-A100 page, in the DeepGrid Semi design system (ink ground,
    copper the one accent, teal only for a safe state). Sections: hero, overview + carousel, key features,
    architecture & specifications, readiness, designed for, call to action. */
@@ -151,7 +154,7 @@
 .pp-slides { position: relative; }
 .pp-carousel { border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); padding: .75rem; }
 .pp-slide video, .pp-slide img { display: block; width: 100%; height: auto; border-radius: var(--sc-radius-sm); background: var(--background); }
-.pp-slide-img img { aspect-ratio: 16 / 9; object-fit: contain; background: #f4f2ec; }
+.pp-slide-img img { aspect-ratio: 16 / 9; object-fit: contain; background: var(--diagram-ground); }
 .pp-carousel-nav { display: flex; align-items: center; gap: .75rem; padding: .75rem .25rem 0; }
 .pp-carousel-nav > button { display: inline-grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; }
 .pp-carousel-nav > button:hover, .pp-carousel-nav > button:focus-visible { border-color: var(--copper); color: var(--copper); }
@@ -182,7 +185,7 @@
 .pp-diagram-full > summary::-webkit-details-marker { display: none; }
 .pp-arch { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr); gap: 1rem; align-items: center; }
 .pp-spec-cards { display: grid; gap: .75rem; margin: 0; }
-.pp-arch-figure { display: block; padding: .6rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: #f4f2ec; text-decoration: none; }
+.pp-arch-figure { display: block; padding: .6rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--diagram-ground); text-decoration: none; }
 .pp-arch-figure img { display: block; width: 100%; height: auto; }
 .pp-arch-figure span { display: inline-flex; align-items: center; gap: .35rem; margin-top: .5rem; padding: .3rem .6rem; border-radius: var(--sc-radius-sm); background: var(--background); color: var(--copper); font-size: var(--sc-t-control); }
 .pp-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin: 1.25rem 0 .75rem; }
@@ -266,3 +269,9 @@
   .pp-hero-specs, .pp-arch, .pp-features, .pp-chips, .pp-evidence-panel .pp-evidence, .pp-highlights, .pp-integration { grid-template-columns: minmax(0, 1fr); }
   .pp-features li.is-lead { grid-row: auto; }
 }
+
+/* Two-die parts: the dies sit side by side on the substrate, each named, each with its own blocks. */
+.pp-chip-die-a, .pp-chip-die-b { grid-template-columns: minmax(0, 1fr); align-content: start; }
+.pp-chip-die-a { inset: 12% 51% 12% 12%; }
+.pp-chip-die-b { inset: 12% 12% 12% 51%; }
+.pp-chip-die em { font: 600 clamp(8px, .8vw, 12px) var(--font-mono); font-style: normal; letter-spacing: .08em; color: var(--copper); text-align: center; }

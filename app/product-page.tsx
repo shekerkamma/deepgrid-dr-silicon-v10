@@ -70,8 +70,8 @@ export default function ProductPageView({slug}: {slug: string}) {
           </div>
         </div>
         <figure className="pp-hero-object">
-          <Chip code={part.code} blocks={p.blocks.map(b => b.name)}/>
-          <figcaption>Illustration: the part’s blocks on one die. Pre-silicon; not a render of manufactured silicon.</figcaption>
+          <Chip code={part.code} blocks={p.blocks.map(b => b.name)} dies={p.dies}/>
+          <figcaption>Illustration: the part’s blocks on {p.dies && p.dies.length > 1 ? `its ${p.dies.length === 2 ? 'two' : p.dies.length} dies` : 'one die'}. Pre-silicon; not a render of manufactured silicon.</figcaption>
           <p id="pp-targets-note" className="pp-targets-note">Every figure on this page is a design target unless marked otherwise.</p>
         </figure>
         <dl className="pp-hero-specs" aria-describedby="pp-targets-note">
@@ -273,14 +273,22 @@ function SpecCard({row: [name, value]}: {row: [string, string]}) {
 }
 
 /** The hero's object: an exploded die stack (lid, die, substrate) with the part's own blocks on the die,
- *  in the spirit of DG-A100's layered chip render. Drawn in CSS 3D; the layers part on entry and drift. */
-function Chip({code, blocks}: {code: string; blocks: string[]}) {
+ *  in the spirit of DG-A100's layered chip render. A multi-die part (SKU-7: SiGe + CMOS; D100: 130 nm +
+ *  28 nm) shows each die with its own blocks, so the object differs where the part does. CSS 3D; the
+ *  layers part once on entry. */
+function Chip({code, blocks, dies}: {code: string; blocks: string[]; dies?: {name: string; blocks: string[]}[]}) {
+  const label = (b: string) => b.replace(/^(SiGe|CMOS) die: /, '');
   return (
     <div className="pp-chip" aria-hidden="true">
       <span className="pp-chip-ring"/>
       <div className="pp-chip-stack">
         <div className="pp-chip-layer pp-chip-sub"><i/></div>
-        <div className="pp-chip-layer pp-chip-die">{blocks.slice(0, 6).map(b => <span key={b}>{b}</span>)}</div>
+        {dies && dies.length > 1
+          ? dies.map((d, i) => (
+              <div key={d.name} className={'pp-chip-layer pp-chip-die pp-chip-die-' + (i === 0 ? 'a' : 'b')}>
+                <em>{d.name}</em>{d.blocks.map(b => <span key={b}>{label(b)}</span>)}
+              </div>))
+          : <div className="pp-chip-layer pp-chip-die">{blocks.slice(0, 6).map(b => <span key={b}>{b}</span>)}</div>}
         <div className="pp-chip-layer pp-chip-lid"><b>{code}</b></div>
       </div>
     </div>

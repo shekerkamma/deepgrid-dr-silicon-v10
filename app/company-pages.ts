@@ -343,7 +343,7 @@ const stageOf = (e: string) => (e.startsWith('First silicon') ? 'First silicon' 
 export const useCasePages: CompanyPage[] = areas.map((a) => {
   const items = a.items.map((i) => ({ ...i, p: products[i.product] }));
   const sections: Section[] = [
-    { kind: 'split', title: a.fit, paras: [a.lede, ...(USECASE_DEPTH[a.id]?.paras ?? [])], flow: USECASE_DEPTH[a.id]?.flow, flowLabel: USECASE_DEPTH[a.id]?.flowLabel, from: 'applications-story-data.ts (Technical Annex v3)' },
+    { kind: 'split', title: a.fit, paras: USECASE_DEPTH[a.id]?.paras?.length ? USECASE_DEPTH[a.id]!.paras : [a.lede]   /* the hero already carries the lede; repeating it here read as a copy error */, flow: USECASE_DEPTH[a.id]?.flow, flowLabel: USECASE_DEPTH[a.id]?.flowLabel, from: 'applications-story-data.ts (Technical Annex v3)' },
     { kind: 'cards', title: items.length === 1 ? 'One chip does the whole job here.' : `${NUM[items.length] ?? items.length} chips, each with one job here.`, lede: 'What each part does in this system, and where it stands today.', cols: items.length > 2 ? 3 : 2,
       items: items.map((i) => ({ title: i.p.name, meta: `${i.p.tag} · ${stageOf(i.p.evidence)}`, text: i.role + (i.p.replaces ? ' Replaces: ' + i.p.replaces : ''), href: '/products/' + SLUG[i.product], go: `Open the ${i.p.tag} page` })),
       from: 'applications-story-data.ts' },

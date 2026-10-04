@@ -15,7 +15,8 @@ colors:
   copper: "#d4a36e"
   copper-ring: "#d9ac78"
   hardware: "#bf7f3b"
-  cpu: "#2f9e8c"
+  cpu: "#a0a59b"
+  safe: "#2f9e8c"
   overlay-shadow: "rgb(0 0 0 / .45)"
   bone-ink: "#18201c"
   bone-muted: "#48534b"
@@ -181,6 +182,14 @@ hardware is in a safe state.
 position, not a new hue. Teal is the single exception and it means "safe", nothing else.
 
 **The Named Colour Rule.** Repeated UI colours use named roles. The v6 bone, rule and dark-surface roles above are extracted from implementation. Industrial renderer materials are documented separately rather than promoted to interaction tokens. Historical literal-count audits are not current measurements.
+
+**v10 decisions (2026-10-04).** Three roles were settled in the v10 QA pass. (1) **Diagram Ground**
+(`#f4f2ec`, token `--diagram-ground`) is the light ground behind the draw.io architecture diagrams on the
+product pages. (2) **Safe** (`--safe`, Signal Teal) is now its own token: `--cpu` had been teal and was used
+both for the CPU share of a cycle bar and for safe states, which broke the teal rule; the CPU share is now
+the neutral `--muted-foreground`, and every safe state reads `--safe`. (3) The product hero's exploded-die
+render uses dark material shades (`#1d2420`, `#121614`, `#2a2f2a`, `#181c1a`) under the object-shading
+exemption; they are renderer materials, not interaction colours.
 
 **The Alpha Is Not A Colour Rule.** `#d4a36e1f` is copper at 12%, not a separate colour. Express it
 from the token (`color-mix`, or a documented alpha token), never as a new hex, so a change to copper

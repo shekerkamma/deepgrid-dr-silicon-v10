@@ -87,7 +87,12 @@ async function landed(p, want, via) {
   const ids = await p.$$eval('nav.mega-nav .mega-trigger', (xs) => xs.map((x) => x.getAttribute('aria-controls')));
   for (const id of ids) {
     if (!(await p.locator(`[aria-controls="${id}"]`).first().isVisible())) continue;
+    // Move the pointer off the menu first and close anything open: a click on a trigger the pointer had just
+    // hovered toggled a hover-opened panel shut, so whether it "opened" depended on runner speed (three CI runs,
+    // three different menus failed, 2026-10-03/04). If the trigger still reads closed after the click, click once more.
+    await p.mouse.move(5, 790); await p.keyboard.press('Escape');
     await p.click(`[aria-controls="${id}"]`);
+    if ((await p.locator(`[aria-controls="${id}"]`).first().getAttribute('aria-expanded')) === 'false') await p.click(`[aria-controls="${id}"]`);
     // Wait for the panel to open before measuring it. Reading the box on the next line raced the opening on
     // a slow CI runner and reported "spans null..null" for a panel that fits (run 37117308383, 2026-10-03).
     const opened = await p.locator('#' + id).waitFor({ state: 'visible', timeout: 3000 }).then(() => true, () => false);

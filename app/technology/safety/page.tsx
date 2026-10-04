@@ -25,6 +25,19 @@ export default function Page() {
           title="From a wrong value to a safe bridge"
           copy="Software self-test runs periodically and cannot see a fault between runs. DG32-LITE compares delayed committed results through its checker and comparator, and the path from mismatch to a switched-off bridge never passes through firmware."
         />
+        {/* Motion explainer (HyperFrames + GSAP, rendered to MP4; narration Kokoro bm_george).
+            Source project: ~/hyperframes-videos/videos/dg32-fault-path-explained. */}
+        <Sec title="The fault path in ninety seconds," em="from a wrong value to a switched-off bridge.">
+          <figure className="st-film" id="film">
+            <video controls preload="none" playsInline width={1920} height={1080}
+              poster={url('/media/dg32-fault-path-explained-poster.jpg')}
+              aria-label="Animated explainer: how DG32-LITE’s lockstep pair turns a CPU fault into a switched-off bridge">
+              <source src={url('/media/dg32-fault-path-explained.mp4')} type="video/mp4"/>
+              <track kind="captions" srcLang="en" label="English" src={url('/media/dg32-fault-path-explained.vtt')}/>
+            </video>
+            <figcaption>Animated explainer, 1:29, captioned. The 39-cycle figure is from simulation; DG32-LITE is pre-silicon.</figcaption>
+          </figure>
+        </Sec>
         <FaultTrace steps={faultPath} intro={
           <>
             <h2 className="dr-h2">Two paths cross the die,<br/><em>and only one is firmware.</em></h2>
@@ -37,22 +50,9 @@ export default function Page() {
             </div>
           </>
         }/>
-        <SafetyScene/>
+        <details className="st-3d"><summary className="pp-ghost">See the same path in 3D</summary><SafetyScene/></details>
         <p className="disclaimer">{PRE_SILICON}</p>
 
-        {/* Motion explainer (HyperFrames + GSAP, rendered to MP4; narration Kokoro bm_george).
-            Source project: ~/hyperframes-videos/videos/dg32-fault-path-explained. */}
-        <Sec kicker="THE FAULT PATH, ANIMATED" title="The same path in ninety seconds," em="from a wrong value to a switched-off bridge.">
-          <figure className="st-film" id="film">
-            <video controls preload="none" playsInline width={1920} height={1080}
-              poster={url('/media/dg32-fault-path-explained-poster.jpg')}
-              aria-label="Animated explainer: how DG32-LITE’s lockstep pair turns a CPU fault into a switched-off bridge">
-              <source src={url('/media/dg32-fault-path-explained.mp4')} type="video/mp4"/>
-              <track kind="captions" srcLang="en" label="English" src={url('/media/dg32-fault-path-explained.vtt')}/>
-            </video>
-            <figcaption>Animated explainer, 1:29, captioned. The 39-cycle figure is from simulation; DG32-LITE is pre-silicon.</figcaption>
-          </figure>
-        </Sec>
 
         {/* Story beats from docs/site-story.md: every failure ends at a signal; how the path is
             proven on silicon; where diagnostics stop; the close. Source: DG32-LITE Architecture
@@ -66,7 +66,7 @@ export default function Page() {
           ]}/>
         </Sec>
 
-        <Sec kicker="HOW THE PATH IS PROVEN" title="Firmware fires the fault on purpose," em="because that is the only test real silicon allows." copy="A path that only ever runs when something breaks has to be exercised deliberately. The injection register is locked, so ordinary code cannot trip it by accident.">
+        <Sec title="Firmware fires the fault on purpose," em="because that is the only test real silicon allows." copy="A path that only ever runs when something breaks has to be exercised deliberately. The injection register is locked, so ordinary code cannot trip it by accident.">
           <Steps label="Proving the fault path on silicon" steps={[
             ['Unlock and inject','Firmware writes the magic value to the Fault CSR, which fires the comparator path without a real fault.'],
             ['The path runs','The same hardware path as a real mismatch: comparator, latch, FAULT_N, gate-driver enable.'],
@@ -75,7 +75,7 @@ export default function Page() {
           ]}/>
         </Sec>
 
-        <Sec kicker="WHERE DIAGNOSTICS STOP" title="A classifier can warn." em="Only hardware trips the bridge." copy={<><p>Condition monitoring on DG32, including anything the DG32-2DOM engine runs, is advisory: it reports health and recommends service. Hard trip limits stay with the hardware path above, which no model output can hold open or close.</p><p>Lockstep is a mechanism for a safety case, not a certificate. ISO 26262 ASIL-D is the path the design is aimed at; no functional-safety certification is claimed.</p></>}>
+        <Sec title="A classifier can warn." em="Only hardware trips the bridge." copy={<><p>Condition monitoring on DG32, including anything the DG32-2DOM engine runs, is advisory: it reports health and recommends service. Hard trip limits stay with the hardware path above, which no model output can hold open or close.</p><p>Lockstep is a mechanism for a safety case, not a certificate. ISO 26262 ASIL-D is the path the design is aimed at; no functional-safety certification is claimed.</p></>}>
           <div className="dr-links">
             <a className="text-link" href={href('applications')}>What the diagnostics watch, and what they never hold <ArrowUpRight size={16} aria-hidden="true"/></a>
             <a className="text-link" href={href('evidence')}>What each figure here rests on <ArrowUpRight size={16} aria-hidden="true"/></a>

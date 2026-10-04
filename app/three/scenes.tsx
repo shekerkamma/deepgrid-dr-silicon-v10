@@ -78,7 +78,7 @@ export function MotorScene({ reduced }: { reduced: boolean }) {
   const build: Build = ({ THREE, mat, box, labels, pivot }) => {
     const back = new THREE.Mesh(new THREE.TorusGeometry(2.35, 0.22, 16, 72), mat('#3a403c', { metalness: 0.7, roughness: 0.35 }));
     back.rotation.x = Math.PI / 2; pivot.add(back);
-    const tones = [C.copper, C.teal, '#b9c4b8'];
+    const tones = [C.copper, C.hardware, '#b9c4b8'];   // teal is reserved for the safe state; phases are copper, hardware copper, neutral
     const coils: { m: import('three').MeshStandardMaterial; phase: number }[] = [];
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2, phase = i % 3;
@@ -97,7 +97,7 @@ export function MotorScene({ reduced }: { reduced: boolean }) {
     const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 1.6, 20), mat('#9aa39b', { metalness: 0.9, roughness: 0.2 })); rotor.add(shaft);
     labels.push(
       { text: 'PHASE A', at: new THREE.Vector3(2.55, 0.35, 0), tone: 'copper' },
-      { text: 'PHASE B', at: new THREE.Vector3(-1.3, 0.35, -2.2), tone: 'teal' },
+      { text: 'PHASE B', at: new THREE.Vector3(-1.3, 0.35, -2.2), tone: 'muted' },
       { text: 'PHASE C', at: new THREE.Vector3(-1.3, 0.35, 2.2) },
       { text: 'ROTOR', at: new THREE.Vector3(0, 0.9, 0) },
     );

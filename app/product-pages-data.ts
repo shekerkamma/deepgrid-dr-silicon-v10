@@ -23,6 +23,8 @@ export type ProductPage = {
   /** Three performance-highlight tiles: [figure, label, the spec row it comes from]. Checked: the figure's
    *  number appears in that row. */
   highlights: [string, string, string][];
+  /** Parts built from more than one die: the hero draws each die with its own blocks (sources: blocks above). */
+  dies?: {name: string; blocks: string[]}[];
   designedToward: string[];
   questions: {title: string; question: string}[];
   reconcile?: string;
@@ -260,6 +262,7 @@ export const productPages: ProductPage[] = [
   },
   {
     id: 'sku7', slug: 'sku-7', portfolioId: 'sku-7',
+    dies: [{name: 'SiGe', blocks: ['SiGe die: transmit', 'SiGe die: receive']}, {name: 'CMOS', blocks: ['CMOS die: digitise', 'CMOS die: detect']}],
     heroSpecs: ['Sweep', 'Array', 'Processing'],
     highlights: [['4 GHz', 'Chirp sweep', 'Sweep'], ['3.75 cm', 'Range resolution', 'Sweep'], ['64', 'Tracked targets', 'Processing']],
     headline: 'Two dies, because 77 GHz and signal processing want different silicon.',
@@ -370,6 +373,7 @@ export const productPages: ProductPage[] = [
   },
   {
     id: 'd100', slug: 'd100', portfolioId: 'track-b-d100',
+    dies: [{name: '130 nm', blocks: ['Flight control', 'Visual-inertial odometry', 'Failsafe island', 'Platform']}, {name: '28 nm', blocks: ['AI accelerator (phase 2)']}],
     heroSpecs: ['Navigation', 'Failsafe', 'Flight control'],
     highlights: [['30 Hz', 'Six-DoF pose, in hardware', 'Navigation'], ['10 TOPS', 'Optional AI, phase 2', 'AI (phase 2)'], ['1080p60', 'Vision input', 'Vision input']],
     headline: 'A drone SoC whose failsafe does not trust its own flight computer.',

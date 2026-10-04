@@ -257,8 +257,8 @@ export const areas: {
     id: 'vehicles', name: 'Vehicles',
     fit: 'Mature nodes own the edges of the vehicle; the central computer is not claimed.',
     ask: 'The zone, its loads and buses, the latency the messages need and the safety target are what we need to answer.',
-    headline: 'In a vehicle, the chips sit at the edges: the battery, the brakes, the radar, the bus and the wiring zones.',
-    lede: 'The central computer of a software-defined vehicle is a sub-10 nm problem and is explicitly not claimed. What mature nodes own is everything around it.',
+    headline: 'In a vehicle, the chips sit at the edges.',
+    lede: 'The battery, the brakes, the radar, the bus and the wiring zones. The central computer of a software-defined vehicle is a sub-10 nm problem and is explicitly not claimed. What mature nodes own is everything around it.',
     items: [
       {product: 'sku9', primary: true, role: 'The zonal layer of a software-defined vehicle: gateway, smart inputs and outputs, and the safety and security edge.'},
       {product: 'sku4', role: 'EV battery management, and braking and steering controllers. Braking and steering need CAN-FD, which is on the DG32 roadmap and not on DG32-LITE.'},

@@ -1,7 +1,6 @@
 'use client';
 
-import {PortfolioAtlas} from '../portfolio-story';
-import '../portfolio-v6.css';
+import {PortfolioV6Style} from '../portfolio-v6-style';
 import {Shell, useNav} from '../shell';
 import {PRE_SILICON} from '../copy';
 import {ArrowRight,ArrowUpRight} from 'lucide-react';
@@ -17,11 +16,10 @@ import ProductTiles from '../product-tiles';
 export default function Page() {
   const {navigate, go, href} = useNav();
   return (
-    <Shell route="products">
+    <Shell route="products"><PortfolioV6Style/>
       <section className="page-wrap">
-  <SectionHead title="A portfolio of physical jobs. Two DG32 variants in detail." copy="DG32-LITE puts a hardware lockstep safety monitor, the motor-drive peripherals and the ADC, CORDIC and PWM datapath in one 64-pin chip. DG32-2DOM is the same chip with an attention engine on its own clock, so a board built for one takes the other."/>
+  <SectionHead kicker="Products" title="Ten parts, each for one physical job." copy="Motion and safety, power and infrastructure, interfaces and perception, system integration: each part starts from the job it does on the board. Below the ten, DG32, the lockstep safety MCU, is shown in depth with its 2DOM variant. Pre-silicon; every figure is a design target."/>
   <ProductTiles/>
-  <Sec kicker="PORTFOLIO / FIND THE FUNCTION" title="Different sockets." em="Named architectures." copy="Start with the silicon job. DG32 is the detailed safety-MCU case within the wider architecture portfolio."><div className="v6-home v6-embed"><PortfolioAtlas/></div></Sec>
   <ProductsScene/>
   <Stats items={[['2 cores','In lockstep: CHECKER runs two cycles behind MAIN'],['~300 cycles','Fixed hardware cost of one FOC loop'],['44 pins','One signal pinout for both chips']]}/>
 
@@ -34,7 +32,7 @@ export default function Page() {
    </div>
   </Sec>
 
-  <Sec kicker="WHAT IS IN THE CHIP" title="Six block groups on one clock;" em="DG32-2DOM adds a seventh on its own." copy="Choose a block to see what it does and why it is there. Then switch to DG32-2DOM: the six groups are the same design from the same source, and only the attention engine and its bridges are new.">
+  <Sec title="Six block groups on one clock;" em="DG32-2DOM adds a seventh on its own." copy="Choose a block to see what it does and why it is there. Then switch to DG32-2DOM: the six groups are the same design from the same source, and only the attention engine and its bridges are new.">
    <ChipMap/>
    <details className="ps-specs">
     <summary>Full specifications, side by side</summary>
@@ -49,7 +47,7 @@ export default function Page() {
    </div>
   </Sec>
 
-  <Sec kicker="WILL IT RUN YOUR LOOP" title="The loop runs in hardware," em="so its cost is fixed." copy="Sampling, the Park transforms and the PWM update are dedicated blocks costing about 300 cycles at any loop rate; the CPU keeps only the two PI regulators. What is left at each rate is the firmware budget.">
+  <Sec title="The loop runs in hardware," em="so its cost is fixed." copy="Sampling, the Park transforms and the PWM update are dedicated blocks costing about 300 cycles at any loop rate; the CPU keeps only the two PI regulators. What is left at each rate is the firmware budget.">
    <LoopCost/>
    <p className="disclaimer">Cycle costs measured in simulation at the 50 MHz clock; 100 kHz is the simulated ceiling, not a bench result.</p>
    <div className="dr-links dr-sec-gap">
@@ -107,7 +105,7 @@ export default function Page() {
    </div>
   </Sec>
 
-  <Sec kicker="WHICH CHIP FOR YOUR DRIVE" title="Start on DG32-LITE;" em="move to DG32-2DOM when the drive should watch its own motor.">
+  <Sec title="Start on DG32-LITE;" em="move to DG32-2DOM when the drive should watch its own motor.">
    <ExplainedGrid cols={2} items={[
     {name:'Choose DG32-LITE',what:'For a drive that needs hardware lockstep safety, hardware FOC acceleration and native DShot in a 64-pin part.',why:'It is pre-silicon. Bring-up must measure loop costs, fault latency, timing and electrical behaviour before design values become silicon results.'},
     {name:'Choose DG32-2DOM',what:'For a drive that should also watch its own motor: bearing-fault or anomaly detection on phase-current data, without a second processor.',why:'The engine runs on its own clock behind bridges, so condition monitoring cannot extend the control core’s worst-case execution time. Design complete, in physical trials.'},

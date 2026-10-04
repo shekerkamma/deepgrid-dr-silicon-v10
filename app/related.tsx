@@ -23,7 +23,7 @@ export default function Related({route}: {route: RouteId}) {
   return (
     <aside className="dr-related" aria-labelledby={'related-' + route}>
       {route !== 'home' && route !== 'company' && hasBrief(route) && <details className="dr-evaluation-guide"><summary>Engineering evaluation guide</summary><RouteJourney route={route}/></details>}
-      <h2 className="dr-kicker" id={'related-' + route}>Where to go next</h2>
+      <h2 className="dr-related-head" id={'related-' + route}>Where to go next</h2>
 
       <ul className="dr-related-sections">
         {r.sections.map(s => {

@@ -118,13 +118,13 @@ function Dom({go,update,reduced,setReduced,exploded,setExploded}:Props){
   <Sec kicker="3D DUAL-DOMAIN DIE & PACKAGE" title="The attention engine widens the die by 0.5 mm," em="and changes nothing about the 44-signal QFN-64 pinout." copy="The 50 MHz control core and peripherals occupy the primary die floorplan; the 114 MHz INT8 Attention Engine and its asynchronous CDC bridges take the added width.">
    <div className="architecture"><div className="architecture-stage"><div className="stage-top"><span className="mono">DG32-2DOM / 3D DUAL-DOMAIN DIE</span><button aria-pressed={reduced} onClick={()=>setReduced(!reduced)} className="small-button">Motion {reduced?'off':'on'}</button></div><Silicon variant="2dom" selected={6} exploded={exploded} reduced={reduced} label="Interactive 3D model of DG32-2DOM with the 114 MHz attention engine and CDC isolation bridge highlighted."/><div className="stage-bottom"><span>DRAG TO ROTATE · ARROW KEYS TO PITCH/YAW</span><button className="small-button" onClick={()=>setExploded(!exploded)} aria-expanded={exploded} aria-label={exploded?'Seat the die':'Lift the die'}><Layers size={14} aria-hidden="true"/>{exploded?'Seat the die':'Lift the die'}</button></div></div>
     <aside className="domain-panel"><Eyebrow>DUAL-DOMAIN ARCHITECTURE</Eyebrow>
-     <div style={{padding:'16px',background:'rgba(34,211,238,0.05)',border:'1px solid rgba(34,211,238,0.3)',borderRadius:'8px',marginBottom:'12px'}}>
-      <span className="mono" style={{color:'#22d3ee',fontWeight:600,fontSize:'12px',letterSpacing:'0.05em'}}>114 MHZ DOMAIN</span>
+     <div className="dom-panel dom-engine">
+      <span className="mono dom-label">114 MHZ DOMAIN</span>
       <strong style={{display:'block',margin:'6px 0 4px',fontSize:'15px'}}>INT8 Attention Engine</strong>
       <p style={{fontSize:'12px',color:'var(--ink-2)',lineHeight:1.5,margin:0}}>6-stage attention pipeline computing QKᵀ, softmax and value sum in 3,242 cycles per query row. Bit-exact to the golden software model.</p>
      </div>
-     <div style={{padding:'16px',background:'rgba(217,119,6,0.05)',border:'1px solid rgba(217,119,6,0.3)',borderRadius:'8px'}}>
-      <span className="mono" style={{color:'#d97706',fontWeight:600,fontSize:'12px',letterSpacing:'0.05em'}}>ISOLATION BARRIER</span>
+     <div className="dom-panel dom-barrier">
+      <span className="mono dom-label">ISOLATION BARRIER</span>
       <strong style={{display:'block',margin:'6px 0 4px',fontSize:'15px'}}>Clock-domain bridges</strong>
       <p style={{fontSize:'12px',color:'var(--ink-2)',lineHeight:1.5,margin:0}}>Three AXI bridges cross between the 50 MHz control core and the 114 MHz engine with a four-phase request and acknowledge through two-flop synchronisers, not a FIFO. The attention engine never stalls the motor control loop.</p>
      </div>

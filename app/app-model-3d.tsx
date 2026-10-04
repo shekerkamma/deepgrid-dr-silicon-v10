@@ -59,19 +59,19 @@ export default function AppModel3D({
       new THREE.MeshStandardMaterial({color, metalness, roughness});
 
     const darkChassisMat = mat('#14181a', 0.8, 0.35);
-    const bodyMat = mat('#1e293b', 0.6, 0.3);
-    const accentMat = mat('#f59e0b', 0.7, 0.3);
-    const cyanSensorMat = new THREE.MeshStandardMaterial({
-      color: '#38bdf8',
-      emissive: '#0284c7',
-      emissiveIntensity: 0.85,
+    const bodyMat = mat('#232a26', 0.6, 0.3);   // materials keep to the system's neutrals and copper; no blue or amber
+    const accentMat = mat('#d4a36e', 0.7, 0.3);
+    const sensorMat = new THREE.MeshStandardMaterial({
+      color: '#d9ac78',
+      emissive: '#bf7f3b',
+      emissiveIntensity: 0.6,
       metalness: 0.2,
       roughness: 0.2
     });
     const rubberMat = mat('#0f1112', 0.1, 0.9);
-    const wheelRimMat = mat('#94a3b8', 0.85, 0.25);
+    const wheelRimMat = mat('#a0a59b', 0.85, 0.25);
     const glassMat = new THREE.MeshPhysicalMaterial({
-      color: '#0284c7',
+      color: '#3d453b',
       metalness: 0.1,
       roughness: 0.1,
       transparent: true,
@@ -139,12 +139,12 @@ export default function AppModel3D({
         // Camera pod
         const camPod = box(0.08, 0.22, 0.12, side * 1.02, 1.25, 1.5, accentMat);
         // Optical lens
-        box(0.04, 0.08, 0.08, side * 1.02, 1.25, 1.44, cyanSensorMat);
+        box(0.04, 0.08, 0.08, side * 1.02, 1.25, 1.44, sensorMat);
       }
 
       // Roof LiDAR / ADAS sensor bar
       box(0.9, 0.08, 0.16, 0, 1.82, 1.2, darkChassisMat);
-      cyl(0.09, 0.09, 0.12, 0, 1.9, 1.2, cyanSensorMat);
+      cyl(0.09, 0.09, 0.12, 0, 1.9, 1.2, sensorMat);
 
       // Battery pack enclosure (Under chassis)
       box(1.3, 0.38, 2.0, 0, 0.3, -0.4, darkChassisMat);
@@ -185,7 +185,7 @@ export default function AppModel3D({
 
       // Underslung multi-spectral optical gimbal
       const gimbal = cyl(0.18, 0.18, 0.22, 0, -0.05, 0.2, darkChassisMat, rootGroup, 16);
-      cyl(0.1, 0.1, 0.12, 0, -0.1, 0.3, cyanSensorMat, rootGroup, 12);
+      cyl(0.1, 0.1, 0.12, 0, -0.1, 0.3, sensorMat, rootGroup, 12);
 
       // 4 Carbon Booms & Brushless Motors
       const boomAngles = [
@@ -241,7 +241,7 @@ export default function AppModel3D({
       box(1.3, 0.06, 1.3, 0, 2.2, -0.2, pillarMat);
 
       // Autonomous LiDAR & 360 Camera Top Mast
-      cyl(0.12, 0.12, 0.18, 0, 2.32, -0.2, cyanSensorMat);
+      cyl(0.12, 0.12, 0.18, 0, 2.32, -0.2, sensorMat);
 
       // Vertical Fork Mast
       box(0.12, 2.2, 0.14, -0.48, 1.15, 0.88, darkChassisMat);
@@ -290,7 +290,7 @@ export default function AppModel3D({
       for (const cx of [-0.95, 0.95]) {
         for (const cz of [-2.2, 2.2]) {
           cyl(0.08, 0.08, 0.38, cx, 0.88, cz, darkChassisMat);
-          cyl(0.06, 0.06, 0.12, cx, 1.1, cz, cyanSensorMat);
+          cyl(0.06, 0.06, 0.12, cx, 1.1, cz, sensorMat);
         }
       }
 
