@@ -2,10 +2,9 @@
 // Renders a Software / Use case / About / Contact page from app/company-pages.ts, in the showcase's
 // look: the showcase's SectionHead, its tokens, and a small set of section shapes taken from
 // deepgridsemi.com's templates (split, card grid, steps, stats, people, figures, contact, CTA).
-import { useState } from 'react';
-import { ArrowRight, ArrowUpRight, BookOpen, Boxes, Check, Cpu, Download, Film, Gauge, Hand, Layers, Library, Loader, Mail, MapPin, Mic, Play, ScanEye, SlidersHorizontal, Terminal } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowRight, ArrowUpRight, BookOpen, Boxes, Check, CircleCheck, Cpu, Download, Film, Gauge, Hand, Layers, Library, Loader, Mail, MapPin, Mic, Play, ScanEye, SlidersHorizontal, Terminal } from 'lucide-react';
 import type { FlowStep } from './company-pages';
-import { SectionHead } from './detail';
 import { url } from './routes';
 import { useReduced } from './shell';
 import { MotorScene } from './three/scenes';
@@ -210,7 +209,7 @@ function Block({ s }: { s: Section }) {
             <h2>{s.title}</h2>
             {s.lede && <p className="cp-lede">{s.lede}</p>}
           </header>
-          <div className={'cp-cards cp-cols-' + s.cols}>
+          <div className={'cp-cards cp-cols-' + s.cols + (s.items.every((c) => c.image && !c.href) ? ' cp-tiles' : '')}>
             {s.items.map((c) => {
               const inner = (
                 <>
@@ -408,21 +407,50 @@ function Block({ s }: { s: Section }) {
   }
 }
 
+/** Fade-in-up on entry, as deepgridsemi.com's sections do; everything visible from the start under reduced motion. */
+function Reveal() {
+  useEffect(() => {
+    const els = [...document.querySelectorAll<HTMLElement>('.cp-page > .cp-sec')];
+    els.forEach(e => e.classList.add('cp-reveal'));
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('is-in')); return; }
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(e => io.observe(e));
+    return () => io.disconnect();
+  }, []);
+  return null;
+}
+
+/** The page hero, after deepgridsemi.com's page heroes: a dark full-width band with a pill badge, the title
+ *  and lede, the page's image behind it (still captioned for what it is), and its key points as cards. */
+function PageBand({ page }: { page: CompanyPage }) {
+  const bg = page.heroImage && page.heroImage.fit !== 'natural' ? page.heroImage : undefined;
+  return (
+    <header className={'cp-band' + (page.chips ? '' : ' is-centered')}>
+      {bg && <img className="cp-band-bg" src={bg.src} alt="" loading="eager" decoding="async" />}
+      <div className="cp-band-inner">
+        <div className="cp-band-copy">
+          <p className="cp-pill">{page.kicker}</p>
+          <h1>{page.title}</h1>
+          <p className="cp-band-lede">{page.lede}</p>
+        </div>
+        {page.chips && (
+          <ul className="cp-chips">
+            {page.chips.map(([t, d]) => <li key={t}><CircleCheck size={18} aria-hidden="true" /><strong>{t}</strong><span>{d}</span></li>)}
+          </ul>
+        )}
+      </div>
+      {bg && <p className="cp-band-credit">{captionFor(bg.src)}: {bg.alt}</p>}
+    </header>
+  );
+}
+
 export default function CompanyPageView({ page }: { page: CompanyPage }) {
   return (
     <div className="page-wrap cp-page" data-sections={page.sections.length}>
-      <SectionHead kicker={page.kicker} title={page.title} copy={page.lede} />
-      {(page.heroImage || page.chips) && (
-        <div className={'cp-hero' + (page.heroImage ? '' : ' cp-hero-solo')}>
-          {page.heroImage && <Figure className={'cp-hero-img' + (page.heroImage.fit === 'natural' ? ' is-natural' : '')} src={page.heroImage.src} alt={page.heroImage.alt} />}
-          {page.chips && (
-            <ul className="cp-chips">
-              {page.chips.map(([t, d]) => <li key={t}><strong>{t}</strong><span>{d}</span></li>)}
-            </ul>
-          )}
-        </div>
-      )}
+      <PageBand page={page} />
+      {page.heroImage?.fit === 'natural' && <div className="cp-hero cp-hero-solo"><Figure className="cp-hero-img is-natural" src={page.heroImage.src} alt={page.heroImage.alt} /></div>}
       {page.sections.map((s, i) => <Block key={i} s={s} />)}
+      <Reveal />
     </div>
   );
 }

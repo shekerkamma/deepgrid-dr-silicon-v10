@@ -1,5 +1,6 @@
 'use client';
 import {ArrowUpRight} from 'lucide-react';
+import ProductTiles from './product-tiles';
 import {url} from './routes';
 import {readHref} from './doc-links';
 import {Workbench,SafetyWorkbench} from './portfolio-workbench';
@@ -9,6 +10,7 @@ import './portfolio-v6.css';
 const src=(s:string,section?:string)=>readHref('/downloads/'+s.replace(/^\/?downloads\//,''),section);
 export function Overview({reduced}:{reduced:boolean}){return <div className="v6-home">
 <section className="v6-hero" aria-labelledby="home-title"><div><h1 id="home-title">Silicon starts<br/>with the <em>system.</em></h1><p>Motion, power, sensing, interfaces and safety. A silicon portfolio for the jobs inside physical equipment.</p><div className="v6-actions"><a className="v6-primary" href="#portfolio">Explore the portfolio <ArrowUpRight size={18}/></a><a className="v6-link" href="#dg32-proof">Inspect DG32 ↗</a></div><small>Architecture portfolio · evidence varies by part</small></div><Workbench reduced={reduced}/></section>
+<div className="v6-section"><ProductTiles/></div>
 <section className="v6-section" id="portfolio"><header><h2>The socket decides the silicon.</h2><p>A motor’s power stage, a metering input and a vehicle harness ask different things of silicon. Start with the function, then inspect the named architecture and its maturity.</p></header><PortfolioAtlas/></section>
 <section className="v6-section v6-bone"><header><h2>Reuse the foundation.<br/>Keep specialist blocks specialist.</h2><p>Shared digital IP creates a foundation. Voltage, signal quality, RF behaviour and packaging still need their own engineering. The strategy extends through equipment makers into boxes, LRUs and assemblies.</p></header><ReuseMap/><a className="v6-link" href={url('/company')}>How the foundation is shared, and how it reaches equipment makers ↗</a> <a className="v6-cite" href={src('deepgrid-sku-compendium-architecture.md','3.5 Sheet 13: Organic Substrate Multi-Die SiP Packaging')}>Annex v3, Sheet 13</a></section>
 <section className="v6-section" id="dg32-proof"><header><h2>DG32 makes the safety<br/>argument inspectable.</h2><p>MAIN executes. CHECKER follows two cycles behind. A result mismatch is recorded by a sticky fault latch; FAULT_N disables the gate driver through the hardware path.</p></header><SafetyWorkbench reduced={reduced}/><div className="v6-proof"><strong>{claims['fault-39'].figure}</strong><div><b>Injected-fault response · simulated</b><p>The complete reported path differs from the checker’s two-cycle execution skew. Hardware lockstep is a mechanism, not a functional-safety certificate.</p><a href={src(claims['fault-39'].source)}>Read the fault-path source ↗</a></div></div><a className="v6-link" href={url('/technology/safety')}>Inspect fault causes and reset behaviour ↗</a></section>
