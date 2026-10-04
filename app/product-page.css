@@ -88,3 +88,41 @@
 
 /* the part explainer film at the top of "Inside the part": a readable width, set off from the lead and the diagram */
 .pp-explainer { margin: 28px 0 8px; max-width: 60rem; }
+
+/* Hero, after deepgridsemi.com's product pages (DG-A100): the part's name, the part itself in the middle,
+   three figures attached beside it. Ours is the film's first scene, since no part is photographed yet. */
+.pp-hero { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr) minmax(0, 3fr); grid-template-areas: "copy object specs" "facts facts facts"; gap: 1.5rem 2rem; align-items: center; padding-block: clamp(2rem, 5vw, 3.5rem) 1rem; }
+.pp-hero-copy { grid-area: copy; }
+.pp-hero h1 { font-family: var(--font-display); font-size: var(--sc-t-hero); line-height: var(--sc-lh-hero); letter-spacing: var(--sc-track-hero); font-weight: 400; margin: .6rem 0 .8rem; color: var(--ink); text-wrap: balance; }
+.pp-hero-code { display: block; font-family: var(--font-mono); font-size: var(--sc-t-meta); letter-spacing: var(--sc-track-meta); color: var(--copper); margin-bottom: .35rem; }
+.pp-hero-claim { font-family: var(--font-display); font-size: var(--sc-t-block); line-height: 1.3; color: var(--ink); margin: 0 0 .8rem; text-wrap: balance; }
+.pp-hero .pp-lede { font-size: var(--sc-t-body); }
+.pp-hero .pp-actions { margin-top: 1.25rem; }
+.pp-hero-object { grid-area: object; margin: 0; position: relative; }
+.pp-hero-object::before { content: ""; position: absolute; inset: -12% 0; background: radial-gradient(closest-side, color-mix(in srgb, var(--copper) 10%, transparent), transparent); pointer-events: none; z-index: -1; }
+.pp-hero-loop { display: block; width: 100%; height: auto; aspect-ratio: 1280 / 586; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); background: var(--background); }
+.pp-hero-object figcaption { margin-top: .5rem; font-size: var(--sc-t-meta); color: var(--ink-3); }
+.pp-hero-specs { grid-area: specs; display: grid; gap: .75rem; margin: 0; }
+.pp-hero-specs div, .pp-spec-cards div { padding: .9rem 1rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); background: var(--surface, transparent); }
+.pp-hero-specs dt, .pp-spec-cards dt { display: flex; justify-content: space-between; gap: .5rem; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--ink-3); margin-bottom: .4rem; }
+.pp-hero-specs dd, .pp-spec-cards dd { margin: 0; color: var(--ink); font-size: var(--sc-t-body); line-height: 1.4; }
+.pp-status { color: var(--copper); }
+.pp-hero .pp-facts { grid-area: facts; margin-top: .5rem; }
+/* Specification: every target as a card with its standing, after the DG-A100 "Architecture & Technical
+   Specifications" grid; the table stays one click away. */
+.pp-spec-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: .75rem; margin: 0 0 1.25rem; }
+/* Questions and evidence: the label holds on the left while the cards scroll, after DG-A100's "System readiness". */
+@media (min-width: 1000px) {
+  .pp-split .dr-sec { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 0 3rem; align-items: start; }
+  .pp-split .dr-sec-head { position: sticky; top: calc(var(--nav-h, 60px) + 5rem); grid-row: 1 / span 4; display: block; }
+  .pp-split .dr-sec > :not(.dr-sec-head) { grid-column: 2; }
+  .pp-split .dr-sec-copy { margin-top: 1rem; }
+}
+@media (max-width: 1199px) {
+  .pp-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "copy object" "specs specs" "facts facts"; }
+  .pp-hero-specs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .pp-hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "object" "specs" "facts"; }
+  .pp-hero-specs { grid-template-columns: minmax(0, 1fr); }
+}

@@ -2,10 +2,10 @@
 import { url } from './routes';
 import type { Film } from './dg32-films';
 
-export type Explainer = Film & { slug: string; code: string };
+export type Explainer = Film & { slug: string; code: string; loop: string };
 const e = (slug: string, title: string, length: string, base: string, sub: string): Explainer => ({
   id: slug + '-explainer', slug, code: slug.toUpperCase(), title, sub, length,
-  src: url(base + '.mp4'), poster: url(base + '-poster.jpg'), vtt: url(base + '.vtt'),
+  src: url(base + '.mp4'), poster: url(base + '-poster.jpg'), vtt: url(base + '.vtt'), loop: url(base + '-loop.mp4'),
 });
 
 export const explainers: Explainer[] = [

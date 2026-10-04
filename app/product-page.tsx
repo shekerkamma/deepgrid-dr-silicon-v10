@@ -2,7 +2,8 @@
 /** One product page (/products/<slug>). Spine: docs/v6/story-pack-depth.md §6. Content comes from
  *  product-pages-data.ts (authored from the annex), maturity and boundary from portfolio-story-data.ts,
  *  status and evidence from applications-story-data.ts, so every surface states the same thing. */
-import {ArrowRight, ArrowUpRight, FileText} from 'lucide-react';
+import {useEffect, useRef} from 'react';
+import {ArrowRight, ArrowUpRight, FileText, Play} from 'lucide-react';
 import {Sec, DataTable, Diagram, Storyboard, DiagramNotes} from './detail';
 import {archStories} from './arch-stories';
 import {explainers} from './explainers';
@@ -49,10 +50,22 @@ export default function ProductPageView({slug}: {slug: string}) {
         <a className="pp-bar-cta" href={contact}>Discuss this part <ArrowUpRight size={14} aria-hidden="true"/></a>
       </nav>
 
-      <header className="pp-head">
-        <p className="dr-kicker">{part.code} · {part.process}</p>
-        <h1>{p.headline}</h1>
-        <p className="pp-lede">{p.lede}</p>
+      <header className="pp-hero">
+        <div className="pp-hero-copy">
+          <h1><span className="pp-hero-code">{part.code} · {part.process}</span> {part.name}</h1>
+          <p className="pp-hero-claim">{p.headline}</p>
+          <p className="pp-lede">{p.lede}</p>
+          <div className="pp-actions">
+            <a className="primary" href={contact}>Discuss {part.code} <ArrowUpRight size={16} aria-hidden="true"/></a>
+            {explainer && <a className="text-link" href="#pp-inside"><Play size={14} aria-hidden="true"/> Watch how it works · {explainer.length}</a>}
+          </div>
+        </div>
+        {explainer && <figure className="pp-hero-object"><HeroLoop src={explainer.loop} poster={explainer.poster}/><figcaption>Animated illustration from the {explainer.length} film below. Pre-silicon; not a render of the part.</figcaption></figure>}
+        <dl className="pp-hero-specs">
+          {p.heroSpecs.map(name => { const row = p.specs.find(r => r[0] === name)!; return (
+            <div key={name}><dt>{name}<span className="pp-status">{status(row[1])}</span></dt><dd>{nbspUnits(row[1])}</dd></div>
+          ); })}
+        </dl>
         <dl className="pp-facts">
           <div><dt>Job</dt><dd>{part.job}</dd></div>
           <div><dt>Replaces</dt><dd>{record.replaces}</dd></div>
@@ -93,7 +106,12 @@ export default function ProductPageView({slug}: {slug: string}) {
 
       <section id="pp-specs" className="pp-sec">
         <Sec kicker="SPECIFICATION" title={S?.specs.title ?? 'Architecture targets, not datasheet values.'} copy={S?.specs.copy ?? `Every figure is a design target stated in the Technical Annex, ${sheet}. None is a measurement of manufactured silicon.`}>
-          <DataTable caption={`${part.code} architecture targets (Annex v3, ${sheet})`} head={['Parameter', 'Target']} rows={p.specs}/>
+          <dl className="pp-spec-cards">
+            {p.specs.map(([name, value]) => <div key={name}><dt>{name}<span className="pp-status">{status(value)}</span></dt><dd>{nbspUnits(value)}</dd></div>)}
+          </dl>
+          <details className="sb-ref"><summary className="dr-kicker">THE SAME TARGETS AS A TABLE</summary>
+            <DataTable caption={`${part.code} architecture targets (Annex v3, ${sheet})`} head={['Parameter', 'Target']} rows={p.specs}/>
+          </details>
           <div className="pp-toward">
             <p className="dr-kicker">DESIGNED TOWARD</p>
             <ul>{p.designedToward.map(s => <li key={s}>{s}</li>)}</ul>
@@ -103,7 +121,7 @@ export default function ProductPageView({slug}: {slug: string}) {
         </Sec>
       </section>
 
-      <section id="pp-questions" className="pp-sec">
+      <section id="pp-questions" className="pp-sec pp-split">
         <Sec kicker="EVALUATION QUESTIONS" title={S?.questions.title ?? 'What an evaluator should ask first.'} copy={S?.questions.copy ?? `The annex asks these of its own design. Each is a question silicon, test or layout has to answer before ${part.code} can be relied on.`}>
           <ol className="pp-questions">
             {p.questions.map(q => <li key={q.title}><h3>{q.title}</h3><p>{q.question}</p></li>)}
@@ -132,7 +150,7 @@ export default function ProductPageView({slug}: {slug: string}) {
         </Sec>
       </section>
 
-      <section id="pp-evidence" className="pp-sec">
+      <section id="pp-evidence" className="pp-sec pp-split">
         <Sec kicker="EVIDENCE TODAY" title={S?.evidence.title ?? (part.maturity === 'Pre-silicon engineering evidence' ? 'Simulated and implemented, not yet measured.' : 'An architecture, with its evidence named.')} copy={S?.evidence.copy ?? part.boundary}>
           <dl className="pp-evidence">
             <div><dt>Strongest evidence</dt><dd>{record.evidence}</dd></div>
@@ -176,6 +194,22 @@ export default function ProductPageView({slug}: {slug: string}) {
       </section>
     </article>
   );
+}
+
+/** A figure's standing, stated on its card: the annex gives targets; a few rows are simulated results. */
+function status(value: string) { return /simulated/i.test(value) ? 'Simulated' : 'Target'; }
+
+/** The hero's silent loop of the film's first scene. Autoplays only without a reduced-motion preference;
+ *  otherwise the poster (the scene fully drawn) stands still. Decorative: the film below carries the content. */
+function HeroLoop({src, poster}: {src: string; poster: string}) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current; if (!v) return;
+    const mq = matchMedia('(prefers-reduced-motion: reduce)');
+    const apply = () => { if (mq.matches) v.pause(); else v.play().catch(() => {}); };
+    apply(); mq.addEventListener('change', apply); return () => mq.removeEventListener('change', apply);
+  }, []);
+  return <video ref={ref} className="pp-hero-loop" src={src} poster={poster} muted loop playsInline preload="metadata" aria-hidden="true" tabIndex={-1}/>;
 }
 
 export {productSlugById};
