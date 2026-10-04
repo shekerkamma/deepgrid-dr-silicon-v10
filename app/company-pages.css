@@ -185,21 +185,17 @@
 .cp-band-bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: .85; }
 /* A scrim only where the copy sits (left column, and the bottom edge into the page), not a dimmed photo. */
 .cp-band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, color-mix(in srgb, var(--background) 94%, transparent) 0%, color-mix(in srgb, var(--background) 82%, transparent) 42%, transparent 72%), linear-gradient(180deg, transparent 70%, var(--background)); pointer-events: none; }
-.cp-band.is-centered::after { background: radial-gradient(60% 75% at 50% 50%, color-mix(in srgb, var(--background) 88%, transparent), transparent 100%), linear-gradient(180deg, transparent 70%, var(--background)); }
 .cp-band-copy { min-width: 0; }
-.cp-band-inner { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; padding-inline: clamp(1rem, 3vw, 2rem); max-width: 80rem; margin-inline: auto; }
-.cp-band.is-centered .cp-band-inner { grid-template-columns: minmax(0, 1fr); text-align: center; max-width: 52rem; }
+.cp-band-inner { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }   /* the band's own padding is the page gutter, so copy shares the content's left edge */
+.cp-band.is-centered .cp-band-inner { grid-template-columns: minmax(0, 1fr); }
 .cp-pill { display: inline-flex; align-items: center; gap: .4rem; margin: 0 0 1rem; padding: .3rem .8rem; border: 1px solid color-mix(in srgb, var(--copper) 45%, var(--line)); border-radius: var(--sc-radius-sm); background: color-mix(in srgb, var(--copper) 8%, transparent); font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--copper); }
 .cp-band h1 { margin: 0 0 1rem; font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-hero); line-height: var(--sc-lh-hero); letter-spacing: var(--sc-track-hero); color: var(--ink); text-wrap: balance; }
 .cp-band-lede { margin: 0; color: var(--ink-2); font-size: var(--sc-t-lead); line-height: var(--sc-lh-body); max-width: 60ch; text-wrap: pretty; }
-.cp-band.is-centered .cp-band-lede { margin-inline: auto; }
 .cp-band-credit { position: absolute; right: 1rem; bottom: .6rem; margin: 0; font-size: var(--sc-t-meta); color: var(--ink-3); max-width: 50ch; text-align: right; }
 .cp-band .cp-chips li { grid-template-columns: auto 1fr; column-gap: .7rem; background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: blur(6px); }
 .cp-band .cp-chips svg { grid-row: span 2; color: var(--copper); margin-top: .1rem; }
 
-/* Section heads centred, as on every deepgridsemi.com section */
-.cp-sec-head { margin-inline: auto; text-align: center; max-width: 48rem; }
-.cp-sec-head .cp-lede { margin-inline: auto; }
+/* Section heads start at the left edge, like every other section head on the site. */
 .cp-page > .cp-band + .cp-sec { border-top: 0; }
 
 /* Icon cards: tinted icon tile, lift on hover */
@@ -217,7 +213,7 @@
 
 /* Stat card (deepgridsemi "2020 Founded"): one glass panel, big figures */
 .cp-stats { padding: clamp(1.5rem, 3vw, 2rem); border: 1px solid var(--line); border-radius: var(--sc-radius-lg); background: var(--surface); margin-block: 1rem; }
-.cp-stats div { border-top: 0; text-align: center; }
+.cp-stats div { border-top: 0; }
 .cp-stats strong { color: var(--copper); line-height: 1; font-variant-numeric: tabular-nums; }
 
 /* People (deepgridsemi "Leadership & Team"): photo-led cards */
@@ -235,9 +231,8 @@
 /* Steps as numbered cards on a rail */
 
 /* Call to action: a full-width band, centred (deepgridsemi "Ready to…?") */
-.cp-cta { margin-inline: calc(50% - 50vw); padding-inline: calc(50vw - 50%); text-align: center; border-top: 1px solid var(--line); background: radial-gradient(60% 120% at 50% 100%, color-mix(in srgb, var(--copper) 13%, transparent), transparent 70%), var(--surface); }
-.cp-cta h2, .cp-cta p { margin-inline: auto; }
-.cp-cta .cp-actions { justify-content: center; }
+.cp-cta { margin-inline: calc(50% - 50vw); padding-inline: calc(50vw - 50%); border-top: 1px solid var(--line); background: radial-gradient(60% 120% at 50% 100%, color-mix(in srgb, var(--copper) 13%, transparent), transparent 70%), var(--surface); }
+
 
 /* Fade-in-up on entry */
 @media (prefers-reduced-motion: no-preference) {

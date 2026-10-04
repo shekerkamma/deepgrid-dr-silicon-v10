@@ -156,12 +156,12 @@ html .dr-enq-field input, html .dr-enq-field select, html .dr-enq-field textarea
 }
 
 /* Page headers as deepgridsemi.com's page heroes: a dark full-width band with the copper glow, the kicker as
-   a pill, the title and copy centred. Same shell as company pages' .cp-band. */
-html .page-wrap > .section-head { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 1rem; text-align: center; margin: 0 calc(50% - 50vw) 2.5rem; padding: clamp(3.5rem, 8vw, 5.5rem) calc(50vw - 50% + 1rem) clamp(2.75rem, 5vw, 4rem); border-bottom: 1px solid var(--line); background: radial-gradient(70% 90% at 50% 0%, color-mix(in srgb, var(--copper) 12%, transparent), transparent 70%), var(--background); }
-html .page-wrap > .section-head > div { display: grid; justify-items: center; }
+   a 4 px chip, the title and copy at the left edge like every other head on the site. Same shell as company pages' .cp-band. */
+html .page-wrap > .section-head { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1fr); justify-items: start; gap: 1rem; text-align: start; margin: 0 calc(50% - 50vw) 2.5rem; padding: clamp(3.5rem, 8vw, 5.5rem) calc(50vw - 50%) clamp(2.75rem, 5vw, 4rem); border-bottom: 1px solid var(--line); background: radial-gradient(70% 90% at 50% 0%, color-mix(in srgb, var(--copper) 12%, transparent), transparent 70%), var(--background); }
+html .page-wrap > .section-head > div { display: grid; justify-items: start; }
 html .page-wrap > .section-head .kicker { display: inline-flex; margin: 0 0 1rem; padding: .3rem .8rem; border: 1px solid color-mix(in srgb, var(--copper) 45%, var(--line)); border-radius: var(--sc-radius-sm); background: color-mix(in srgb, var(--copper) 8%, transparent); color: var(--copper); }
-html .page-wrap > .section-head h1 { max-width: 22ch; margin-inline: auto; font-size: var(--sc-t-hero); line-height: var(--sc-lh-hero); }
-html .page-wrap > .section-head > p { max-width: 62ch; margin-inline: auto; font-size: var(--sc-t-lead); }
+html .page-wrap > .section-head h1 { max-width: 22ch; margin-inline: 0; font-size: var(--sc-t-hero); line-height: var(--sc-lh-hero); }
+html .page-wrap > .section-head > p { max-width: 62ch; margin-inline: 0; font-size: var(--sc-t-lead); }
 html body:has(.page-wrap > .section-head) { overflow-x: clip; }
 /* Flush to the nav only when the header opens the page; after a breadcrumb or tabs it keeps its place. */
 html .page-wrap > .section-head:first-child { margin-top: -60px; }

@@ -29,10 +29,8 @@ const SECTIONS = [
   ['pp-inside', 'Overview'],
   ['pp-features', 'Key features'],
   ['pp-specs', 'Architecture'],
-  ['pp-highlights', 'Highlights'],
   ['pp-readiness', 'Readiness'],
   ['pp-fit', 'Designed for'],
-  ['pp-integration', 'Integration'],
   ['pp-sources', 'Sources'],
 ] as const;
 
@@ -52,7 +50,6 @@ export default function ProductPageView({slug}: {slug: string}) {
   const contact = url('/contact') + '?part=' + encodeURIComponent(`${part.code} ${part.name}`);
   const deck = url(`/downloads/${base}-architecture.pptx`);
   const animated = `/diagrams/${p.slug}-architecture-animated.svg`;   // scripts/sku-diagrams/animate.py
-  const interfaces = p.specs.filter(([n]) => /interface|input|network|rs-485|can-fd|vision|output|connect/i.test(n));
 
   return (
     <article className="pp">
@@ -87,7 +84,7 @@ export default function ProductPageView({slug}: {slug: string}) {
       {/* 2 · Overview: name, status line, actions; the media carousel (DG-A100: three product views). */}
       <section id="pp-inside" className="pp-sec pp-overview pp-reveal">
         <div className="pp-overview-copy">
-          <h2>{nbspUnits(part.job)}</h2>
+          <h2 className="dr-h2">{nbspUnits(part.job)}</h2>
           <p className="pp-lede">{nbspUnits(p.lede)}</p>
           <dl className="pp-facts">
             <div><dt>Job</dt><dd>{part.job}</dd></div>
@@ -108,10 +105,10 @@ export default function ProductPageView({slug}: {slug: string}) {
       {/* 3 · Key features: one card per storyboard beat (DG-A100: a grid of six feature cards). */}
       {story && (
         <section id="pp-features" className="pp-sec pp-reveal">
-          <header className="pp-center-head"><h2>Key features</h2><p>{story.lead.split('. ')[0]}.</p></header>
+          <Head title={story.headline} copy={story.lead.split('. ')[0] + '.'}/>
           <ol className="pp-features">
             {story.beats.slice(0, 6).map((b, i) => { const Icon = iconFor(b.title + ' ' + b.zones.join(' ')); return (
-              <li key={i} className={i === 0 ? 'is-lead' : undefined}>
+              <li key={i}>
                 <Icon size={22} aria-hidden="true"/>
                 <p className="pp-feature-zone">{(b.zones[0] ?? '').split('  ·  ')[0]}</p>
                 <h3>{nbspUnits(b.title)}</h3>
@@ -125,7 +122,12 @@ export default function ProductPageView({slug}: {slug: string}) {
       {/* 4 · Architecture and technical specifications: the diagram in the middle, the targets around it,
           a row of facts beneath (DG-A100: schematic with spec cards either side, four chips below). */}
       <section id="pp-specs" className="pp-sec pp-reveal">
-        <header className="pp-center-head"><h2>Architecture &amp; technical specifications</h2><p>{S?.specs.copy ?? `Every figure is a design target stated in the Technical Annex, ${sheet}. None is a measurement of manufactured silicon.`}</p></header>
+        <Head title={S?.specs.title ?? 'Architecture targets, not datasheet values.'} copy={S?.specs.copy ?? `Every figure is a design target stated in the Technical Annex, ${sheet}. None is a measurement of manufactured silicon.`}/>
+        <ul id="pp-highlights" className="pp-highlights" aria-label="The three figures that decide the fit">
+          {p.highlights.map(([fig, label, row]) => { const value = p.specs.find(r => r[0] === row)![1]; return (
+            <li key={label}><strong>{nbspUnits(fig)}</strong><span className="pp-hl-label">{label}</span>{tag(value)}</li>
+          ); })}
+        </ul>
         {dg && <a className="pp-arch-figure" href="#pp-diagram" onClick={() => { const d = document.getElementById('pp-diagram') as HTMLDetailsElement | null; if (d) d.open = true; }}>
           <img src={url(animated)} alt={dg.alt} width={dg.width} height={dg.height} loading="lazy"/>
         </a>}
@@ -149,22 +151,11 @@ export default function ProductPageView({slug}: {slug: string}) {
         )}
       </section>
 
-      {/* Performance highlights (DG-R100/S100/T100): three large figures. Ours are design targets, so the
-          tiles say so, and there are no benchmark bars: nothing has been measured on silicon. */}
-      <section id="pp-highlights" className="pp-sec pp-reveal">
-        <header className="pp-center-head"><h2>Performance highlights</h2><p>Design targets from the Technical Annex, {sheet.toLowerCase()}. None is a measurement of manufactured silicon.</p></header>
-        <ul className="pp-highlights">
-          {p.highlights.map(([fig, label, row]) => { const value = p.specs.find(r => r[0] === row)![1]; return (
-            <li key={label}><strong>{nbspUnits(fig)}</strong><span className="pp-hl-label">{label}</span>{tag(value)}</li>
-          ); })}
-        </ul>
-      </section>
-
       {/* 5 · Readiness: the label holds while the cards scroll (DG-A100: "System readiness"), ending on
           the evidence panel where DG-A100 shows its measured prototype pipeline. */}
       <section id="pp-readiness" className="pp-sec pp-readiness pp-reveal">
         <header className="pp-readiness-head">
-          <h2>{S?.questions.title ?? 'What an evaluator should ask first.'}</h2>
+          <h2 className="dr-h2">{nbspUnits(S?.questions.title ?? 'What an evaluator should ask first.')}</h2>
           <p>{S?.questions.copy ?? `The annex asks these of its own design. Each is a question silicon, test or layout has to answer before ${part.code} can be relied on.`}</p>
         </header>
         <div className="pp-readiness-cards">
@@ -190,39 +181,24 @@ export default function ProductPageView({slug}: {slug: string}) {
 
       {/* 6 · Designed for: application cards (DG-A100: four application cards), then the parts beside it. */}
       <section id="pp-fit" className="pp-sec pp-designed pp-reveal">
-        <header className="pp-center-head"><h2>Designed for</h2><p>{S?.fit.copy ?? part.evaluation}</p></header>
+        <Head title={S?.fit.title ?? 'The systems it goes into, and the parts beside it.'} copy={S?.fit.copy ?? part.evaluation}/>
         <ul className="pp-apps">
           {fits.map(f => { const Icon = areaIcon(f.area.id); return (
             <li key={f.area.id}><a href={url('/use-cases/' + f.area.id)}><Icon size={22} aria-hidden="true"/><span className="pp-app-name">{f.area.name}<ArrowUpRight size={14} aria-hidden="true"/></span><span>{f.role}</span></a></li>
           ); })}
         </ul>
-        <ul className="pp-related">
+        <p className="pp-group-label">Parts beside it</p>
+        <ul className="pp-apps">
           {p.related.map(r => {
             const rp = productBySlug[r.slug];
             const rpart = portfolioParts.find(x => x.id === rp.portfolioId)!;
-            return <li key={r.slug}><a href={url('/products/' + r.slug)}><span className="mono">{rpart.code}</span> {rpart.name}<span className="pp-why">{r.why}</span></a></li>;
+            return <li key={r.slug}><a href={url('/products/' + r.slug)}><Cpu size={22} aria-hidden="true"/><span className="pp-app-name">{rpart.code} {rpart.name}<ArrowUpRight size={14} aria-hidden="true"/></span><span>{r.why}</span></a></li>;
           })}
         </ul>
       </section>
 
-      {/* Integration & compatibility (DG-R100/S100/T100): three columns of what a designer plugs into. */}
-      <section id="pp-integration" className="pp-sec pp-reveal">
-        <header className="pp-center-head"><h2>Integration &amp; compatibility</h2><p>The interfaces it presents, the standards it is designed toward, and the design files to take into your own tools.</p></header>
-        <div className="pp-integration">
-          <article><h3><Network size={18} aria-hidden="true"/> Interfaces</h3><ul>{(interfaces.length ? interfaces : p.specs.slice(0, 3)).map(([n, v]) => <li key={n}><b>{n}</b> {nbspUnits(v)}</li>)}</ul></article>
-          <article><h3><ShieldCheck size={18} aria-hidden="true"/> Designed toward</h3><ul>{p.designedToward.map(x => <li key={x}>{x}</li>)}</ul><p className="pp-note">No DeepGrid part holds a certification or qualification today.</p></article>
-          <article><h3><Download size={18} aria-hidden="true"/> Design files</h3><ul>
-            <li><a href={deck}>Architecture deck (.pptx)</a></li>
-            {dg && <li><a href={url(dg.drawio)}>Editable diagram (.drawio)</a></li>}
-            <li><a href={url(`/downloads/${base}-workflow.html`)}>Interactive workflow (.html)</a></li>
-            {dg && <li><a href={readHref(dg.guide)}>Architecture guide</a></li>}
-          </ul></article>
-        </div>
-      </section>
-
       <section id="pp-sources" className="pp-sec">
-        <header className="pp-sources-head"><h2>{S?.sources.title ?? 'Read the source behind every figure.'}</h2>
-          <p>{(S?.sources.copy ?? 'Each document opens inside the site at the cited section; the PDF is the edition of record.') + (dg?.annexDiffers ? ' Where the annex sheet differs from this page, the difference is stated beside it.' : '')}</p></header>
+        <Head title={S?.sources.title ?? 'Read the source behind every figure.'} copy={(S?.sources.copy ?? 'Each document opens inside the site at the cited section; the PDF is the edition of record.') + (dg?.annexDiffers ? ' Where the annex sheet differs from this page, the difference is stated beside it.' : '')}/>
         <ul className="pp-sources">
           <li>
             <a href={readHref(annex.specFile, part.source.section.includes('§3') ? undefined : '2. Complete 14-Sheet Portfolio Matrix')}><FileText size={15} aria-hidden="true"/><span>{annex.title}</span><span className="pp-cite">{sheet}{part.source.section ? ' · ' + part.source.section : ''}</span></a>
@@ -239,6 +215,13 @@ export default function ProductPageView({slug}: {slug: string}) {
             <li><a href={readHref(part.source.path, part.source.section)}><FileText size={15} aria-hidden="true"/><span>{part.source.title}</span><span className="pp-cite">{part.source.section}</span></a></li>
           )}
         </ul>
+        <p className="pp-group-label">Design files</p>
+        <ul className="pp-files">
+          <li><a href={deck}><Download size={15} aria-hidden="true"/> Architecture deck (.pptx)</a></li>
+          {dg && <li><a href={url(dg.drawio)}><Download size={15} aria-hidden="true"/> Editable diagram (.drawio)</a></li>}
+          <li><a href={url(`/downloads/${base}-workflow.html`)}><ArrowUpRight size={15} aria-hidden="true"/> Interactive workflow (.html)</a></li>
+          {dg && <li><a href={readHref(dg.guide)}><FileText size={15} aria-hidden="true"/> Architecture guide</a></li>}
+        </ul>
       </section>
       {/* 7 · Call to action (DG-A100: talk to our team, download the whitepaper). */}
       <section className="pp-close pp-reveal">
@@ -254,6 +237,11 @@ export default function ProductPageView({slug}: {slug: string}) {
       <Reveal/>
     </article>
   );
+}
+
+/** The site's section head (as `Sec` draws it): verdict title on the left, copy on the right. */
+function Head({title, copy}: {title: string; copy?: React.ReactNode}) {
+  return <header className="dr-sec-head"><div><h2 className="dr-h2">{nbspUnits(title)}</h2></div>{copy && <div className="dr-sec-copy">{typeof copy === 'string' ? <p>{nbspUnits(copy)}</p> : copy}</div>}</header>;
 }
 
 /** A figure's standing, stated on its card: the annex gives targets; a few rows are simulated results. */

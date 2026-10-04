@@ -109,7 +109,7 @@
 .pp-hero-claim { font-size: var(--sc-t-lead); line-height: var(--sc-lh-body); color: var(--ink-2); margin: 0; text-wrap: pretty; }
 .pp-hero .pp-actions { margin-top: 1.5rem; }
 .pp-hero-object { grid-area: object; margin: 0; }
-.pp-hero-object figcaption { margin-top: .75rem; font-size: var(--sc-t-meta); color: var(--ink-3); text-align: center; }
+.pp-hero-object figcaption { margin-top: .75rem; font-size: var(--sc-t-meta); color: var(--ink-3); }
 .pp-hero-specs { grid-area: specs; display: grid; gap: .75rem; margin: 0; }
 
 /* The exploded die: three layers in CSS 3D. Entry parts them; a slow drift keeps them alive. */
@@ -144,7 +144,7 @@
 
 /* 2 · Overview + carousel */
 .pp-overview { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: center; padding-block: clamp(3rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
-.pp-overview h2, .pp-center-head h2, .pp-readiness-head h2, .pp-sources-head h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-page); line-height: var(--sc-lh-page); color: var(--ink); margin: .5rem 0 1rem; text-wrap: balance; }
+.pp-readiness-head h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-page); line-height: var(--sc-lh-page); color: var(--ink); margin: .5rem 0 1rem; text-wrap: balance; }
 .pp-overview .pp-lede { font-size: var(--sc-t-body); }
 .pp-overview .pp-facts { grid-template-columns: minmax(0, 1fr); gap: .9rem; margin-top: 1.5rem; }
 .pp-overview-copy { min-width: 0; }
@@ -163,8 +163,6 @@
 .pp-dots button.is-on::after { background: var(--copper); }
 
 /* 3 · Key features: a bento grid, the first card large */
-.pp-center-head { text-align: center; max-width: 46rem; margin: 0 auto 2rem; }
-.pp-center-head p { margin: 0; color: var(--ink-2); font-size: var(--sc-t-body); line-height: var(--sc-lh-body); }
 #pp-features, #pp-specs, .pp-designed { padding-block: clamp(3rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
 .pp-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; margin: 0; padding: 0; list-style: none; }
 .pp-features li { padding: 1.4rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); transition: border-color .2s ease; }
@@ -179,8 +177,8 @@
 /* 4 · Architecture: the animated diagram full width (in a side column its labels fell to about 4.5 px),
    the targets as a card grid beneath it, chips under those. */
 .pp-arch-cards { grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); margin-top: 1rem; }
-.pp-targets-note { margin: .4rem 0 0; font-size: var(--sc-t-meta); color: var(--ink-3); text-align: center; }
-.pp-diagram-full > summary { list-style: none; cursor: pointer; width: fit-content; margin-inline: auto; }
+.pp-targets-note { margin: .4rem 0 0; font-size: var(--sc-t-meta); color: var(--ink-3); }
+.pp-diagram-full > summary { list-style: none; cursor: pointer; width: fit-content; }
 .pp-diagram-full > summary::-webkit-details-marker { display: none; }
 .pp-arch { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr); gap: 1rem; align-items: center; }
 .pp-spec-cards { display: grid; gap: .75rem; margin: 0; }
@@ -218,7 +216,7 @@
 /* Performance highlights: three large figures, each marked as a target */
 #pp-highlights, #pp-integration { padding-block: clamp(3rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
 .pp-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; margin: 0; padding: 0; list-style: none; }
-.pp-highlights li { display: grid; justify-items: center; gap: .35rem; padding: 1.75rem 1.25rem; text-align: center; border: 1px solid var(--line); border-radius: var(--sc-radius-lg); background: var(--surface); }
+.pp-highlights li { display: grid; justify-items: start; gap: .35rem; padding: 1.5rem 1.25rem; border: 1px solid var(--line); border-radius: var(--sc-radius-lg); background: var(--surface); }
 .pp-highlights strong { font-variant-numeric: tabular-nums; font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-hero); line-height: 1; color: var(--copper); }
 .pp-hl-label { font-weight: 600; color: var(--ink); font-size: var(--sc-t-body); }
 .pp-highlights .pp-status { margin: 0; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; }
@@ -235,12 +233,19 @@
 .pp-integration a { display: inline-flex; align-items: center; min-height: 28px; color: var(--ink); }
 .pp-integration a:hover, .pp-integration a:focus-visible { color: var(--copper); }
 
+/* Groups inside a section (Designed for, Sources) */
+.pp-group-label { margin: 1.5rem 0 .75rem; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--ink-3); }
+.pp-files { display: flex; flex-wrap: wrap; gap: .6rem; margin: 0; padding: 0; list-style: none; }
+.pp-files a { display: inline-flex; align-items: center; gap: .45rem; min-height: 40px; padding: 0 .9rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); color: var(--ink); text-decoration: none; font-size: var(--sc-t-control); }
+.pp-files a:hover, .pp-files a:focus-visible { border-color: var(--copper); color: var(--copper); }
+.pp-files svg { color: var(--copper); }
+#pp-specs .pp-highlights { margin-bottom: 1.25rem; }
+#pp-sources { border-top: 1px solid var(--line); }
+
 /* 7 · Call to action */
 .pp-ghost { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: 0 1.1rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); color: var(--ink); text-decoration: none; }
 .pp-ghost:hover, .pp-ghost:focus-visible { border-color: var(--copper); color: var(--copper); }
-.pp-close { text-align: center; }
-.pp-close h2, .pp-close p { margin-inline: auto; }
-.pp-close .pp-actions { justify-content: center; }
+/* One alignment rule for the whole page (and site): heads and copy start at the left edge. */
 .pp-sources-head { max-width: 46rem; margin-bottom: 1.25rem; }
 #pp-sources { padding-block: clamp(2.5rem, 5vw, 3.5rem) 0; }
 
