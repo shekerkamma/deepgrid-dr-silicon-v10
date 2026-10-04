@@ -153,7 +153,7 @@
 .cp-flow-text strong { color: var(--ink); font-weight: 600; font-size: var(--sc-t-control); }
 .cp-flow-text small { color: var(--ink-3); font-size: var(--sc-t-meta); }
 @media (prefers-reduced-motion: no-preference) {
-  .cp-flow li { animation: cp-flow-pulse 6s ease-in-out infinite; animation-delay: calc(var(--i) * 1s); }
+  .cp-flow li { animation: cp-flow-pulse 6s ease-in-out 2; animation-delay: calc(var(--i) * 1s); }   /* twice through, then still: motion over 5 s needs a stop */
   @keyframes cp-flow-pulse { 0%, 20%, 100% { border-color: var(--line-soft); } 8% { border-color: var(--copper); box-shadow: 0 0 0 1px var(--copper) inset; } }
 }
 
@@ -182,12 +182,14 @@
    a stat card, photo-led people, resource cards and a full-width call-to-action band. ── */
 .cp-page { overflow-x: clip; }
 .cp-band { position: relative; isolation: isolate; margin: -60px calc(50% - 50vw) 0; padding: clamp(3.5rem, 8vw, 6rem) calc(50vw - 50%) clamp(3rem, 6vw, 4.5rem); overflow: hidden; border-bottom: 1px solid var(--line); background: radial-gradient(70% 90% at 50% 0%, color-mix(in srgb, var(--copper) 12%, transparent), transparent 70%), var(--background); }
-.cp-band-bg { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; opacity: .28; filter: saturate(.6); }
-.cp-band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent 40%, var(--background)); pointer-events: none; }
+.cp-band-bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: .85; }
+/* A scrim only where the copy sits (left column, and the bottom edge into the page), not a dimmed photo. */
+.cp-band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, color-mix(in srgb, var(--background) 94%, transparent) 0%, color-mix(in srgb, var(--background) 82%, transparent) 42%, transparent 72%), linear-gradient(180deg, transparent 70%, var(--background)); pointer-events: none; }
+.cp-band.is-centered::after { background: radial-gradient(60% 75% at 50% 50%, color-mix(in srgb, var(--background) 88%, transparent), transparent 100%), linear-gradient(180deg, transparent 70%, var(--background)); }
 .cp-band-copy { min-width: 0; }
 .cp-band-inner { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; padding-inline: clamp(1rem, 3vw, 2rem); max-width: 80rem; margin-inline: auto; }
 .cp-band.is-centered .cp-band-inner { grid-template-columns: minmax(0, 1fr); text-align: center; max-width: 52rem; }
-.cp-pill { display: inline-flex; align-items: center; gap: .4rem; margin: 0 0 1rem; padding: .3rem .8rem; border: 1px solid color-mix(in srgb, var(--copper) 45%, var(--line)); border-radius: 999px; background: color-mix(in srgb, var(--copper) 8%, transparent); font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--copper); }
+.cp-pill { display: inline-flex; align-items: center; gap: .4rem; margin: 0 0 1rem; padding: .3rem .8rem; border: 1px solid color-mix(in srgb, var(--copper) 45%, var(--line)); border-radius: var(--sc-radius-sm); background: color-mix(in srgb, var(--copper) 8%, transparent); font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--copper); }
 .cp-band h1 { margin: 0 0 1rem; font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-hero); line-height: var(--sc-lh-hero); letter-spacing: var(--sc-track-hero); color: var(--ink); text-wrap: balance; }
 .cp-band-lede { margin: 0; color: var(--ink-2); font-size: var(--sc-t-lead); line-height: var(--sc-lh-body); max-width: 60ch; text-wrap: pretty; }
 .cp-band.is-centered .cp-band-lede { margin-inline: auto; }
@@ -201,9 +203,9 @@
 .cp-page > .cp-band + .cp-sec { border-top: 0; }
 
 /* Icon cards: tinted icon tile, lift on hover */
-.cp-card { border-radius: 12px; transition: border-color .2s ease, translate .2s ease; }
+.cp-card { transition: border-color .2s ease, translate .2s ease; }
 .cp-card-link:hover { translate: 0 -2px; }
-.cp-card-icon { width: 44px; height: 44px; border-radius: 10px; border-color: color-mix(in srgb, var(--copper) 35%, var(--line)); background: color-mix(in srgb, var(--copper) 9%, var(--surface)); }
+.cp-card-icon { width: 44px; height: 44px; border-radius: var(--sc-radius-lg); border-color: color-mix(in srgb, var(--copper) 35%, var(--line)); background: color-mix(in srgb, var(--copper) 9%, var(--surface)); }
 
 /* Image tiles (deepgridsemi "Company Strategy"): tall, image-led, title on the image */
 .cp-tiles .cp-card { position: relative; min-height: 22rem; padding: 0; overflow: hidden; align-content: end; }
@@ -214,12 +216,12 @@
 .cp-tiles .cp-card p { padding-bottom: 1.25rem; background: color-mix(in srgb, var(--background) 85%, transparent); }
 
 /* Stat card (deepgridsemi "2020 Founded"): one glass panel, big figures */
-.cp-stats { padding: clamp(1.5rem, 3vw, 2rem); border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(160deg, color-mix(in srgb, var(--copper) 8%, var(--surface)), var(--surface)); margin-block: 1rem; }
+.cp-stats { padding: clamp(1.5rem, 3vw, 2rem); border: 1px solid var(--line); border-radius: var(--sc-radius-lg); background: var(--surface); margin-block: 1rem; }
 .cp-stats div { border-top: 0; text-align: center; }
-.cp-stats strong { color: var(--copper); font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1; }
+.cp-stats strong { color: var(--copper); line-height: 1; font-variant-numeric: tabular-nums; }
 
 /* People (deepgridsemi "Leadership & Team"): photo-led cards */
-.cp-person { border-radius: 14px; padding: 0; overflow: hidden; }
+.cp-person { border-radius: var(--sc-radius-lg); padding: 0; overflow: hidden; }
 .cp-person-head { flex-direction: column; align-items: stretch; gap: 0; }
 .cp-person-head img, .cp-person-head .cp-initials { width: 100%; height: auto; aspect-ratio: 4 / 3; border-radius: 0; object-fit: cover; font-size: 2rem; }
 .cp-person-head > div { padding: 1rem 1.25rem .25rem; }
@@ -227,11 +229,10 @@
 .cp-person > :last-child { margin-bottom: 1.25rem; }
 
 /* Resource cards (deepgridsemi "Resources") */
-.cp-docgroup { border-radius: 14px; padding: 1.5rem; }
+.cp-docgroup { border-radius: var(--sc-radius-lg); padding: 1.5rem; }
 .cp-docgroup h2 { font-size: var(--sc-t-block) !important; }
 
 /* Steps as numbered cards on a rail */
-.cp-steps li { border-radius: 12px; }
 
 /* Call to action: a full-width band, centred (deepgridsemi "Ready to…?") */
 .cp-cta { margin-inline: calc(50% - 50vw); padding-inline: calc(50vw - 50%); text-align: center; border-top: 1px solid var(--line); background: radial-gradient(60% 120% at 50% 100%, color-mix(in srgb, var(--copper) 13%, transparent), transparent 70%), var(--surface); }
@@ -240,8 +241,8 @@
 
 /* Fade-in-up on entry */
 @media (prefers-reduced-motion: no-preference) {
-  .cp-reveal { opacity: 0; translate: 0 28px; transition: opacity .8s ease, translate .8s ease; }
-  .cp-reveal.is-in { opacity: 1; translate: 0 0; }
+  .cp-js .cp-reveal { opacity: 0; translate: 0 28px; transition: opacity .8s ease, translate .8s ease; }
+  .cp-js .cp-reveal.is-in { opacity: 1; translate: 0 0; }
 }
 @media (max-width: 900px) {
   .cp-band-inner { grid-template-columns: minmax(0, 1fr); }

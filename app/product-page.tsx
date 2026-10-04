@@ -51,7 +51,6 @@ export default function ProductPageView({slug}: {slug: string}) {
   const sheet = `Sheet ${String(record.sheet).padStart(2, '0')}`;
   const contact = url('/contact') + '?part=' + encodeURIComponent(`${part.code} ${part.name}`);
   const deck = url(`/downloads/${base}-architecture.pptx`);
-  const half = Math.ceil(p.specs.length / 2);
   const animated = `/diagrams/${p.slug}-architecture-animated.svg`;   // scripts/sku-diagrams/animate.py
   const interfaces = p.specs.filter(([n]) => /interface|input|network|rs-485|can-fd|vision|output|connect/i.test(n));
 
@@ -65,21 +64,22 @@ export default function ProductPageView({slug}: {slug: string}) {
 
       {/* 1 · Hero: the name, the part, three figures (DG-A100: name, exploded chip render, three cards). */}
       <header className="pp-hero">
-        <div className="pp-hero-copy pp-reveal">
-          <h1><span className="pp-hero-code">{part.code} · {part.process}</span> {part.name}</h1>
-          <p className="pp-hero-claim">{p.headline}</p>
+        <div className="pp-hero-copy">
+          <h1><span className="pp-hero-code">{part.code} · {nbspUnits(part.process)}</span> {part.name}</h1>
+          <p className="pp-hero-claim">{nbspUnits(p.headline)}</p>
           <div className="pp-actions">
-            <a className="primary" href={contact}>Discuss {part.code} <ArrowUpRight size={16} aria-hidden="true"/></a>
+            <a className="primary" href={contact}>Discuss this part <ArrowUpRight size={16} aria-hidden="true"/></a>
             {explainer && <a className="text-link" href="#pp-inside"><Play size={14} aria-hidden="true"/> Watch how it works · {explainer.length}</a>}
           </div>
         </div>
-        <figure className="pp-hero-object pp-reveal">
+        <figure className="pp-hero-object">
           <Chip code={part.code} blocks={p.blocks.map(b => b.name)}/>
-          <figcaption>Illustration: the part's blocks on one die. Pre-silicon; not a render of manufactured silicon.</figcaption>
+          <figcaption>Illustration: the part’s blocks on one die. Pre-silicon; not a render of manufactured silicon.</figcaption>
+          <p id="pp-targets-note" className="pp-targets-note">Every figure on this page is a design target unless marked otherwise.</p>
         </figure>
-        <dl className="pp-hero-specs pp-reveal">
+        <dl className="pp-hero-specs" aria-describedby="pp-targets-note">
           {p.heroSpecs.map(name => { const row = p.specs.find(r => r[0] === name)!; const Icon = iconFor(name); return (
-            <div key={name}><dt><Icon size={16} aria-hidden="true"/>{name}<span className="pp-status">{status(row[1])}</span></dt><dd>{nbspUnits(row[1])}</dd></div>
+            <div key={name}><dt><Icon size={16} aria-hidden="true"/>{name}{tag(row[1])}</dt><dd>{nbspUnits(row[1])}</dd></div>
           ); })}
         </dl>
       </header>
@@ -87,10 +87,8 @@ export default function ProductPageView({slug}: {slug: string}) {
       {/* 2 · Overview: name, status line, actions; the media carousel (DG-A100: three product views). */}
       <section id="pp-inside" className="pp-sec pp-overview pp-reveal">
         <div className="pp-overview-copy">
-          <p className="dr-kicker">{part.code} · {part.maturity}</p>
-          <h2>{part.code} {part.name}</h2>
-          <p className="pp-subtitle">{story?.headline ?? p.headline}</p>
-          <p className="pp-lede">{p.lede}</p>
+          <h2>{nbspUnits(part.job)}</h2>
+          <p className="pp-lede">{nbspUnits(p.lede)}</p>
           <dl className="pp-facts">
             <div><dt>Job</dt><dd>{part.job}</dd></div>
             <div><dt>Replaces</dt><dd>{record.replaces}</dd></div>
@@ -116,8 +114,8 @@ export default function ProductPageView({slug}: {slug: string}) {
               <li key={i} className={i === 0 ? 'is-lead' : undefined}>
                 <Icon size={22} aria-hidden="true"/>
                 <p className="pp-feature-zone">{(b.zones[0] ?? '').split('  ·  ')[0]}</p>
-                <h3>{b.title}</h3>
-                <p>{firstSentence(b.body)}</p>
+                <h3>{nbspUnits(b.title)}</h3>
+                <p>{nbspUnits(firstSentence(b.body))}</p>
               </li>
             ); })}
           </ol>
@@ -128,13 +126,12 @@ export default function ProductPageView({slug}: {slug: string}) {
           a row of facts beneath (DG-A100: schematic with spec cards either side, four chips below). */}
       <section id="pp-specs" className="pp-sec pp-reveal">
         <header className="pp-center-head"><h2>Architecture &amp; technical specifications</h2><p>{S?.specs.copy ?? `Every figure is a design target stated in the Technical Annex, ${sheet}. None is a measurement of manufactured silicon.`}</p></header>
-        <div className="pp-arch">
-          <dl className="pp-spec-cards">{p.specs.slice(0, half).map(r => <SpecCard key={r[0]} row={r}/>)}</dl>
-          {dg && <a className="pp-arch-figure" href="#pp-diagram"><img src={url(animated)} alt={dg.alt} width={dg.width} height={dg.height} loading="lazy"/><span>Open the full diagram <ArrowRight size={14} aria-hidden="true"/></span></a>}
-          <dl className="pp-spec-cards">{p.specs.slice(half).map(r => <SpecCard key={r[0]} row={r}/>)}</dl>
-        </div>
+        {dg && <a className="pp-arch-figure" href="#pp-diagram" onClick={() => { const d = document.getElementById('pp-diagram') as HTMLDetailsElement | null; if (d) d.open = true; }}>
+          <img src={url(animated)} alt={dg.alt} width={dg.width} height={dg.height} loading="lazy"/>
+        </a>}
+        <dl className="pp-spec-cards pp-arch-cards">{p.specs.map(r => <SpecCard key={r[0]} row={r}/>)}</dl>
         <dl className="pp-chips">
-          <div><dt>Process</dt><dd>{part.process}</dd></div>
+          <div><dt>Process</dt><dd>{nbspUnits(part.process)}</dd></div>
           <div><dt>Maturity</dt><dd>{part.maturity}</dd></div>
           <div><dt>Designed toward</dt><dd>{p.designedToward.join(' · ')}</dd></div>
           <div><dt>Source</dt><dd>Technical Annex v3, {sheet.toLowerCase()}</dd></div>
@@ -142,7 +139,7 @@ export default function ProductPageView({slug}: {slug: string}) {
         <p className="pp-note">Standards the architecture is designed toward. No DeepGrid part holds a certification or qualification today.</p>
         {p.reconcile && <aside className="pp-reconcile"><p className="dr-kicker">WHERE THE SOURCES DIFFER</p><p>{p.reconcile}</p></aside>}
         {dg && story && (
-          <details id="pp-diagram" className="sb-ref pp-diagram-full"><summary className="dr-kicker">THE FULL DIAGRAM, ITS STORYBOARD AND SOURCES</summary>
+          <details id="pp-diagram" className="pp-diagram-full"><summary className="pp-ghost">Open the full diagram, its storyboard and sources</summary>
             {dg.note && <p className="pp-note">{nbspUnits(dg.note)}</p>}
             <Diagram src={dg.src} title={dg.title} alt={dg.alt} width={dg.width} height={dg.height} drawio={dg.drawio} guide={dg.guide} html={`/downloads/${base}-workflow.html`} deck={`/downloads/${base}-architecture.pptx`}/>
             <Storyboard story={story} questionsHref="#pp-readiness"/>
@@ -158,7 +155,7 @@ export default function ProductPageView({slug}: {slug: string}) {
         <header className="pp-center-head"><h2>Performance highlights</h2><p>Design targets from the Technical Annex, {sheet.toLowerCase()}. None is a measurement of manufactured silicon.</p></header>
         <ul className="pp-highlights">
           {p.highlights.map(([fig, label, row]) => { const value = p.specs.find(r => r[0] === row)![1]; return (
-            <li key={label}><strong>{nbspUnits(fig)}</strong><span className="pp-hl-label">{label}</span><span className="pp-status">{status(value)}</span><span className="pp-hl-rest">{row}: {nbspUnits(value)}</span></li>
+            <li key={label}><strong>{nbspUnits(fig)}</strong><span className="pp-hl-label">{label}</span>{tag(value)}</li>
           ); })}
         </ul>
       </section>
@@ -167,16 +164,15 @@ export default function ProductPageView({slug}: {slug: string}) {
           the evidence panel where DG-A100 shows its measured prototype pipeline. */}
       <section id="pp-readiness" className="pp-sec pp-readiness pp-reveal">
         <header className="pp-readiness-head">
-          <p className="dr-kicker">READINESS</p>
           <h2>{S?.questions.title ?? 'What an evaluator should ask first.'}</h2>
           <p>{S?.questions.copy ?? `The annex asks these of its own design. Each is a question silicon, test or layout has to answer before ${part.code} can be relied on.`}</p>
         </header>
         <div className="pp-readiness-cards">
           {p.physics.map((x, i) => (
-            <article key={'r' + i}><p className="pp-card-kicker">Why its own silicon</p><h3>{x.requirement}</h3><p>{x.consequence}</p></article>
+            <article key={'r' + i}><p className="pp-card-kicker">Why its own silicon</p><h3>{nbspUnits(x.requirement)}</h3><p>{nbspUnits(x.consequence)}</p></article>
           ))}
           {p.questions.map((q, i) => (
-            <article key={'q' + i}><p className="pp-card-kicker">Open question {String(i + 1).padStart(2, '0')}</p><h3>{q.title}</h3><p>{q.question}</p></article>
+            <article key={'q' + i}><p className="pp-card-kicker">Open question {String(i + 1).padStart(2, '0')}</p><h3>{q.title}</h3><p>{nbspUnits(q.question)}</p></article>
           ))}
           <article className="pp-evidence-panel">
             <p className="pp-card-kicker">Evidence today</p>
@@ -224,19 +220,8 @@ export default function ProductPageView({slug}: {slug: string}) {
         </div>
       </section>
 
-      {/* 7 · Call to action (DG-A100: talk to our team, download the whitepaper). */}
-      <section className="pp-close pp-reveal">
-        <h2>{S?.close.title ?? `Bring the socket. We will tell you what ${part.code} has to prove for it.`}</h2>
-        <p>{S?.close.copy ?? 'Send the platform, voltage and power environment, interfaces and qualification needs. The reply names what is architecture, what is evidence and what would have to be tested.'}</p>
-        <div className="pp-actions">
-          <a className="primary" href={contact}>Discuss {part.code} <ArrowUpRight size={16} aria-hidden="true"/></a>
-          <a className="pp-ghost" href={deck}><Download size={15} aria-hidden="true"/> Download the architecture deck</a>
-          <a className="text-link" href={url('/products')}>Compare all ten parts <ArrowUpRight size={15} aria-hidden="true"/></a>
-        </div>
-      </section>
-
       <section id="pp-sources" className="pp-sec">
-        <header className="pp-sources-head"><p className="dr-kicker">SOURCES</p><h2>{S?.sources.title ?? 'Read the source behind every figure.'}</h2>
+        <header className="pp-sources-head"><h2>{S?.sources.title ?? 'Read the source behind every figure.'}</h2>
           <p>{(S?.sources.copy ?? 'Each document opens inside the site at the cited section; the PDF is the edition of record.') + (dg?.annexDiffers ? ' Where the annex sheet differs from this page, the difference is stated beside it.' : '')}</p></header>
         <ul className="pp-sources">
           <li>
@@ -255,6 +240,17 @@ export default function ProductPageView({slug}: {slug: string}) {
           )}
         </ul>
       </section>
+      {/* 7 · Call to action (DG-A100: talk to our team, download the whitepaper). */}
+      <section className="pp-close pp-reveal">
+        <h2>{nbspUnits(S?.close.title ?? `Bring the socket. We will tell you what ${part.code} has to prove for it.`)}</h2>
+        <p>{nbspUnits(S?.close.copy ?? 'Send the platform, voltage and power environment, interfaces and qualification needs. The reply names what is architecture, what is evidence and what would have to be tested.')}</p>
+        <div className="pp-actions">
+          <a className="primary" href={contact}>Discuss {part.code} <ArrowUpRight size={16} aria-hidden="true"/></a>
+          <a className="pp-ghost" href={deck}><Download size={15} aria-hidden="true"/> Download the architecture deck</a>
+          <a className="text-link" href={url('/products')}>Compare all ten parts <ArrowUpRight size={15} aria-hidden="true"/></a>
+        </div>
+      </section>
+
       <Reveal/>
     </article>
   );
@@ -262,6 +258,8 @@ export default function ProductPageView({slug}: {slug: string}) {
 
 /** A figure's standing, stated on its card: the annex gives targets; a few rows are simulated results. */
 function status(value: string) { return /simulated/i.test(value) ? 'Simulated' : 'Target'; }
+/** The tag a card shows: only an exception to the section's stated default ("every figure is a target"). */
+function tag(value: string) { const s = status(value); return s === 'Target' ? null : <span className="pp-status">{s}</span>; }
 
 function firstSentence(s: string) { const m = s.match(/^.+?[.!?](\s|$)/); return (m ? m[0] : s).trim(); }
 
@@ -283,7 +281,7 @@ function areaIcon(id: string): LucideIcon { return ({vehicles: Car, grid: Zap, m
 
 function SpecCard({row: [name, value]}: {row: [string, string]}) {
   const Icon = iconFor(name + ' ' + value);
-  return <div><dt><Icon size={15} aria-hidden="true"/>{name}<span className="pp-status">{status(value)}</span></dt><dd>{nbspUnits(value)}</dd></div>;
+  return <div><dt><Icon size={15} aria-hidden="true"/>{name}{tag(value)}</dt><dd>{nbspUnits(value)}</dd></div>;
 }
 
 /** The hero's object: an exploded die stack (lid, die, substrate) with the part's own blocks on the die,
@@ -309,16 +307,17 @@ function Carousel({label, slides}: {label: string; slides: {key: string; title: 
   if (!slides.length) return null;
   const go = (d: number) => setI(x => (x + d + slides.length) % slides.length);
   return (
-    <div className="pp-carousel" ref={root} role="region" aria-roledescription="carousel" aria-label={label}>
+    <div className="pp-carousel" ref={root} role="region" aria-roledescription="carousel" aria-label={label}
+      onKeyDown={e => { if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); } else if (e.key === 'ArrowRight') { e.preventDefault(); go(1); } }}>
       <div className="pp-slides">
         {slides.map((s, k) => <div key={s.key} className={'pp-slide' + (k === i ? ' is-active' : '')} role="group" aria-roledescription="slide" aria-label={`${k + 1} of ${slides.length}: ${s.title}`} hidden={k !== i}>{s.node}</div>)}
       </div>
       {slides.length > 1 && (
         <div className="pp-carousel-nav">
-          <button type="button" onClick={() => go(-1)} aria-label="Previous"><ChevronLeft size={18} aria-hidden="true"/></button>
-          <span className="pp-carousel-title">{slides[i].title}</span>
+          <button type="button" onClick={() => go(-1)} aria-label={`Previous: ${slides[(i - 1 + slides.length) % slides.length].title}`}><ChevronLeft size={18} aria-hidden="true"/></button>
+          <span className="pp-carousel-title" aria-live="polite">{i + 1} of {slides.length}: {slides[i].title}</span>
           <span className="pp-dots">{slides.map((s, k) => <button key={s.key} type="button" className={k === i ? 'is-on' : undefined} onClick={() => setI(k)} aria-label={s.title} aria-current={k === i}/>)}</span>
-          <button type="button" onClick={() => go(1)} aria-label="Next"><ChevronRight size={18} aria-hidden="true"/></button>
+          <button type="button" onClick={() => go(1)} aria-label={`Next: ${slides[(i + 1) % slides.length].title}`}><ChevronRight size={18} aria-hidden="true"/></button>
         </div>
       )}
     </div>
@@ -330,6 +329,7 @@ function Carousel({label, slides}: {label: string; slides: {key: string; title: 
 function Reveal() {
   useEffect(() => {
     const els = [...document.querySelectorAll<HTMLElement>('.pp-reveal')];
+    document.documentElement.classList.add('pp-js');      // content is hidden for the fade only once this runs
     if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('is-in')); return; }
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), {rootMargin: '0px 0px -8% 0px'});
     els.forEach(e => io.observe(e));

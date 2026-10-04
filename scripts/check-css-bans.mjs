@@ -26,6 +26,10 @@ const files = [];
 if (files.length < 3) { console.error(`Only ${files.length} stylesheets found under app/; the scan is wrong.`); process.exit(1); }
 
 const problems = [];
+// Split a shadow list on top-level commas only. The first version split on /,(?![^(]*\))/, which also
+// splits inside nested functions: `0 0 60px color-mix(in srgb, var(--copper) 18%, transparent)` came out as
+// `0 0 60px color-mix(in srgb` with no colour token, and a real copper halo passed the gate.
+const topLevel = v => { const out = []; let d = 0, cur = ''; for (const ch of v) { if (ch === '(') d++; if (ch === ')') d--; if (ch === ',' && d === 0) { out.push(cur); cur = ''; } else cur += ch; } return [...out, cur]; };
 for (const f of files) {
   const raw = fs.readFileSync(path.join(root, f), 'utf8');
   const src = raw.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, ' '));
@@ -33,11 +37,11 @@ for (const f of files) {
   for (const m of src.matchAll(/transition\s*:\s*all\b[^;}]*/g))
     problems.push(`${f}:${lineOf(m.index)}  ${m[0].trim()}  -> name the properties that should animate`);
   for (const m of src.matchAll(/(?:box|text)-shadow\s*:([^;}]*)/g)) {
-    for (const layer of m[1].split(/,(?![^(]*\))/)) {
+    for (const layer of topLevel(m[1])) {
       const l = layer.trim();
       if (/^inset\b/.test(l)) continue;
       const g = l.match(/^0(?:px)?\s+0(?:px)?\s+(\d*\.?\d+)px\b/);
-      if (g && Number(g[1]) > 0 && /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(|var\(--/i.test(l))
+      if (g && Number(g[1]) > 0 && /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(|var\(--|color-mix\(|color\(/i.test(l))
         problems.push(`${f}:${lineOf(m.index)}  ${m[0].trim().slice(0, 80)}  -> zero-offset coloured halo`);
     }
   }

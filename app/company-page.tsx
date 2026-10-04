@@ -76,7 +76,7 @@ function ContactBlock() {
       >
         <h2>Send Us a Message</h2>
         <label><span className="cp-field">Name <b aria-hidden="true">*</b></span><input name="name" required autoComplete="name" /></label>
-        <label><span className="cp-field">Email <b aria-hidden="true">*</b></span><input name="email" type="email" required autoComplete="email" /></label>
+        <label><span className="cp-field">Email <b aria-hidden="true">*</b></span><input name="email" type="email" required autoComplete="email" spellCheck={false} /></label>
         <label>Company<input name="company" autoComplete="organization" /></label>
         <label>Interest
           <select name="interest" defaultValue="">
@@ -412,6 +412,7 @@ function Reveal() {
   useEffect(() => {
     const els = [...document.querySelectorAll<HTMLElement>('.cp-page > .cp-sec')];
     els.forEach(e => e.classList.add('cp-reveal'));
+    document.documentElement.classList.add('cp-js');      // hidden for the fade only once this runs
     if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('is-in')); return; }
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
     els.forEach(e => io.observe(e));
@@ -426,7 +427,7 @@ function PageBand({ page }: { page: CompanyPage }) {
   const bg = page.heroImage && page.heroImage.fit !== 'natural' ? page.heroImage : undefined;
   return (
     <header className={'cp-band' + (page.chips ? '' : ' is-centered')}>
-      {bg && <img className="cp-band-bg" src={bg.src} alt="" loading="eager" decoding="async" />}
+      {bg && <img className="cp-band-bg" src={bg.src} alt="" width={1536} height={864} loading="eager" decoding="async" />}
       <div className="cp-band-inner">
         <div className="cp-band-copy">
           <p className="cp-pill">{page.kicker}</p>
@@ -439,7 +440,7 @@ function PageBand({ page }: { page: CompanyPage }) {
           </ul>
         )}
       </div>
-      {bg && <p className="cp-band-credit">{captionFor(bg.src)}: {bg.alt}</p>}
+      {bg && <p className="cp-band-credit">{bg.alt.toLowerCase().startsWith(captionFor(bg.src).toLowerCase()) ? bg.alt : `${captionFor(bg.src)}: ${bg.alt}`}</p>}
     </header>
   );
 }

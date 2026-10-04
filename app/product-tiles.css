@@ -3,36 +3,41 @@
 .pt-head { text-align: center; max-width: 46rem; margin: 0 auto 2rem; }
 .pt-head h2 { margin: 0 0 .6rem; font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-page); line-height: var(--sc-lh-page); color: var(--ink); }
 .pt-head p { margin: 0; color: var(--ink-2); font-size: var(--sc-t-body); }
-.pt-row { display: flex; gap: .6rem; height: 26rem; margin: 0; padding: 0; list-style: none; }
-.pt-tile { position: relative; flex: 1 1 0; min-width: 3.4rem; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); transition: flex-grow .5s cubic-bezier(.2, .7, .2, 1), border-color .3s ease; }
+.pt-row { display: flex; gap: .6rem; height: 33rem; margin: 0; padding: 0; list-style: none; }
+.pt-tile { position: relative; flex: 1 1 0; min-width: 3.4rem; overflow: hidden; border: 1px solid var(--line); border-radius: var(--sc-radius-lg); background: var(--surface); transition: border-color .3s ease; }   /* flex-grow changes without a transition: animating layout reflows every tile */
 .pt-tile.is-open { flex-grow: 7; border-color: color-mix(in srgb, var(--copper) 55%, var(--line)); }
-.pt-tile { background: linear-gradient(165deg, color-mix(in srgb, var(--copper) 10%, var(--surface)), var(--surface) 55%); }
-.pt-mark { position: absolute; right: -.1em; top: -.15em; font-family: var(--font-display); font-size: clamp(5rem, 9vw, 9rem); line-height: 1; color: color-mix(in srgb, var(--copper) 14%, transparent); pointer-events: none; transition: color .4s ease; }
-.pt-tile.is-open .pt-mark { color: color-mix(in srgb, var(--copper) 9%, transparent); }
+
+.pt-still { display: block; width: 100%; height: 8.5rem; object-fit: cover; object-position: center 45%; border: 1px solid var(--line); border-radius: var(--sc-radius-md); margin-bottom: .4rem; }
 .pt-tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, color-mix(in srgb, var(--background) 92%, transparent)); pointer-events: none; }
-.pt-spine { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: flex-end; padding: 1rem .6rem; writing-mode: vertical-rl; rotate: 180deg; color: var(--ink); text-decoration: none; font-weight: 600; font-size: var(--sc-t-control); white-space: nowrap; }
+.pt-spine { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: flex-end; padding: 1rem .6rem; border: 0; background: none; cursor: pointer; writing-mode: vertical-rl; rotate: 180deg; color: var(--ink); font: 600 var(--sc-t-control) var(--font-text); white-space: nowrap; text-align: start; }
 .pt-spine span { color: var(--copper); font: 600 var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); margin-bottom: .5rem; }
-.pt-tile.is-open .pt-spine { visibility: hidden; }
-.pt-body { position: absolute; inset: 0; z-index: 3; display: grid; align-content: end; gap: .55rem; padding: 1.5rem; opacity: 0; translate: 0 12px; transition: opacity .35s ease .15s, translate .35s ease .15s; pointer-events: none; }
+/* Open, the spine stays in place as the tile's label strip (still the focus target), not hidden. */
+.pt-tile.is-open .pt-spine { inset: 0 auto 0 0; width: 2.6rem; color: var(--ink-3); }
+.pt-tile.is-open .pt-body { padding-left: 3.4rem; }
+.pt-spine:focus-visible { outline: 2px solid var(--copper); outline-offset: -4px; border-radius: var(--sc-radius-lg); }
+.pt-body { position: absolute; inset: 0; z-index: 3; display: grid; align-content: start; gap: .55rem; padding: 1.5rem; opacity: 0; translate: 0 12px; transition: opacity .35s ease .15s, translate .35s ease .15s; pointer-events: none; }
 .pt-tile.is-open .pt-body { opacity: 1; translate: 0 0; pointer-events: auto; }
 .pt-code { margin: 0; color: var(--copper); font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; }
 .pt-body h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-page); line-height: 1.1; color: var(--ink); }
 .pt-claim { margin: 0; color: var(--ink-2); font-size: var(--sc-t-control); line-height: 1.5; max-width: 46ch; }
 .pt-body dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin: .4rem 0; }
-.pt-body dl div { padding: .6rem .7rem; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in srgb, var(--surface) 85%, transparent); }
+.pt-body dl div { padding: .6rem .7rem; border: 1px solid var(--line); border-radius: var(--sc-radius-lg); background: color-mix(in srgb, var(--surface) 85%, transparent); }
 .pt-body dt { font-size: var(--sc-t-meta); color: var(--ink-3); line-height: 1.3; }
-.pt-body dd { margin: .2rem 0 0; font-family: var(--font-display); font-size: var(--sc-t-block); color: var(--copper); }
+.pt-body dd { margin: .2rem 0 0; font-family: var(--font-display); font-size: var(--sc-t-block); color: var(--copper); font-variant-numeric: tabular-nums; }
 .pt-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
 .pt-actions a { display: inline-flex; align-items: center; gap: .35rem; min-height: 40px; }
 .pt-ghost { padding: 0 .9rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); color: var(--ink); text-decoration: none; }
 .pt-ghost:hover, .pt-ghost:focus-visible { border-color: var(--copper); color: var(--copper); }
-@media (prefers-reduced-motion: reduce) { .pt-tile, .pt-body, .pt-mark { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .pt-tile, .pt-body { transition: none; } }
 /* Phone: the row becomes a stack; every tile is open, as deepgridsemi.com's mobile layout lists its products. */
+/* Stacked (set by the component from the same query): every tile open, no spine, nothing hidden. */
+.pt-row.is-stacked { flex-direction: column; height: auto; }
+.pt-row.is-stacked .pt-tile { flex: none; min-height: 0; }
+.pt-row.is-stacked .pt-spine, .pt-row.is-stacked .pt-tile.is-open .pt-spine { position: relative; inset: auto; width: 100%; min-height: 52px; writing-mode: horizontal-tb; rotate: none; justify-content: flex-start; gap: .6rem; padding: .9rem 1.1rem; color: var(--ink); }
+.pt-row.is-stacked .pt-spine span { margin: 0; }
+.pt-row.is-stacked .pt-body { position: relative; display: none; opacity: 1; translate: none; pointer-events: auto; padding: 0 1.1rem 1.25rem; }
+.pt-row.is-stacked .pt-tile.is-open .pt-body { display: grid; }
 @media (max-width: 860px) {
-  .pt-row { flex-direction: column; height: auto; }
-  .pt-tile, .pt-tile.is-open { flex: none; min-height: 0; }
-  .pt-spine { display: none; }
-  .pt-body { position: relative; opacity: 1; translate: none; pointer-events: auto; }
   .pt-body dl { grid-template-columns: minmax(0, 1fr); }
 }
 /* On the home page the tiles sit in a home section; keep the reference's centred head, not the section's two columns. */
