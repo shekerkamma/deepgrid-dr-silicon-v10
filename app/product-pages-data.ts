@@ -20,6 +20,9 @@ export type ProductPage = {
   specs: [string, string][];
   /** The three spec rows the hero carries beside the part, as deepgridsemi.com's product pages do. */
   heroSpecs: string[];
+  /** Three performance-highlight tiles: [figure, label, the spec row it comes from]. Checked: the figure's
+   *  number appears in that row. */
+  highlights: [string, string, string][];
   designedToward: string[];
   questions: {title: string; question: string}[];
   reconcile?: string;
@@ -31,6 +34,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'sku1', slug: 'sku-1', portfolioId: 'sku-1',
     heroSpecs: ['High-voltage rail', 'Control engine', 'PWM'],
+    highlights: [['120 V', 'Top of the high-voltage rail', 'High-voltage rail'], ['< 1 µs', 'Hardware PID loop', 'Control engine'], ['200 kHz', 'PWM, seven channels', 'PWM']],
     headline: 'One die runs the motor and drives its power stage.',
     lede: 'SKU-1 collapses the usual two-chip motor drive, a microcontroller plus a separate gate pre-driver, into one 130 nm BCD die. Field-oriented control runs in hardware, so the control loop does not wait on firmware, and the same die drives the high-voltage stage.',
     physics: [
@@ -68,6 +72,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'sku2', slug: 'sku-2', portfolioId: 'sku-2',
     heroSpecs: ['Front end', 'Accuracy class', 'Always-on domain'],
+    highlights: [['24-bit', 'Six-channel sigma-delta front end', 'Front end'], ['0.5S', 'Accuracy class', 'Accuracy class'], ['< 2 µW', 'Always-on domain', 'Always-on domain']],
     headline: 'A meter that keeps measuring, and keeps its record, when the mains is gone.',
     lede: 'SKU-2 puts a six-channel 24-bit sigma-delta front end, the metrology engine, cryptography and an always-on clock domain on one 130 nm CMOS die, so a meter needs one chip for measurement, security and its own time base.',
     physics: [
@@ -103,6 +108,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'sku3', slug: 'sku-3', portfolioId: 'sku-3',
     heroSpecs: ['Input', 'Rails', 'Upset hardening'],
+    highlights: [['100 V', 'Input spike', 'Input'], ['3 A', 'Largest rail, at 3.3 V', 'Rails'], ['12 ppm/°C', 'Reference drift', 'Reference']],
     headline: 'Turn a 28 V equipment bus into four sequenced, supervised rails.',
     lede: 'SKU-3 is a high-reliability power management IC for avionics and vehicle electronics: a pre-buck regulator takes the 28 V bus, four regulators sequence the board supplies, and a hardened state machine keeps the sequence correct under radiation.',
     physics: [
@@ -139,6 +145,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'sku4', slug: 'sku-4', portfolioId: 'sku-4',
     heroSpecs: ['Lockstep', 'Fault response', 'Package (DG32-LITE)'],
+    highlights: [['39', 'Cycles from injected fault to FAULT_N', 'Fault response'], ['2', 'Cycles of lockstep skew', 'Lockstep'], ['50 MHz', 'DG32-LITE clock', 'Clock (DG32-LITE)']],
     headline: 'Two cores, two cycles apart, and a comparator that answers in hardware.',
     lede: 'SKU-4 is the safety microcontroller of the portfolio and the one part with detailed engineering evidence: DG32-LITE implements it. A second core runs the same instructions two cycles behind the first; when their committed results differ, a comparator latches the cause and drives the fault pin without waiting for firmware.',
     physics: [
@@ -180,6 +187,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'sku5', slug: 'sku-5', portfolioId: 'sku-5',
     heroSpecs: ['RS-485', 'CAN-FD', 'Protection target'],
+    highlights: [['256', 'RS-485 nodes', 'RS-485'], ['8 Mbps', 'CAN-FD data phase', 'CAN-FD'], ['±15 kV', 'Pin protection', 'Protection target']],
     headline: 'The link at every node of an industrial or vehicle bus.',
     lede: 'SKU-5 is a dual-channel line driver, RS-485 and CAN-FD, built where a bus transceiver belongs: thick-oxide 5 V output devices, hysteresis receivers, failsafe biasing and heavy ESD protection. Every differentiating block is analog; the logic is a thin skin.',
     physics: [
@@ -216,6 +224,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'sku6', slug: 'sku-6', portfolioId: 'sku-6',
     heroSpecs: ['Rails', 'Deglitch', 'Watchdog'],
+    highlights: [['8 µs', 'Deglitch filter', 'Deglitch'], ['500 µV', 'Comparator offset, at most', 'Comparator offset'], ['0.1%', 'Threshold-network matching', 'Threshold network']],
     headline: 'Watch four rails, ignore the switching noise, latch the real fault.',
     lede: 'SKU-6 supervises four supply rails with chopper-stabilised comparators and matched resistor ladders, filters out converter noise with an 8 µs deglitch, and latches a fault the system cannot ignore. It is planned as the first part through the MIL-STD-883 screening flow.',
     physics: [
@@ -252,6 +261,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'sku7', slug: 'sku-7', portfolioId: 'sku-7',
     heroSpecs: ['Sweep', 'Array', 'Processing'],
+    highlights: [['4 GHz', 'Chirp sweep', 'Sweep'], ['3.75 cm', 'Range resolution', 'Sweep'], ['64', 'Tracked targets', 'Processing']],
     headline: 'Two dies, because 77 GHz and signal processing want different silicon.',
     lede: 'SKU-7 is a 4D imaging radar split across a silicon-germanium transceiver for the 77 GHz front end and a 130 nm CMOS die for sampling, FFTs and target detection. Its own sheet states the risk plainly: the SiGe front end has no FPGA equivalent, so it is proven on silicon or not at all.',
     physics: [
@@ -287,6 +297,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'sku8', slug: 'sku-8', portfolioId: 'sku-8',
     heroSpecs: ['Output swing', 'Column outputs', 'Safety'],
+    highlights: [['12 V', 'Column output swing', 'Output swing'], ['14-bit', 'Temperature-fed gamma', 'Gamma'], ['2 frames', 'Freeze alert', 'Safety']],
     headline: 'A cockpit display driver that notices when the picture freezes.',
     lede: 'SKU-8 integrates a timing controller and a 1280-channel 10-bit source driver on one 130 nm high-voltage die, with temperature-compensated gamma for sunlight and a frame-freeze self-test that flags a frozen display within two frames.',
     physics: [
@@ -323,6 +334,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'sku9', slug: 'sku-9', portfolioId: 'sku-9',
     heroSpecs: ['Networking', 'Power', 'Safety island'],
+    highlights: [['16', 'Smart electronic fuses', 'Power'], ['8 × CAN-FD', 'Beside TSN, LIN and FlexRay', 'Networking'], ['2-cycle', 'Lockstep safety island', 'Safety island']],
     headline: 'The zonal edge of a software-defined vehicle, not its central computer.',
     lede: 'SKU-9 bridges in-vehicle networks to local loads in one zone: sixteen smart electronic fuses, a time-sensitive Ethernet switch, a lockstep safety island and a hardware security module. Its sheet draws the line itself: the central multi-gigahertz computer is a sub-10 nm part and is not claimed.',
     physics: [
@@ -359,6 +371,7 @@ export const productPages: ProductPage[] = [
   {
     id: 'd100', slug: 'd100', portfolioId: 'track-b-d100',
     heroSpecs: ['Navigation', 'Failsafe', 'Flight control'],
+    highlights: [['30 Hz', 'Six-DoF pose, in hardware', 'Navigation'], ['10 TOPS', 'Optional AI, phase 2', 'AI (phase 2)'], ['1080p60', 'Vision input', 'Vision input']],
     headline: 'A drone SoC whose failsafe does not trust its own flight computer.',
     lede: 'D100 combines real-time flight control, visual-inertial odometry for GPS-denied navigation, and an isolated hardware failsafe island with its own power, clock and path to the motor controllers. When the mission computer locks up or the link is lost, the island brings the airframe to a safe state without it.',
     physics: [

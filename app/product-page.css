@@ -1,7 +1,7 @@
 /* Product pages (/products/<slug>). Tokens from DESIGN.md: serif headings, Inter body, mono labels,
    copper the one accent. Layout follows the page's own Sec sections; the sticky bar is the only new
    pattern (Apple-style product sub-nav), sitting under the site header. */
-.pp { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+.pp { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; overflow-x: clip; }   /* the hero glow runs to the viewport edges; clip keeps the sticky bars working */
 .pp-bar { position: sticky; top: var(--nav-h, 60px); z-index: 20; display: flex; align-items: center; gap: 1.5rem; padding: .6rem 0; background: var(--background); border-bottom: 1px solid var(--line); }
 .pp-bar-name { min-width: 0; font-family: var(--font-display); font-size: var(--sc-t-block); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pp-bar-name .mono { font-family: var(--font-mono); font-size: var(--sc-t-meta); letter-spacing: var(--sc-track-meta); color: var(--copper); margin-right: .35rem; }
@@ -89,40 +89,169 @@
 /* the part explainer film at the top of "Inside the part": a readable width, set off from the lead and the diagram */
 .pp-explainer { margin: 28px 0 8px; max-width: 60rem; }
 
-/* Hero, after deepgridsemi.com's product pages (DG-A100): the part's name, the part itself in the middle,
-   three figures attached beside it. Ours is the film's first scene, since no part is photographed yet. */
-.pp-hero { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr) minmax(0, 3fr); grid-template-areas: "copy object specs" "facts facts facts"; gap: 1.5rem 2rem; align-items: center; padding-block: clamp(2rem, 5vw, 3.5rem) 1rem; }
-.pp-hero-copy { grid-area: copy; }
-.pp-hero h1 { font-family: var(--font-display); font-size: var(--sc-t-hero); line-height: var(--sc-lh-hero); letter-spacing: var(--sc-track-hero); font-weight: 400; margin: .6rem 0 .8rem; color: var(--ink); text-wrap: balance; }
-.pp-hero-code { display: block; font-family: var(--font-mono); font-size: var(--sc-t-meta); letter-spacing: var(--sc-track-meta); color: var(--copper); margin-bottom: .35rem; }
-.pp-hero-claim { font-family: var(--font-display); font-size: var(--sc-t-block); line-height: 1.3; color: var(--ink); margin: 0 0 .8rem; text-wrap: balance; }
-.pp-hero .pp-lede { font-size: var(--sc-t-body); }
-.pp-hero .pp-actions { margin-top: 1.25rem; }
-.pp-hero-object { grid-area: object; margin: 0; position: relative; }
-.pp-hero-object::before { content: ""; position: absolute; inset: -12% 0; background: radial-gradient(closest-side, color-mix(in srgb, var(--copper) 10%, transparent), transparent); pointer-events: none; z-index: -1; }
-.pp-hero-loop { display: block; width: 100%; height: auto; aspect-ratio: 1280 / 586; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); background: var(--background); }
-.pp-hero-object figcaption { margin-top: .5rem; font-size: var(--sc-t-meta); color: var(--ink-3); }
-.pp-hero-specs { grid-area: specs; display: grid; gap: .75rem; margin: 0; }
-.pp-hero-specs div, .pp-spec-cards div { padding: .9rem 1rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); background: var(--surface, transparent); }
-.pp-hero-specs dt, .pp-spec-cards dt { display: flex; justify-content: space-between; gap: .5rem; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--ink-3); margin-bottom: .4rem; }
-.pp-hero-specs dd, .pp-spec-cards dd { margin: 0; color: var(--ink); font-size: var(--sc-t-body); line-height: 1.4; }
-.pp-status { color: var(--copper); }
-.pp-hero .pp-facts { grid-area: facts; margin-top: .5rem; }
-/* Specification: every target as a card with its standing, after the DG-A100 "Architecture & Technical
-   Specifications" grid; the table stays one click away. */
-.pp-spec-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: .75rem; margin: 0 0 1.25rem; }
-/* Questions and evidence: the label holds on the left while the cards scroll, after DG-A100's "System readiness". */
-@media (min-width: 1000px) {
-  .pp-split .dr-sec { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 0 3rem; align-items: start; }
-  .pp-split .dr-sec-head { position: sticky; top: calc(var(--nav-h, 60px) + 5rem); grid-row: 1 / span 4; display: block; }
-  .pp-split .dr-sec > :not(.dr-sec-head) { grid-column: 2; }
-  .pp-split .dr-sec-copy { margin-top: 1rem; }
+/* Product page after deepgridsemi.com's DG-A100 page, in the DeepGrid Semi design system (ink ground,
+   copper the one accent, teal only for a safe state). Sections: hero, overview + carousel, key features,
+   architecture & specifications, readiness, designed for, call to action. */
+
+/* Motion: fade-in-up on entry (DG-A100 "fade-in-up 0.8s"), only for viewers who allow motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .pp-reveal { opacity: 0; translate: 0 28px; transition: opacity .8s ease, translate .8s ease; }
+  .pp-reveal.is-in { opacity: 1; translate: 0 0; }
 }
+
+/* 1 · Hero */
+.pp-hero { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr); grid-template-areas: "copy object specs"; gap: 2rem; align-items: center; padding-block: clamp(2.5rem, 6vw, 4.5rem); position: relative; isolation: isolate; }
+.pp-hero::before { content: ""; position: absolute; inset: 0 -50vw; z-index: -2; background: radial-gradient(60% 70% at 55% 50%, color-mix(in srgb, var(--copper) 9%, transparent), transparent 70%); pointer-events: none; }
+.pp-hero-copy { grid-area: copy; }
+.pp-hero h1 { font-family: var(--font-display); font-size: var(--sc-t-hero); line-height: var(--sc-lh-hero); letter-spacing: var(--sc-track-hero); font-weight: 400; margin: 0 0 .8rem; color: var(--ink); text-wrap: balance; }
+.pp-hero-code { display: block; font-family: var(--font-mono); font-size: var(--sc-t-meta); letter-spacing: var(--sc-track-meta); color: var(--copper); margin-bottom: .6rem; }
+.pp-hero-claim { font-size: var(--sc-t-lead); line-height: var(--sc-lh-body); color: var(--ink-2); margin: 0; text-wrap: pretty; }
+.pp-hero .pp-actions { margin-top: 1.5rem; }
+.pp-hero-object { grid-area: object; margin: 0; }
+.pp-hero-object figcaption { margin-top: .75rem; font-size: var(--sc-t-meta); color: var(--ink-3); text-align: center; }
+.pp-hero-specs { grid-area: specs; display: grid; gap: .75rem; margin: 0; }
+
+/* The exploded die: three layers in CSS 3D. Entry parts them; a slow drift keeps them alive. */
+.pp-chip { position: relative; aspect-ratio: 5 / 4; display: grid; place-items: center; perspective: 1600px; }
+.pp-chip-ring { position: absolute; width: 78%; aspect-ratio: 1; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--copper) 45%, transparent); box-shadow: 0 0 60px color-mix(in srgb, var(--copper) 18%, transparent), inset 0 0 60px color-mix(in srgb, var(--copper) 10%, transparent); }
+.pp-chip-stack { position: relative; width: 58%; aspect-ratio: 1; transform-style: preserve-3d; transform: rotateX(58deg) rotateZ(-40deg); }
+.pp-chip-layer { position: absolute; inset: 0; border-radius: 6px; transform-style: preserve-3d; }
+.pp-chip-sub { background: linear-gradient(135deg, #1d2420, #121614); border: 1px solid var(--line); transform: translateZ(0); }
+.pp-chip-sub i { position: absolute; inset: 8%; background-image: radial-gradient(circle, color-mix(in srgb, var(--copper) 55%, transparent) 1.6px, transparent 2.2px); background-size: 9% 9%; opacity: .7; }
+.pp-chip-die { inset: 14%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5%; padding: 7%; background: linear-gradient(135deg, #2a2f2a, #181c1a); border: 1px solid color-mix(in srgb, var(--copper) 50%, var(--line)); transform: translateZ(70px); }
+.pp-chip-die span { display: grid; place-items: center; padding: 4%; border: 1px solid color-mix(in srgb, var(--copper) 35%, transparent); border-radius: 3px; background: color-mix(in srgb, var(--copper) 7%, transparent); font: 600 clamp(6px, .62vw, 10px)/1.15 var(--font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--ink-2); text-align: center; overflow: hidden; }
+.pp-chip-lid { inset: 22%; display: grid; place-items: center; background: linear-gradient(135deg, color-mix(in srgb, var(--copper) 26%, #1a1d1b), color-mix(in srgb, var(--copper) 10%, #121514)); border: 1px solid color-mix(in srgb, var(--copper) 70%, transparent); transform: translateZ(150px); opacity: .9; }
+.pp-chip-lid b { font: 600 clamp(12px, 1.3vw, 20px) var(--font-mono); letter-spacing: .12em; color: var(--ink); }
+@media (prefers-reduced-motion: no-preference) {
+  .pp-chip-ring { animation: pp-pulse 3.2s ease-in-out infinite; }
+  .pp-chip-stack { animation: pp-drift 9s ease-in-out infinite alternate; }
+  .pp-chip-die { animation: pp-part-die 1.4s cubic-bezier(.2, .7, .2, 1) both; }
+  .pp-chip-lid { animation: pp-part-lid 1.6s cubic-bezier(.2, .7, .2, 1) both; }
+}
+@keyframes pp-pulse { 0%, 100% { scale: 1; opacity: .75; } 50% { scale: 1.05; opacity: 1; } }
+@keyframes pp-drift { from { transform: rotateX(58deg) rotateZ(-40deg); } to { transform: rotateX(54deg) rotateZ(-34deg); } }
+@keyframes pp-part-die { from { transform: translateZ(4px); } to { transform: translateZ(70px); } }
+@keyframes pp-part-lid { from { transform: translateZ(8px); opacity: 0; } to { transform: translateZ(150px); opacity: .9; } }
+
+/* Figure cards (hero and specification): label, standing, value. */
+.pp-hero-specs div, .pp-spec-cards div { padding: .9rem 1rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); background: var(--surface); transition: border-color .2s ease, translate .2s ease; }
+.pp-hero-specs div:hover, .pp-spec-cards div:hover { border-color: color-mix(in srgb, var(--copper) 60%, var(--line)); }
+.pp-hero-specs dt, .pp-spec-cards dt { display: flex; align-items: center; gap: .45rem; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--ink-3); margin-bottom: .45rem; }
+.pp-hero-specs dt svg, .pp-spec-cards dt svg { color: var(--copper); flex: none; }
+.pp-hero-specs dd, .pp-spec-cards dd { margin: 0; color: var(--ink); font-size: var(--sc-t-body); line-height: 1.4; }
+.pp-status { margin-left: auto; color: var(--copper); }
+
+/* 2 · Overview + carousel */
+.pp-overview { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: center; padding-block: clamp(3rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
+.pp-overview h2, .pp-center-head h2, .pp-readiness-head h2, .pp-sources-head h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-page); line-height: var(--sc-lh-page); color: var(--ink); margin: .5rem 0 1rem; text-wrap: balance; }
+.pp-overview .pp-lede { font-size: var(--sc-t-body); }
+.pp-overview .pp-facts { grid-template-columns: minmax(0, 1fr); gap: .9rem; margin-top: 1.5rem; }
+.pp-overview-copy { min-width: 0; }
+.pp-slides { position: relative; }
+.pp-carousel { border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); padding: .75rem; }
+.pp-slide video, .pp-slide img { display: block; width: 100%; height: auto; border-radius: var(--sc-radius-sm); background: var(--background); }
+.pp-slide-img img { aspect-ratio: 16 / 9; object-fit: contain; background: #f4f2ec; }
+.pp-carousel-nav { display: flex; align-items: center; gap: .75rem; padding: .75rem .25rem 0; }
+.pp-carousel-nav > button { display: inline-grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; }
+.pp-carousel-nav > button:hover, .pp-carousel-nav > button:focus-visible { border-color: var(--copper); color: var(--copper); }
+.pp-carousel-title { flex: 1; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--ink-2); }
+.pp-dots { display: flex; gap: 0; }
+/* The dot is 8 px; the button around it is 24 px, the minimum tap target. */
+.pp-dots button { display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.pp-dots button::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.pp-dots button.is-on::after { background: var(--copper); }
+
+/* 3 · Key features: a bento grid, the first card large */
+.pp-center-head { text-align: center; max-width: 46rem; margin: 0 auto 2rem; }
+.pp-center-head p { margin: 0; color: var(--ink-2); font-size: var(--sc-t-body); line-height: var(--sc-lh-body); }
+#pp-features, #pp-specs, .pp-designed { padding-block: clamp(3rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
+.pp-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; margin: 0; padding: 0; list-style: none; }
+.pp-features li { padding: 1.4rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); transition: border-color .2s ease; }
+.pp-features li:hover { border-color: color-mix(in srgb, var(--copper) 55%, var(--line)); }
+.pp-features li.is-lead { grid-row: span 2; background: linear-gradient(160deg, color-mix(in srgb, var(--copper) 10%, var(--surface)), var(--surface) 60%); }
+.pp-features svg { color: var(--copper); }
+.pp-feature-zone { margin: .9rem 0 .35rem; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--ink-3); }
+.pp-features h3 { margin: 0 0 .5rem; font-size: var(--sc-t-block); line-height: 1.3; color: var(--ink); font-weight: 600; }
+.pp-features li p:last-child { margin: 0; color: var(--ink-2); font-size: var(--sc-t-control); line-height: 1.55; }
+.pp-features li.is-lead h3 { font-family: var(--font-display); font-weight: 400; font-size: var(--sc-t-page); }
+
+/* 4 · Architecture: specs either side of the diagram, chips beneath */
+.pp-arch { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr); gap: 1rem; align-items: center; }
+.pp-spec-cards { display: grid; gap: .75rem; margin: 0; }
+.pp-arch-figure { display: block; padding: .6rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: #f4f2ec; text-decoration: none; }
+.pp-arch-figure img { display: block; width: 100%; height: auto; }
+.pp-arch-figure span { display: inline-flex; align-items: center; gap: .35rem; margin-top: .5rem; padding: .3rem .6rem; border-radius: var(--sc-radius-sm); background: var(--background); color: var(--copper); font-size: var(--sc-t-control); }
+.pp-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin: 1.25rem 0 .75rem; }
+.pp-chips div { padding: .8rem 1rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); }
+.pp-chips dt { font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--ink-3); margin-bottom: .3rem; }
+.pp-chips dd { margin: 0; color: var(--ink); font-size: var(--sc-t-control); line-height: 1.45; }
+.pp-diagram-full { margin-top: 1.5rem; }
+
+/* 5 · Readiness: label holds, cards scroll */
+.pp-readiness { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 1.5rem 3rem; align-items: start; padding-block: clamp(3rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
+.pp-readiness-head { position: sticky; top: calc(var(--nav-h, 60px) + 5rem); }
+.pp-readiness-head p:last-child, .pp-sources-head p:last-child { margin: 0; color: var(--ink-2); font-size: var(--sc-t-body); line-height: var(--sc-lh-body); }
+.pp-readiness-cards { display: grid; gap: .9rem; }
+.pp-readiness-cards article { padding: 1.25rem 1.4rem; border: 1px solid var(--line); border-left: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); }
+.pp-card-kicker { margin: 0 0 .4rem; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; color: var(--copper); }
+.pp-readiness-cards h3 { margin: 0 0 .45rem; font-size: var(--sc-t-block); line-height: 1.35; color: var(--ink); font-weight: 600; }
+.pp-readiness-cards article > p:not(.pp-card-kicker) { margin: 0; color: var(--ink-2); font-size: var(--sc-t-control); line-height: 1.55; }
+.pp-evidence-panel { background: linear-gradient(160deg, color-mix(in srgb, var(--copper) 8%, var(--surface)), var(--surface) 70%) !important; }
+.pp-evidence-panel .pp-evidence { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: .75rem 0; }
+
+/* 6 · Designed for */
+.pp-apps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: .9rem; margin: 0 0 1.5rem; padding: 0; list-style: none; }
+.pp-apps a { display: grid; gap: .5rem; height: 100%; padding: 1.25rem 1.4rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); color: var(--ink-2); text-decoration: none; font-size: var(--sc-t-control); line-height: 1.5; transition: border-color .2s ease; }
+.pp-apps a:hover, .pp-apps a:focus-visible { border-color: var(--copper); }
+.pp-apps svg { color: var(--copper); }
+.pp-app-name { display: inline-flex; align-items: center; gap: .35rem; color: var(--ink); font-weight: 600; font-size: var(--sc-t-body); }
+
+/* Overview subtitle (DG-R100: the configuration line in the accent) */
+.pp-subtitle { margin: -.4rem 0 1rem; font-size: var(--sc-t-block); line-height: 1.35; color: var(--copper); text-wrap: balance; }
+
+/* Performance highlights: three large figures, each marked as a target */
+#pp-highlights, #pp-integration { padding-block: clamp(3rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
+.pp-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; margin: 0; padding: 0; list-style: none; }
+.pp-highlights li { display: grid; justify-items: center; gap: .35rem; padding: 1.75rem 1.25rem; text-align: center; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: linear-gradient(180deg, color-mix(in srgb, var(--copper) 7%, var(--surface)), var(--surface)); }
+.pp-highlights strong { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.2rem, 4vw, 3.2rem); line-height: 1; color: var(--copper); }
+.pp-hl-label { font-weight: 600; color: var(--ink); font-size: var(--sc-t-body); }
+.pp-highlights .pp-status { margin: 0; font: var(--sc-t-meta) var(--font-mono); letter-spacing: var(--sc-track-meta); text-transform: uppercase; }
+.pp-hl-rest { color: var(--ink-2); font-size: var(--sc-t-control); line-height: 1.5; max-width: 30ch; }
+
+/* Integration & compatibility: three columns */
+.pp-integration { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; }
+.pp-integration article { padding: 1.4rem; border: 1px solid var(--line); border-radius: var(--sc-radius-md); background: var(--surface); }
+.pp-integration h3 { display: flex; align-items: center; gap: .5rem; margin: 0 0 .9rem; font-size: var(--sc-t-block); color: var(--ink); font-weight: 600; }
+.pp-integration h3 svg { color: var(--copper); }
+.pp-integration ul { display: grid; gap: .55rem; margin: 0; padding: 0 0 0 1rem; color: var(--ink-2); font-size: var(--sc-t-control); line-height: 1.5; }
+.pp-integration li::marker { color: var(--copper); }
+.pp-integration b { color: var(--ink); font-weight: 600; }
+.pp-integration a { display: inline-flex; align-items: center; min-height: 28px; color: var(--ink); }
+.pp-integration a:hover, .pp-integration a:focus-visible { color: var(--copper); }
+
+/* 7 · Call to action */
+.pp-ghost { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: 0 1.1rem; border: 1px solid var(--line); border-radius: var(--sc-radius-sm); color: var(--ink); text-decoration: none; }
+.pp-ghost:hover, .pp-ghost:focus-visible { border-color: var(--copper); color: var(--copper); }
+.pp-close { text-align: center; }
+.pp-close h2, .pp-close p { margin-inline: auto; }
+.pp-close .pp-actions { justify-content: center; }
+.pp-sources-head { max-width: 46rem; margin-bottom: 1.25rem; }
+#pp-sources { padding-block: clamp(2.5rem, 5vw, 3.5rem) 0; }
+
 @media (max-width: 1199px) {
-  .pp-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "copy object" "specs specs" "facts facts"; }
+  .pp-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "copy object" "specs specs"; }
   .pp-hero-specs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pp-arch { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .pp-arch-figure { grid-column: 1 / -1; grid-row: 1; }
+  .pp-features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pp-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .pp-overview, .pp-readiness { grid-template-columns: minmax(0, 1fr); }
+  .pp-readiness-head { position: static; }
 }
 @media (max-width: 760px) {
-  .pp-hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "object" "specs" "facts"; }
-  .pp-hero-specs { grid-template-columns: minmax(0, 1fr); }
+  .pp-hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "object" "specs"; }
+  .pp-hero-specs, .pp-arch, .pp-features, .pp-chips, .pp-evidence-panel .pp-evidence, .pp-highlights, .pp-integration { grid-template-columns: minmax(0, 1fr); }
+  .pp-features li.is-lead { grid-row: auto; }
 }

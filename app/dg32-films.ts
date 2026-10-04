@@ -1,9 +1,11 @@
 // DG32's narrated films (public/media), for the pages built on the company-page renderer. Titles follow the
 // site's own names for them; lengths are read from the files.
 import { url } from './routes';
-export type Film = { id: string; title: string; sub: string; length: string; src: string; poster: string; vtt: string };
+/** `burned`: the captions are part of the picture, so the caption track stays available but off by default. */
+export type Film = { id: string; title: string; sub: string; length: string; src: string; poster: string; vtt: string; burned?: boolean };
 const f = (id: string, title: string, sub: string, length: string): Film => ({
   id, title, sub, length, src: url('/media/' + id + '.mp4'), poster: url('/media/' + id + '-poster.jpg'), vtt: url('/media/' + id + '.vtt'),
+  burned: id === 'dg32-fault-path-explained',   // built in HyperFrames with captions in the picture
 });
 export const films: Film[] = [
   f('dg32-fault-path-explained', 'The fault path, explained', 'From a silent CPU fault to a switched-off bridge, in hardware', '1:28'),
